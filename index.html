@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Main</title>
 
 <link rel="stylesheet" href="style.css">
@@ -16,9 +17,37 @@ if (sessionStorage.getItem("loggedIn") !== "true") {
 </script>
 
 <style>
+.center-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+/* ✅ Responsive cards */
+.card {
+    width: 100%;
+    max-width: 650px;
+}
+
+/* ✅ Canvas scaling */
 #canvas-container {
-    width: 650px;
-    height: 400px;
+    width: 100%;
+    height: 50vh;
+    max-height: 400px;
+}
+
+canvas {
+    display: block;
+}
+
+/* ✅ Mobile layout */
+@media (max-width: 768px) {
+    .grid-3 {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 </head>
@@ -27,69 +56,196 @@ if (sessionStorage.getItem("loggedIn") !== "true") {
 
 <div class="center-wrapper">
 
-    <div class="card" style="width:650px;">
-        <h2 class="text-center">3D Cupboard</h2>
+<!-- ================= INPUT PANEL ================= -->
+<div class="card">
+    <h2 class="text-center">Cupboard Designer (Real Cut System)</h2>
 
-        <button class="btn btn-primary mt-2" onclick="updateBox()">Update</button>
+    <div class="grid grid-3 mt-2">
+
+        <div class="form-group">
+            <label>Width (m)</label>
+            <input type="number" id="width" value="2">
+        </div>
+
+        <div class="form-group">
+            <label>Height (m)</label>
+            <input type="number" id="height" value="2.2">
+        </div>
+
+        <div class="form-group">
+            <label>Depth (m)</label>
+            <input type="number" id="depth" value="0.6">
+        </div>
+
+        <div class="form-group">
+            <label>Panel Thickness (m)</label>
+            <input type="number" id="thickness" value="0.018">
+        </div>
+
+        <div class="form-group">
+            <label>Shelves</label>
+            <input type="number" id="shelves" value="2">
+        </div>
+
+        <div class="form-group">
+            <label>Back Panel Thickness (m)</label>
+            <input type="number" id="back" value="0.006">
+        </div>
+
     </div>
 
-    <div class="card mt-3">
-        <div id="canvas-container"></div>
-    </div>
+    <button class="btn btn-primary mt-2" onclick="updateCabinet()">Update</button>
+</div>
+
+<!-- ================= VIEWPORT ================= -->
+<div class="card mt-3">
+    <div id="canvas-container"></div>
+</div>
 
 </div>
 
 <button class="btn btn-danger logout-btn" onclick="logout()">Logout</button>
 
 <script>
-let scene, camera, renderer, cube, controls;
+let scene, camera, renderer, controls;
+let parts = [];
 
-function init() {
+/* =========================
+   INIT
+========================= */
+function init3D() {
     const container = document.getElementById("canvas-container");
+
+    const w = container.clientWidth;
+    const h = container.clientHeight;
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0f172a);
 
-    camera = new THREE.PerspectiveCamera(75, 650/400, 0.1, 1000);
+    camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
 
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize(650, 400);
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
 
     const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(5,5,5);
+    light.position.set(5, 5, 5);
     scene.add(light);
 
-    scene.add(new THREE.AmbientLight(0xffffff,0.5));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
+    controls.enablePan = false;
 
-    cube = new THREE.Mesh(
-        new THREE.BoxGeometry(2,3,1),
-        new THREE.MeshStandardMaterial({color:0x8b5a2b})
-    );
+    buildCabinet();
 
-    scene.add(cube);
+    // ✅ Handle resizing (VERY IMPORTANT FOR MOBILE)
+    window.addEventListener("resize", () => {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
 
-    camera.position.set(4,3,4);
-    controls.update();
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(w, h);
+    });
 
     animate();
 }
 
-function animate() {
-    requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene,camera);
+/* =========================
+   CLEAR PARTS
+========================= */
+function clearCabinet() {
+    parts.forEach(p => scene.remove(p));
+    parts = [];
 }
 
+/* =========================
+   BUILD REAL CUPBOARD
+========================= */
+function buildCabinet() {
+    clearCabinet();
+
+    const W = parseFloat(document.getElementById("width").value);
+    const H = parseFloat(document.getElementById("height").value);
+    const D = parseFloat(document.getElementById("depth").value);
+    const T = parseFloat(document.getElementById("thickness").value);
+    const shelves = parseInt(document.getElementById("shelves").value);
+    const backT = parseFloat(document.getElementById("back").value);
+
+    const wood = 0x8b5a2b;
+
+    addBox(T, H, D, -W/2 + T/2, 0, 0, wood);
+    addBox(T, H, D, W/2 - T/2, 0, 0, wood);
+
+    addBox(W, T, D, 0, H/2 - T/2, 0, wood);
+    addBox(W, T, D, 0, -H/2 + T/2, 0, wood);
+
+    addBox(W, H, backT, 0, 0, -D/2, 0x5a3a1a);
+
+    for (let i = 1; i <= shelves; i++) {
+        const y = -H/2 + (H / (shelves + 1)) * i;
+        addBox(W, T, D * 0.95, 0, y, 0, wood);
+    }
+
+    updateCamera(W, H, D);
+}
+
+/* =========================
+   ADD PART
+========================= */
+function addBox(w, h, d, x, y, z, color) {
+    const geo = new THREE.BoxGeometry(w, h, d);
+    const mat = new THREE.MeshStandardMaterial({ color });
+
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(x, y, z);
+
+    scene.add(mesh);
+    parts.push(mesh);
+}
+
+/* =========================
+   CAMERA
+========================= */
+function updateCamera(w, h, d) {
+    const max = Math.max(w, h, d);
+
+    camera.position.set(max * 2, max * 1.5, max * 2);
+    camera.lookAt(0, 0, 0);
+
+    controls.target.set(0, 0, 0);
+    controls.update();
+}
+
+/* =========================
+   UPDATE
+========================= */
+function updateCabinet() {
+    buildCabinet();
+}
+
+/* =========================
+   LOGOUT
+========================= */
 function logout() {
     sessionStorage.removeItem("loggedIn");
     window.location.href = "login.html";
 }
 
-init();
+/* =========================
+   LOOP
+========================= */
+function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+init3D();
 </script>
 
 </body>
