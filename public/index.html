@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Main</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+if (sessionStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "login.html";
+}
+</script>
+
+<style>
+#canvas-container {
+    width: 650px;
+    height: 400px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="center-wrapper">
+
+    <div class="card" style="width:650px;">
+        <h2 class="text-center">3D Cupboard</h2>
+
+        <button class="btn btn-primary mt-2" onclick="updateBox()">Update</button>
+    </div>
+
+    <div class="card mt-3">
+        <div id="canvas-container"></div>
+    </div>
+
+</div>
+
+<button class="btn btn-danger logout-btn" onclick="logout()">Logout</button>
+
+<script>
+let scene, camera, renderer, cube, controls;
+
+function init() {
+    const container = document.getElementById("canvas-container");
+
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f172a);
+
+    camera = new THREE.PerspectiveCamera(75, 650/400, 0.1, 1000);
+
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(650, 400);
+    container.appendChild(renderer.domElement);
+
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(5,5,5);
+    scene.add(light);
+
+    scene.add(new THREE.AmbientLight(0xffffff,0.5));
+
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    cube = new THREE.Mesh(
+        new THREE.BoxGeometry(2,3,1),
+        new THREE.MeshStandardMaterial({color:0x8b5a2b})
+    );
+
+    scene.add(cube);
+
+    camera.position.set(4,3,4);
+    controls.update();
+
+    animate();
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene,camera);
+}
+
+function logout() {
+    sessionStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+}
+
+init();
+</script>
+
+</body>
+</html>
