@@ -34,8 +34,6 @@ async function checkAuth() {
 
         if (!data || !data.userId) {
             window.location.href = "login.html";
-        } else {
-            window.location.href = "dashboard.html";
         }
     } catch (err) {
         window.location.href = "login.html";
