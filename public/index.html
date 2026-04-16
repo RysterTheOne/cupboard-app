@@ -142,7 +142,7 @@ LOAD PROJECT
 function loadProject() {
     const data = localStorage.getItem("currentProject");
     if (!data) {
-        window.location.href = "dashboard.html";
+        return;
     }
 
     const obj = JSON.parse(data);
