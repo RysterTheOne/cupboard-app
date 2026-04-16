@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="center-wrapper">
+    <div class="card">
+        <h2>Saved Projects</h2>
+
+        <button class="btn btn-primary" onclick="newProject()">+ New Project</button>
+
+        <div id="projects" class="mt-2"></div>
+    </div>
+</div>
+
+<button class="btn btn-danger logout-btn" onclick="logout()">Logout</button>
+
+<script>
+const API = "https://YOUR-RENDER-URL";
+
+async function checkAuth() {
+    const res = await fetch(API + "/api/me", {
+        credentials: "include"
+    });
+
+    const data = await res.json();
+    if (!data) window.location.href = "login.html";
+}
+
+async function loadProjects() {
+    const res = await fetch(API + "/api/projects", {
+        credentials: "include"
+    });
+
+    const projects = await res.json();
+
+    const container = document.getElementById("projects");
+    container.innerHTML = "";
+
+    projects.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "card mt-1";
+        div.style.cursor = "pointer";
+
+        div.innerText = p.cabinet_type + " (click to open)";
+        div.onclick = () => {
+            localStorage.setItem("currentProject", p.data);
+            window.location.href = "index.html";
+        };
+
+        container.appendChild(div);
+    });
+}
+
+function newProject() {
+    localStorage.removeItem("currentProject");
+    window.location.href = "index.html";
+}
+
+async function logout() {
+    await fetch(API + "/api/logout", {
+        method: "POST",
+        credentials: "include"
+    });
+
+    window.location.href = "login.html";
+}
+
+checkAuth();
+loadProjects();
+</script>
+
+</body>
+</html>

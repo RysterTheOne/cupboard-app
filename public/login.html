@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="center-wrapper">
+    <div class="card">
+        <h2 class="text-center">Login</h2>
+
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="username">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password">
+        </div>
+
+        <button class="btn btn-primary mt-2" onclick="login()">Login</button>
+    </div>
+</div>
+
+<script>
+const API = "https://YOUR-RENDER-URL";
+
+async function login() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    const res = await fetch(API + "/api/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+    });
+
+    if (res.ok) {
+        window.location.href = "dashboard.html";
+    } else {
+        alert("Login failed");
+    }
+}
+</script>
+
+</body>
+</html>
