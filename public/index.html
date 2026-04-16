@@ -266,7 +266,7 @@ function generateCutList(){
     const H = +height.value;
     const D = +depth.value;
     const T = +thickness.value;
-    const shelves = +shelves.value;
+    const shelvesVal = +document.getElementById("shelves").value;
     const backT = +back.value;
 
     const internalWidth = W - (2*T);
@@ -278,7 +278,7 @@ function generateCutList(){
     ];
 
     if(shelves>0){
-        list.push({name:"Shelf",qty:shelves,w:internalWidth,h:D,t:T});
+        list.push({name:"Shelf",qty:shelvesVal,w:internalWidth,h:D,t:T});
     }
 
     cutList.innerHTML = list.map(i =>
