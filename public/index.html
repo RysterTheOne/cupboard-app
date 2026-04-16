@@ -296,9 +296,14 @@ function generateCutList(){
 }
 
 /* ========================= */
-function logout(){
-    fetch("/logout",{method:"POST",credentials:"include"})
-    .then(()=>window.location.href="login.html");
+async function logout() {
+    await fetch(API + "/api/logout", {
+        method: "POST",
+        credentials: "include"
+    });
+
+    // force clear UI state
+    window.location.href = "login.html";
 }
 
 /* ========================= */
