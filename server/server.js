@@ -15,7 +15,16 @@ app.use(express.json());
 app.use(cookieParser());
 
 //temp startpoint to create a user, remove later
+app.get("/create-user", async (req, res) => {
+    const bcrypt = require("bcrypt");
+    const hash = await bcrypt.hash("1234", 10);
 
+    db.run(
+        "INSERT OR IGNORE INTO users (username, password_hash) VALUES (?, ?)",
+        ["admin", hash],
+        () => res.send("User created: admin / 1234")
+    );
+});
 // temp endpoint to create a user, remove later
 
 // ✅ IMPORTANT for frontend connection
