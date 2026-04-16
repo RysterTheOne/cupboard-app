@@ -25,13 +25,23 @@
 const API = "https://cupboard-app.onrender.com";
 
 async function checkAuth() {
-    const res = await fetch(API + "/api/me", {
-        credentials: "include"
-    });
+    try {
+        const res = await fetch(API + "/api/me", {
+            credentials: "include"
+        });
 
-    const data = await res.json();
-    if (!data) window.location.href = "login.html";
+        const data = await res.json();
+
+        if (!data || !data.userId) {
+            window.location.href = "login.html";
+        } else {
+            window.location.href = "dashboard.html";
+        }
+    } catch (err) {
+        window.location.href = "login.html";
+    }
 }
+checkAuth();
 
 async function loadProjects() {
     const res = await fetch(API + "/api/projects", {
@@ -72,7 +82,6 @@ async function logout() {
     window.location.href = "login.html";
 }
 
-checkAuth();
 loadProjects();
 </script>
 

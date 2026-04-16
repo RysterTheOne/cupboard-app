@@ -120,10 +120,17 @@ const API = "https://cupboard-app.onrender.com";
 AUTH CHECK (BACKEND ONLY)
 ========================= */
 async function checkAuth() {
-    const res = await fetch(API + "/api/me", {
-        credentials: "include"
-    });
-    if (!res.ok) {
+    try {
+        const res = await fetch(API + "/api/me", {
+            credentials: "include"
+        });
+
+        const data = await res.json();
+
+        if (!data || !data.userId) {
+            window.location.href = "login.html";
+        }
+    } catch (err) {
         window.location.href = "login.html";
     }
 }
