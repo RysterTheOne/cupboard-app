@@ -42,6 +42,25 @@ const pool = new Pool({
 });
 // ================= DB =================
 
+app.get("/setup-admin", async (req, res) => {
+    const existing = await pool.query(
+        "SELECT * FROM users WHERE is_admin = TRUE"
+    );
+
+    if (existing.rows.length > 0) {
+        return res.send("Admin already exists");
+    }
+
+    const hash = await bcrypt.hash("admin123", 10);
+
+    await pool.query(
+        "INSERT INTO users (username, password_hash, is_admin) VALUES ($1, $2, TRUE)",
+        ["admin", hash]
+    );
+
+    res.send("Admin created");
+});
+
 // Create tables if not exist
 async function initDB() {
     await pool.query(`
