@@ -64,7 +64,7 @@ async function checkAuth() {
             window.location.href = "dashboard.html";
         }
     } catch (err) {
-        window.location.href = "login.html";
+        return;
     }
 }
 checkAuth();

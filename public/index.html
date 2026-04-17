@@ -11,13 +11,6 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
 <style>
-.center-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    padding: 10px;
-}
 
 .card {
     width: 100%;
@@ -30,14 +23,6 @@
     max-height: 400px;
 }
 
-.top-bar {
-    width: 100%;
-    max-width: 650px;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
 @media (max-width: 768px) {
     .grid-3 {
         grid-template-columns: 1fr;
@@ -48,13 +33,12 @@
 
 <body>
 
-<div class="center-wrapper">
-
 <!-- TOP BAR -->
 <div class="top-bar">
-    <button class="btn btn-danger" onclick="logout()">Logout</button>
-    <button class="btn btn-primary" onclick="saveProject()">Save Project</button>
+    <button class="btn btn-primary" onclick="goAccounts()">Accounts -></button>
 </div>
+
+<div class="center-wrapper">
 
 <!-- INPUT -->
 <div class="card">
@@ -112,6 +96,11 @@ Update
 <div id="cutList"></div>
 </div>
 
+</div>
+
+<div class="bottom-bar">
+    <button class="btn btn-primary" onclick="logout()">Save Project</button>
+    <button class="btn btn-danger" onclick="logout()">Logout</button>
 </div>
 
 <script>

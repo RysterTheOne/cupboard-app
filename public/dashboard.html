@@ -9,6 +9,11 @@
 
 <body>
 
+<!-- TOP BAR -->
+<div class="top-bar">
+    <button class="btn btn-primary" onclick="goAccounts()">Accounts -></button>
+</div>
+
 <div class="center-wrapper">
     <div class="card">
         <h2>Saved Projects</h2>
@@ -64,6 +69,10 @@ async function loadProjects() {
 
         container.appendChild(div);
     });
+}
+
+function goAccounts() {
+    window.location.href = "admin.html";
 }
 
 function newProject() {
