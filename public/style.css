@@ -58,7 +58,6 @@ input {
 }
 
 .mid {
-    display: grid;
     place-items: center; /* Centers both horizontally and vertically */
 }
 .btn-primary {
