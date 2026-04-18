@@ -18,9 +18,37 @@
     <div class="card">
         <h2>Saved Projects</h2>
 
-        <button class="btn btn-primary" onclick="newProject()">+ New Project</button>
+        <button class="btn btn-primary" onclick="showCreateProject()">+ New Project</button>
 
         <div id="projects" class="mt-2"></div>
+    </div>
+    <div id="createProjectModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);">
+
+        <div style="background: white; padding: 20px; width: 300px; margin: 100px auto; border-radius: 8px;">
+        
+            <h3>Create Project</h3>
+
+            <!-- Name field -->
+            <input 
+                type="text" 
+                id="projectName" 
+                placeholder="Enter name" 
+                style="width: 100%; margin-bottom: 10px; padding: 8px;"
+            >
+
+            <!-- Type dropdown -->
+            <select id="projectType" style="width: 100%; margin-bottom: 15px; padding: 8px;">
+                <option value="shelving">Shelving</option>
+                <option value="base_cabinet">Base Cabinet</option>
+            </select>
+
+            <!-- Buttons -->
+            <div style="display: flex; justify-content: space-between;">
+                <button class="btn btn-danger logout-btn" onclick="hideCreateProject()">Cancel</button>
+                <button class="btn btn-primary">Create</button>
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -61,7 +89,7 @@ async function loadProjects() {
         div.className = "card mt-1";
         div.style.cursor = "pointer";
 
-        div.innerText = p.cabinet_type + " (click to open)";
+        div.innerText = p.name + " (click to open)";
         div.onclick = () => {
             localStorage.setItem("currentProject", p.data);
             window.location.href = "index.html";
@@ -74,6 +102,60 @@ async function loadProjects() {
 function goAccounts() {
     window.location.href = "admin.html";
 }
+
+function showCreateProject() {
+    document.getElementById("createProjectModal").style.display = "block"
+}
+
+function hideCreateProject() {
+  document.getElementById("createProjectModal").style.display = "none";
+}
+
+async function createProject() {
+  const name = document.getElementById("projectName").value;
+  const type = document.getElementById("projectType").value;
+
+  if (!name) {
+    alert("Please enter a name");
+    return;
+  }
+
+  try {
+    const data = {
+        name: name,
+        cabinet_type: type,
+
+        width: width.value,
+        height: height.value,
+        depth: depth.value,
+        thickness: thickness.value,
+        shelves: shelves.value,
+        back: back.value
+    };
+
+    await fetch(API + "/api/projects", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+        body: JSON.stringify({
+            data
+        })
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to create user");
+    }
+
+    alert("User created!");
+    hideCreateProject();
+
+  } catch (err) {
+    console.error(err);
+    alert("Error creating user");
+  }
+}
+
+
 
 function newProject() {
     localStorage.removeItem("currentProject");

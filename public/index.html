@@ -35,7 +35,7 @@
 
 <!-- TOP BAR -->
 <div class="top-bar">
-    <button class="btn btn-primary" onclick="goAccounts()">Accounts -></button>
+    <button class="btn btn-primary" onclick="goDashboard()">← Dashboard</button>
 </div>
 
 <div class="center-wrapper">
@@ -44,9 +44,7 @@
 <div class="card">
 <h2 class="text-center">Cupboard Designer</h2>
 
-<input type="text" id="projectName" placeholder="Project Name" class="mt-2">
-
-<div class="grid grid-3 mt-2">
+<div class="grid grid-3 mt-2" id="shelving">
 
 <div class="form-group">
 <label>Width (mm)</label>
@@ -99,7 +97,7 @@ Update
 </div>
 
 <div class="bottom-bar">
-    <button class="btn btn-primary" onclick="logout()">Save Project</button>
+    <button class="btn btn-primary" onclick="saveProject()">Save Project</button>
     <button class="btn btn-danger" onclick="logout()">Logout</button>
 </div>
 
@@ -125,6 +123,19 @@ async function checkAuth() {
 }
 checkAuth();
 
+async function logout() {
+    await fetch(API + "/api/logout", {
+        method: "POST",
+        credentials: "include"
+    });
+
+    // force clear UI state
+    window.location.href = "login.html";
+}
+
+function goDashboard() {
+    window.location.href = "dashboard.html"
+}
 /* =========================
 LOAD PROJECT
 ========================= */
