@@ -9,22 +9,9 @@
 
 <body>
 
-<!-- TOP BAR -->
-<div class="top-bar">
-    <button class="btn btn-primary" onclick="goAccounts()">Accounts -></button>
-</div>
-
-<div class="center-wrapper">
-    <div class="card">
-        <h2>Saved Projects</h2>
-
-        <button class="btn btn-primary" onclick="showCreateProject()">+ New Project</button>
-
-        <div id="projects" class="mt-2"></div>
-    </div>
     <div id="createProjectModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);">
 
-        <div class="mid card">
+        <div class=" card">
         
             <h3>Create Project</h3>
 
@@ -49,6 +36,19 @@
             </div>
 
         </div>
+    </div>
+<!-- TOP BAR -->
+<div class="top-bar">
+    <button class="btn btn-primary" onclick="goAccounts()">Accounts -></button>
+</div>
+
+<div class="center-wrapper">
+    <div class="card">
+        <h2>Saved Projects</h2>
+
+        <button class="btn btn-primary" onclick="showCreateProject()">+ New Project</button>
+
+        <div id="projects" class="mt-2"></div>
     </div>
 </div>
 
