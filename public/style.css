@@ -60,9 +60,10 @@ input {
 .mid {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Horizontal centering */
-    align-items: center;     /* Vertical centering */
-    margin: 0;
+    align-items: center;
+    justify-content: center;
+    height: 85vh;
+    width: 100vw;
 }
 .btn-primary {
     background: #2563eb;
