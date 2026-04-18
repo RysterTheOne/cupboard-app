@@ -58,6 +58,8 @@ input {
 }
 
 .mid {
+    display: flex;
+    flex-direction: column;
     justify-content: center; /* Horizontal centering */
     align-items: center;     /* Vertical centering */
     margin: 0;
