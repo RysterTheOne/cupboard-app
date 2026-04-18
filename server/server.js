@@ -41,6 +41,18 @@ const pool = new Pool({
     }
 });
 // ================= DB =================
+//delete after use
+app.get("/fix-admin-column", async (req, res) => {
+    try {
+        await pool.query(
+            "ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE"
+        );
+
+        res.send("Column added");
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
 
 app.get("/setup-admin", async (req, res) => {
     const existing = await pool.query(
