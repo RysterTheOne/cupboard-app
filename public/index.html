@@ -1,318 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cabinet Designer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
-<link rel="stylesheet" href="style.css">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
-
-<style>
-
-.card {
-    width: 100%;
-    max-width: 650px;
-}
-
-#canvas-container {
-    width: 100%;
-    height: 50vh;
-    max-height: 400px;
-}
-
-@media (max-width: 768px) {
-    .grid-3 {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<button class="btn btn-primary" onclick="goDashboard()">← Dashboard</button>
-
-<div class="center-wrapper">
-
-<!-- INPUT -->
-<div class="card">
-<h2 class="text-center">Cupboard Designer</h2>
-
-<div class="grid grid-3 mt-2" id="shelving">
-
-<div class="form-group">
-<label>Width (mm)</label>
-<input type="number" id="width" value="2000">
-</div>
-
-<div class="form-group">
-<label>Height (mm)</label>
-<input type="number" id="height" value="2200">
-</div>
-
-<div class="form-group">
-<label>Depth (mm)</label>
-<input type="number" id="depth" value="600">
-</div>
-
-<div class="form-group">
-<label>Panel Thickness (mm)</label>
-<input type="number" id="thickness" value="18">
-</div>
-
-<div class="form-group">
-<label>Shelves</label>
-<input type="number" id="shelves" value="2">
-</div>
-
-<div class="form-group">
-<label>Back Thickness (mm)</label>
-<input type="number" id="back" value="6">
-</div>
-
-</div>
-
-<button class="btn btn-primary mt-2" onclick="updateCabinet(); generateCutList();">
-Update
-</button>
-</div>
-
-<!-- VIEWPORT -->
-<div class="card mt-3">
-<div id="canvas-container"></div>
-</div>
-
-<!-- CUT LIST -->
-<div class="card mt-3">
-<h3>Cut List</h3>
-<div id="cutList"></div>
-</div>
-
-</div>
-
-<div class="bottom-bar">
-    <button class="btn btn-primary" onclick="saveProject()">Save Project</button>
-    <button class="btn btn-danger" onclick="logout()">Logout</button>
-</div>
-
-<script>
-const API = "https://cupboard-app.onrender.com";
-/* =========================
-AUTH CHECK (BACKEND ONLY)
-========================= */
-async function checkAuth() {
-    try {
-        const res = await fetch(API + "/api/me", {
-            credentials: "include"
-        });
-
-        const data = await res.json();
-
-        if (!data || !data.userId) {
-            window.location.href = "login.html";
+    <style>
+        .card {
+            width: 100%;
+            max-width: 650px;
         }
-    } catch (err) {
-        window.location.href = "login.html";
-    }
-}
-checkAuth();
 
-async function logout() {
-    await fetch(API + "/api/logout", {
-        method: "POST",
-        credentials: "include"
-    });
+        #canvas-container {
+            width: 100%;
+            height: 50vh;
+            max-height: 400px;
+        }
 
-    // force clear UI state
-    window.location.href = "login.html";
-}
+        @media (max-width: 768px) {
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 
-function goDashboard() {
-    window.location.href = "dashboard.html"
-}
-/* =========================
-LOAD PROJECT
-========================= */
-function loadProject() {
-    const data = localStorage.getItem("currentProject");
-    if (!data) {
-        return;
-    }
+    <head>
+        <title>Cabinet Designer</title>
+    </head>
 
-    const obj = JSON.parse(data);
+    <body>
 
-    projectName.value = obj.name || "";
-    width.value = obj.width;
-    height.value = obj.height;
-    depth.value = obj.depth;
-    thickness.value = obj.thickness;
-    shelves.value = obj.shelves;
-    back.value = obj.back;
-}
-loadProject();
+        <button class="btn btn-primary" onclick="goDashboard()">← Dashboard</button>
+        <div class="center-wrapper">
+            <!-- INPUT -->
+            <div class="card">
+                <h2 class="text-center">Cupboard Designer</h2>
+                <div class="grid grid-3 mt-2" id="shelving">
+                    <div class="form-group">
+                        <label>Width (mm)</label>
+                        <input type="number" id="width" value="2000">
+                    </div>
 
-/* =========================
-SAVE PROJECT (BACKEND)
-========================= */
-async function saveProject() {
-    const data = {
-        name: projectName.value,
-        width: width.value,
-        height: height.value,
-        depth: depth.value,
-        thickness: thickness.value,
-        shelves: shelves.value,
-        back: back.value
-    };
+                    <div class="form-group">
+                        <label>Height (mm)</label>
+                        <input type="number" id="height" value="2200">
+                    </div>
 
-    await fetch(API + "/api/projects", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        credentials: "include",
-        body: JSON.stringify({
-            cabinet_type: "shelving",
-            data
-        })
-    });
+                    <div class="form-group">
+                        <label>Depth (mm)</label>
+                        <input type="number" id="depth" value="600">
+                    </div>
 
-    localStorage.setItem("projectData", JSON.stringify(data));
-    alert("Project saved");
-}
+                    <div class="form-group">
+                        <label>Panel Thickness (mm)</label>
+                        <input type="number" id="thickness" value="18">
+                    </div>
 
-/* =========================
-3D ENGINE
-========================= */
-let scene, camera, renderer, controls;
-let parts = [];
+                    <div class="form-group">
+                        <label>Shelves</label>
+                        <input type="number" id="shelves" value="2">
+                    </div>
 
-function init3D() {
-    const container = document.getElementById("canvas-container");
+                    <div class="form-group">
+                        <label>Back Thickness (mm)</label>
+                        <input type="number" id="back" value="6">
+                    </div>
+                </div>
 
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0f172a);
+                <button class="btn btn-primary mt-2" onclick="updateCabinet(); generateCutList();">
+                    Update
+                </button>
+            </div>
 
-    camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            <!-- VIEWPORT -->
+            <div class="card mt-3">
+            <div id="canvas-container"></div>
+            </div>
 
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    container.appendChild(renderer.domElement);
+            <!-- CUT LIST -->
+            <div class="card mt-3">
+            <h3>Cut List</h3>
+            <div id="cutList"></div>
+            </div>
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        </div>
 
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(5,5,5);
-    scene.add(light);
+        <button class="btn btn-primary" onclick="saveProject()">Save Project</button>
+        <button class="btn btn-danger" onclick="logout()">Logout</button>
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enablePan = false;
+        <script>
+            const API = "https://cupboard-app.onrender.com";
+            /* =========================
+            AUTH CHECK (BACKEND ONLY)
+            ========================= */
+            async function checkAuth() {
+                try {
+                    const res = await fetch(API + "/api/me", {
+                        credentials: "include"
+                    });
 
-    buildCabinet();
-    animate();
-}
+                    const data = await res.json();
 
-function clearCabinet() {
-    parts.forEach(p => scene.remove(p));
-    parts = [];
-}
+                    if (!data || !data.userId) {
+                        window.location.href = "login.html";
+                    }
+                } catch (err) {
+                    window.location.href = "login.html";
+                }
+            }
+            checkAuth();
 
-function buildCabinet() {
-    clearCabinet();
+            async function logout() {
+                await fetch(API + "/api/logout", {
+                    method: "POST",
+                    credentials: "include"
+                });
 
-    const W = document.getElementById("width").value / 1000;
-    const H = document.getElementById("height").value / 1000;
-    const D = document.getElementById("depth").value / 1000;
-    const T = document.getElementById("thickness").value / 1000;
-    const shelves = parseInt(document.getElementById("shelves").value);
-    const backT = document.getElementById("back").value / 1000;
+                // force clear UI state
+                window.location.href = "login.html";
+            }
 
-    addBox(T,H,D,-W/2+T/2,0,0);
-    addBox(T,H,D,W/2-T/2,0,0);
+            function goDashboard() {
+                window.location.href = "dashboard.html"
+            }
+            /* =========================
+            LOAD PROJECT
+            ========================= */
+            function loadProject() {
+                const data = localStorage.getItem("currentProject");
+                if (!data) {
+                    return;
+                }
 
-    addBox(W,T,D,0,H/2-T/2,0);
-    addBox(W,T,D,0,-H/2+T/2,0);
+                const obj = JSON.parse(data);
 
-    addBox(W,H,backT,0,0,-D/2);
+                projectName.value = obj.name || "";
+                width.value = obj.width;
+                height.value = obj.height;
+                depth.value = obj.depth;
+                thickness.value = obj.thickness;
+                shelves.value = obj.shelves;
+                back.value = obj.back;
+            }
+            loadProject();
 
-    for(let i=1;i<=shelves;i++){
-        const y = -H/2 + (H/(shelves+1))*i;
-        addBox(W-2*T,T,D*0.95,0,y,0);
-    }
+            /* =========================
+            SAVE PROJECT (BACKEND)
+            ========================= */
+            async function saveProject() {
+                const data = {
+                    name: projectName.value,
+                    width: width.value,
+                    height: height.value,
+                    depth: depth.value,
+                    thickness: thickness.value,
+                    shelves: shelves.value,
+                    back: back.value
+                };
 
-    updateCamera(W,H,D);
-}
+                await fetch(API + "/api/projects", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    credentials: "include",
+                    body: JSON.stringify({
+                        cabinet_type: "shelving",
+                        data
+                    })
+                });
 
-function addBox(w,h,d,x,y,z){
-    const geo = new THREE.BoxGeometry(w,h,d);
-    const mat = new THREE.MeshStandardMaterial({color:0x8b5a2b});
-    const mesh = new THREE.Mesh(geo,mat);
-    mesh.position.set(x,y,z);
-    scene.add(mesh);
-    parts.push(mesh);
-}
+                localStorage.setItem("projectData", JSON.stringify(data));
+                alert("Project saved");
+            }
 
-function updateCamera(w,h,d){
-    const max = Math.max(w,h,d);
-    camera.position.set(max*2,max*1.5,max*2);
-    controls.target.set(0,0,0);
-    controls.update();
-}
+            /* =========================
+            3D ENGINE
+            ========================= */
+            let scene, camera, renderer, controls;
+            let parts = [];
 
-function updateCabinet(){
-    buildCabinet();
-}
+            function init3D() {
+                const container = document.getElementById("canvas-container");
 
-/* =========================
-CUT LIST (MM)
-========================= */
-function generateCutList(){
-    const W = +width.value;
-    const H = +height.value;
-    const D = +depth.value;
-    const T = +thickness.value;
-    const shelvesVal = +document.getElementById("shelves").value;
-    const backT = +back.value;
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x0f172a);
 
-    const internalWidth = W - (2*T);
+                camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
 
-    const list = [
-        {name:"Side Panel",qty:2,w:D,h:H,t:T},
-        {name:"Top/Bottom",qty:2,w:W,h:D,t:T},
-        {name:"Back Panel",qty:1,w:W,h:H,t:backT}
-    ];
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                container.appendChild(renderer.domElement);
 
-    if(shelves>0){
-        list.push({name:"Shelf",qty:shelvesVal,w:internalWidth,h:D,t:T});
-    }
+                scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 
-    cutList.innerHTML = list.map(i =>
-        `<div>${i.name} | ${i.qty}x | ${i.w} × ${i.h} × ${i.t} mm</div>`
-    ).join("");
-}
+                const light = new THREE.DirectionalLight(0xffffff, 1);
+                light.position.set(5,5,5);
+                scene.add(light);
 
-/* ========================= */
-async function logout() {
-    await fetch(API + "/api/logout", {
-        method: "POST",
-        credentials: "include"
-    });
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enablePan = false;
 
-    // force clear UI state
-    window.location.href = "login.html";
-}
+                buildCabinet();
+                animate();
+            }
 
-/* ========================= */
-function animate(){
-    requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene,camera);
-}
+            function clearCabinet() {
+                parts.forEach(p => scene.remove(p));
+                parts = [];
+            }
 
-init3D();
-generateCutList();
-</script>
+            function buildCabinet() {
+                clearCabinet();
 
-</body>
+                const W = document.getElementById("width").value / 1000;
+                const H = document.getElementById("height").value / 1000;
+                const D = document.getElementById("depth").value / 1000;
+                const T = document.getElementById("thickness").value / 1000;
+                const shelves = parseInt(document.getElementById("shelves").value);
+                const backT = document.getElementById("back").value / 1000;
+
+                addBox(T,H,D,-W/2+T/2,0,0);
+                addBox(T,H,D,W/2-T/2,0,0);
+
+                addBox(W,T,D,0,H/2-T/2,0);
+                addBox(W,T,D,0,-H/2+T/2,0);
+
+                addBox(W,H,backT,0,0,-D/2);
+
+                for(let i=1;i<=shelves;i++){
+                    const y = -H/2 + (H/(shelves+1))*i;
+                    addBox(W-2*T,T,D*0.95,0,y,0);
+                }
+
+                updateCamera(W,H,D);
+            }
+
+            function addBox(w,h,d,x,y,z){
+                const geo = new THREE.BoxGeometry(w,h,d);
+                const mat = new THREE.MeshStandardMaterial({color:0x8b5a2b});
+                const mesh = new THREE.Mesh(geo,mat);
+                mesh.position.set(x,y,z);
+                scene.add(mesh);
+                parts.push(mesh);
+            }
+
+            function updateCamera(w,h,d){
+                const max = Math.max(w,h,d);
+                camera.position.set(max*2,max*1.5,max*2);
+                controls.target.set(0,0,0);
+                controls.update();
+            }
+
+            function updateCabinet(){
+                buildCabinet();
+            }
+
+            /* =========================
+            CUT LIST (MM)
+            ========================= */
+            function generateCutList(){
+                const W = +width.value;
+                const H = +height.value;
+                const D = +depth.value;
+                const T = +thickness.value;
+                const shelvesVal = +document.getElementById("shelves").value;
+                const backT = +back.value;
+
+                const internalWidth = W - (2*T);
+
+                const list = [
+                    {name:"Side Panel",qty:2,w:D,h:H,t:T},
+                    {name:"Top/Bottom",qty:2,w:W,h:D,t:T},
+                    {name:"Back Panel",qty:1,w:W,h:H,t:backT}
+                ];
+
+                if(shelves>0){
+                    list.push({name:"Shelf",qty:shelvesVal,w:internalWidth,h:D,t:T});
+                }
+
+                cutList.innerHTML = list.map(i =>
+                    `<div>${i.name} | ${i.qty}x | ${i.w} × ${i.h} × ${i.t} mm</div>`
+                ).join("");
+            }
+
+            /* ========================= */
+            async function logout() {
+                await fetch(API + "/api/logout", {
+                    method: "POST",
+                    credentials: "include"
+                });
+
+                // force clear UI state
+                window.location.href = "login.html";
+            }
+
+            /* ========================= */
+            function animate(){
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene,camera);
+            }
+
+            init3D();
+            generateCutList();
+        </script>
+    </body>
 </html>
