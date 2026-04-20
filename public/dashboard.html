@@ -42,7 +42,7 @@
     <button id="accounts-btn" class="btn btn-primary" onclick="goAccounts()">Accounts -></button>
 </div>
 
-<div class="center-wrapper">
+<div id="main-page" class="center-wrapper">
     <div class="card">
         <h2>Saved Projects</h2>
 
@@ -105,12 +105,14 @@ function goAccounts() {
 
 function showCreateProject() {
     document.getElementById("createProjectModal").style.display = "flex";
+    document.getElementById("main-page").style.display = "none";
     document.getElementById("logout-btn").style.display = "none";
     document.getElementById("accounts-btn").style.display = "none";
 }
 
 function hideCreateProject() {
     document.getElementById("createProjectModal").style.display = "none";
+    document.getElementById("main-page").style.display = "flex";
     document.getElementById("logout-btn").style.display = "block";
     document.getElementById("accounts-btn").style.display = "block";
 }
