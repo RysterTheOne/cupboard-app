@@ -1,183 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard</title>
-<link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<body>
+    <head>
+        <title>Dashboard</title>
+    </head>
 
-    <div id="createProjectModal" class="center-wrapper" style="display: none; background: rgba(0,0,0,0.5); height: 100vh;width: 100vw;">
+    <body>
 
-        <div class="card">
-        
-            <h3>Create Project</h3>
+        <div id="createProjectModal" class="center-wrapper" style="display: none; background: rgba(0,0,0,0.5); height: 100vh;width: 100vw;">
 
-            <!-- Name field -->
-            <input 
-                type="text" 
-                id="projectName" 
-                placeholder="Enter name" 
-                class="btn btn-primary"
-            >
+            <div class="card">
+                <table>
+                    <tr>
+                        <th colspan="4" align="center"><h2>Create Project</h2></th>
+                    </tr>
 
-            <!-- Type dropdown -->
-            <select class="btn btn-primary" id="projectType">
-                <option value="shelving">Shelving</option>
-                <option value="base_cabinet">Base Cabinet</option>
-            </select>
+                    <tr><td colspan="4" align="center"><h3>Project Name</h3></td></tr>
 
-            <!-- Buttons -->
-            <div style="display: flex; justify-content: space-between;">
-                <button class="btn btn-danger" onclick="hideCreateProject()">Cancel</button>
-                <button class="btn btn-primary">Create</button>
+                    <tr>
+                        <td colspan="4">
+                            <!-- Name field -->
+                            <input 
+                                type="text" 
+                                id="projectName" 
+                                placeholder="Enter name" 
+                                class="btn btn-primary"
+                                style="color: white;"
+                            >
+                        </td>
+                    </tr>
+
+                    <tr><td colspan="4" align="center"><h3>Project Type</h3></td></tr>
+
+                    <tr>
+                        <td colspan="4">
+                            <!-- Type dropdown -->
+                            <select class="btn btn-primary" id="projectType">
+                                <option value="" disabled selected></option>
+                                <option value="shelving">Shelving</option>
+                                <option value="base_cabinet">Base Cabinet</option>
+                                <option value="wall_cabinet">Wall Cabinet</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="4">
+                            <!-- Buttons -->
+                            <div style="display: flex; justify-content: space-between;">
+                                <button class="btn btn-danger" onclick="hideCreateProject()">Cancel</button>
+                                <button class="btn btn-primary" onclick="createProject()">Create</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
-
         </div>
-    </div>
 
-    <button id="accounts-btn" class="btn btn-primary" onclick="goAccounts()">Accounts -></button>
+        <button id="accounts-btn" class="btn btn-primary" onclick="goAccounts()">Accounts -></button>
 
-<div id="main-page" class="center-wrapper">
-    <div class="card">
-        <h2>Saved Projects</h2>
+        <div id="main-page" class="center-wrapper">
+            <div class="card">
+                <h2>Saved Projects</h2>
 
-        <button class="btn btn-primary" onclick="showCreateProject()">+ New Project</button>
+                <button class="btn btn-primary" onclick="showCreateProject()">+ New Project</button>
 
-        <div id="projects" class="mt-2"></div>
-    </div>
-</div>
+                <div id="projects" class="mt-2"></div>
+            </div>
+        </div>
 
-<button id="logout-btn" class="btn btn-danger" onclick="logout()">Logout</button>
+        <button id="logout-btn" class="btn btn-danger" onclick="logout()">Logout</button>
 
-<script>
-const API = "https://cupboard-app.onrender.com";
+        <script>
+            const API = "https://cupboard-app.onrender.com";
 
-async function checkAuth() {
-    try {
-        const res = await fetch(API + "/api/me", {
-            credentials: "include"
-        });
+            async function checkAuth() {
+                try {
+                    const res = await fetch(API + "/api/me", {
+                        credentials: "include"
+                    });
 
-        const data = await res.json();
+                    const data = await res.json();
 
-        if (!data || !data.userId) {
-            window.location.href = "login.html";
-        }
-    } catch (err) {
-        window.location.href = "login.html";
-    }
-}
-checkAuth();
+                    if (!data || !data.userId) {
+                        window.location.href = "login.html";
+                    }
+                } catch (err) {
+                    window.location.href = "login.html";
+                }
+            }
+            checkAuth();
 
-async function loadProjects() {
-    const res = await fetch(API + "/api/projects", {
-        credentials: "include"
-    });
+            async function loadProjects() {
+                const res = await fetch(API + "/api/projects", {
+                    credentials: "include"
+                });
 
-    const projects = await res.json();
+                const projects = await res.json();
 
-    const container = document.getElementById("projects");
-    container.innerHTML = "";
+                const container = document.getElementById("projects");
+                container.innerHTML = "";
 
-    projects.forEach(p => {
-        const div = document.createElement("div");
-        div.className = "card mt-1";
-        div.style.cursor = "pointer";
+                projects.forEach(p => {
+                    const div = document.createElement("div");
+                    div.className = "card mt-1";
+                    div.style.cursor = "pointer";
 
-        div.innerText = p.name + " (click to open)";
-        div.onclick = () => {
-            localStorage.setItem("currentProject", p.data);
-            window.location.href = "index.html";
-        };
+                    div.innerText = p.name + " (click to open)";
+                    div.onclick = () => {
+                        localStorage.setItem("currentProject", p.data);
+                        window.location.href = "index.html";
+                    };
 
-        container.appendChild(div);
-    });
-}
+                    container.appendChild(div);
+                });
+            }
 
-function goAccounts() {
-    window.location.href = "admin.html";
-}
+            function goAccounts() {
+                window.location.href = "admin.html";
+            }
 
-function showCreateProject() {
-    document.getElementById("createProjectModal").style.display = "flex";
-    document.getElementById("main-page").style.display = "none";
-    document.getElementById("logout-btn").style.display = "none";
-    document.getElementById("accounts-btn").style.display = "none";
-}
+            function showCreateProject() {
+                document.getElementById("createProjectModal").style.display = "flex";
+                document.getElementById("main-page").style.display = "none";
+                document.getElementById("logout-btn").style.display = "none";
+                document.getElementById("accounts-btn").style.display = "none";
+            }
 
-function hideCreateProject() {
-    document.getElementById("createProjectModal").style.display = "none";
-    document.getElementById("main-page").style.display = "flex";
-    document.getElementById("logout-btn").style.display = "block";
-    document.getElementById("accounts-btn").style.display = "block";
-}
+            function hideCreateProject() {
+                document.getElementById("createProjectModal").style.display = "none";
+                document.getElementById("main-page").style.display = "flex";
+                document.getElementById("logout-btn").style.display = "block";
+                document.getElementById("accounts-btn").style.display = "block";
+            }
 
-async function createProject() {
-  const name = document.getElementById("projectName").value;
-  const type = document.getElementById("projectType").value;
+            async function createProject() {
+                const name = document.getElementById("projectName").value;
+                const type = document.getElementById("projectType").value;
 
-  if (!name) {
-    alert("Please enter a name");
-    return;
-  }
+            if (!name) {
+                alert("Please enter a name");
+                return;
+            }
 
-  try {
-    const data = {
-        name: name,
-        cabinet_type: type,
+            try {
+                const data = {
+                    name: name,
+                    cabinet_type: type,
 
-        width: width.value,
-        height: height.value,
-        depth: depth.value,
-        thickness: thickness.value,
-        shelves: shelves.value,
-        back: back.value
-    };
+                    width: width.value,
+                    height: height.value,
+                    depth: depth.value,
+                    thickness: thickness.value,
+                    shelves: shelves.value,
+                    back: back.value
+                };
 
-    await fetch(API + "/api/projects", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        credentials: "include",
-        body: JSON.stringify({
-            data
-        })
-    });
+                await fetch(API + "/api/projects", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    credentials: "include",
+                    body: JSON.stringify({
+                        data
+                    })
+                });
 
-    if (!res.ok) {
-      throw new Error("Failed to create user");
-    }
+                if (!res.ok) {
+                throw new Error("Failed to create user");
+                }
 
-    alert("User created!");
-    hideCreateProject();
+                alert("User created!");
+                hideCreateProject();
 
-  } catch (err) {
-    console.error(err);
-    alert("Error creating user");
-  }
-}
-
+            } catch (err) {
+                console.error(err);
+                alert("Error creating user");
+            }
+            }
 
 
-function newProject() {
-    localStorage.removeItem("currentProject");
-    window.location.href = "index.html";
-}
 
-async function logout() {
-    await fetch(API + "/api/logout", {
-        method: "POST",
-        credentials: "include"
-    });
+            function newProject() {
+                localStorage.removeItem("currentProject");
+                window.location.href = "index.html";
+            }
 
-    // force clear UI state
-    window.location.href = "login.html";
-}
+            async function logout() {
+                await fetch(API + "/api/logout", {
+                    method: "POST",
+                    credentials: "include"
+                });
 
-loadProjects();
-</script>
+                // force clear UI state
+                window.location.href = "login.html";
+            }
 
-</body>
+            loadProjects();
+        </script>
+    </body>
 </html>
