@@ -9,7 +9,7 @@
 
 <body>
 
-    <div id="createProjectModal" style="display: none; background: rgba(0,0,0,0.5);" class="center-wrapper">
+    <div id="createProjectModal" class="center-wrapper" style="display: none; background: rgba(0,0,0,0.5); height: 100vh;width: 100vw;">
 
         <div class="card">
         
@@ -39,7 +39,7 @@
     </div>
 <!-- TOP BAR -->
 <div class="top-bar">
-    <button class="btn btn-primary" onclick="goAccounts()">Accounts -></button>
+    <button id="accounts-btn" class="btn btn-primary" onclick="goAccounts()">Accounts -></button>
 </div>
 
 <div class="center-wrapper">
@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<button class="btn btn-danger logout-btn" onclick="logout()">Logout</button>
+<button id="logout-btn" class="btn btn-danger" onclick="logout()">Logout</button>
 
 <script>
 const API = "https://cupboard-app.onrender.com";
@@ -105,10 +105,14 @@ function goAccounts() {
 
 function showCreateProject() {
     document.getElementById("createProjectModal").style.display = "flex";
+    document.getElementById("logout-btn").style.display = "none";
+    document.getElementById("accounts-btn").style.display = "none";
 }
 
 function hideCreateProject() {
-  document.getElementById("createProjectModal").style.display = "none";
+    document.getElementById("createProjectModal").style.display = "none";
+    document.getElementById("logout-btn").style.display = "block";
+    document.getElementById("accounts-btn").style.display = "block";
 }
 
 async function createProject() {
