@@ -28,6 +28,7 @@
                                 id="projectName" 
                                 placeholder="Enter name" 
                                 class="btn btn-primary"
+                                style="color: azure;"
                             >
                         </td>
                     </tr>
@@ -37,7 +38,7 @@
                     <tr>
                         <td colspan="4" align="center">
                             <!-- Type dropdown -->
-                            <select class="btn btn-primary" id="projectType">
+                            <select class="btn btn-primary" id="projectType" style="color: azure;">
                                 <option value="" disabled selected></option>
                                 <option value="shelving">Shelving</option>
                                 <option value="base_cabinet">Base Cabinet</option>
@@ -46,12 +47,10 @@
                         </td>
                     </tr>
 
-                    <tr width="3px"></tr>
-
                     <tr>
                         <td colspan="4">
                             <!-- Buttons -->
-                            <div style="display: flex; justify-content: space-between;">
+                            <div style="display: flex; justify-content: space-between; padding-top: 3px;">
                                 <button class="btn btn-danger" onclick="hideCreateProject()">Cancel</button>
                                 <button class="btn btn-primary" onclick="createProject()">Create</button>
                             </div>
