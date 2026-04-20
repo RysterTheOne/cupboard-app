@@ -7,7 +7,7 @@
     <head>
         <title>Dashboard</title>
     </head>
-
+    
     <body>
 
         <div id="createProjectModal" class="center-wrapper" style="display: none; background: rgba(0,0,0,0.5); height: 100vh;width: 100vw;">
@@ -140,44 +140,44 @@
             async function createProject() {
                 window.location.href = "index.html";
 
-            if (!name) {
-                alert("Please enter a name");
-                return;
-            }
-
-            try {
-                const data = {
-                    name: name,
-                    cabinet_type: type,
-
-                    width: width.value,
-                    height: height.value,
-                    depth: depth.value,
-                    thickness: thickness.value,
-                    shelves: shelves.value,
-                    back: back.value
-                };
-
-                await fetch(API + "/api/projects", {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    credentials: "include",
-                    body: JSON.stringify({
-                        data
-                    })
-                });
-
-                if (!res.ok) {
-                throw new Error("Failed to create user");
+                if (!name) {
+                    alert("Please enter a name");
+                    return;
                 }
 
-                alert("User created!");
-                hideCreateProject();
+                try {
+                    const data = {
+                        name: name,
+                        cabinet_type: type,
 
-            } catch (err) {
-                console.error(err);
-                alert("Error creating user");
-            }
+                        width: width.value,
+                        height: height.value,
+                        depth: depth.value,
+                        thickness: thickness.value,
+                        shelves: shelves.value,
+                        back: back.value
+                    };
+
+                    await fetch(API + "/api/projects", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        credentials: "include",
+                        body: JSON.stringify({
+                            data
+                        })
+                    });
+
+                    if (!res.ok) {
+                        throw new Error("Failed to create user");
+                    }
+
+                    alert("Project created!");
+                    hideCreateProject();
+
+                } catch (err) {
+                    console.error(err);
+                    alert("Error creating project");
+                }
             }
 
 
