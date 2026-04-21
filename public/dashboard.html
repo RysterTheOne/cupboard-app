@@ -138,8 +138,8 @@
             }
 
             async function createProject() {
-                const name = projectName.value
-                const type = projectType.selected.value
+                const name = document.getElementById("projectName").value
+                const type = document.getElementById("projectType").value
                 
                 if (!name) {
                     alert("Please enter a name");
