@@ -130,19 +130,16 @@
             function loadProject() {
                 const data = localStorage.getItem("currentProject");
                 if (!data) {
+                    window.location.href = "dashboard.html"
                     return;
                 }
 
                 const obj = JSON.parse(data);
 
                 projectName.value = obj.name || "";
-                width.value = obj.width;
-                height.value = obj.height;
-                depth.value = obj.depth;
-                thickness.value = obj.thickness;
-                shelves.value = obj.shelves;
-                back.value = obj.back;
+                const type = obj.type;
             }
+
             loadProject();
 
             /* =========================
@@ -151,12 +148,7 @@
             async function saveProject() {
                 const data = {
                     name: projectName.value,
-                    width: width.value,
-                    height: height.value,
-                    depth: depth.value,
-                    thickness: thickness.value,
-                    shelves: shelves.value,
-                    back: back.value
+                    type: type.value,
                 };
 
                 await fetch(API + "/api/projects", {
@@ -164,7 +156,6 @@
                     headers: {"Content-Type": "application/json"},
                     credentials: "include",
                     body: JSON.stringify({
-                        cabinet_type: "shelving",
                         data
                     })
                 });
