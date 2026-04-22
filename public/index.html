@@ -134,12 +134,7 @@
                     return;
                 }
 
-                const obj = JSON.parse(localStorage.getItem("currentProject"));
-                if(!obj) {
-                    return;
-                }
-
-                document.getElementById("projectName").innerText = obj.name || "";
+                document.getElementById("projectName").innerText = data.name || "";
                 const type = obj.cabinet_type;
             }
 
