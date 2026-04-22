@@ -135,10 +135,10 @@
                 }
 
                 const obj = JSON.parse(localStorage.getItem("currentProject"));
-                if(!obj || err) {
+                if(!obj) {
                     return;
                 }
-                
+
                 projectName.value = obj.name || "";
                 const type = obj.cabinet_type;
             }
