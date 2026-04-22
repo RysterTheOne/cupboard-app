@@ -134,8 +134,9 @@
                     return;
                 }
 
+                console.log(data)
                 document.getElementById("projectName").innerText = data.name || "";
-                const type = obj.cabinet_type;
+                const type = data.cabinet_type;
             }
 
             loadProject();
