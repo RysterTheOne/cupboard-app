@@ -183,7 +183,7 @@
 
                 try {
                     const data = {
-                        name: name,
+                        cabinet_type: type,
                     };
 
                     await fetch(API + "/api/projects", {
@@ -191,14 +191,14 @@
                         headers: {"Content-Type": "application/json"},
                         credentials: "include",
                         body: JSON.stringify({
-                            cabinet_type: type,
+                            name: name,
                             data
                         })
                     });
 
                     alert("Project created!");
                     localStorage.removeItem("currentProject");
-                    localStorage.setItem("currentProject", JSON.stringify({cabinet_type: type,data}))
+                    localStorage.setItem("currentProject", JSON.stringify({name: name,data}))
                     window.location.href = "index.html";
 
                 } catch (err) {

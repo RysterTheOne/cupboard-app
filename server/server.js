@@ -223,7 +223,12 @@ app.post("/api/logout", (req, res) => {
 });
 
 // ================= PROJECTS =================
-app.post("/api/projects/change")
+// CHANGE PROJECTS COULMN NAME
+app.post("/api/projects/change", async (req, res) => {
+    await pool.query(
+        'ALTER TABLE projects RENAME COLUMN cabinet_type TO name',
+    )
+})
 // SAVE PROJECT
 app.post("/api/projects", async (req, res) => {
     const token = req.cookies.token;
