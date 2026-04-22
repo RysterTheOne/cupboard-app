@@ -116,7 +116,7 @@
 
                     // Project name (clickable)
                     const name = document.createElement("span");
-                    name.innerText = p.name + " (click to open)";
+                    name.innerText = p.data.name + " (click to open)";
                     name.onclick = () => {
                         localStorage.setItem("currentProject", JSON.stringify(p.data)); // 🔥 FIXED
                         window.location.href = "index.html";
@@ -185,7 +185,6 @@
                 try {
                     const data = {
                         name: name,
-                        cabinet_type: type,
                     };
 
                     await fetch(API + "/api/projects", {
@@ -193,6 +192,7 @@
                         headers: {"Content-Type": "application/json"},
                         credentials: "include",
                         body: JSON.stringify({
+                            cabinet_type: type,
                             data
                         })
                     });
