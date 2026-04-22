@@ -41,18 +41,6 @@ const pool = new Pool({
     }
 });
 // ================= DB =================
-//delete after use
-app.get("/fix-admin-column", async (req, res) => {
-    try {
-        await pool.query(
-            "ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE"
-        );
-
-        res.send("Column added");
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
 
 app.get("/setup-admin", async (req, res) => {
     const existing = await pool.query(
@@ -267,6 +255,19 @@ app.get("/api/projects", async (req, res) => {
     );
 
     res.json(result.rows);
+});
+
+// DELETE PROJECTS
+app.delete("/api/projects/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await pool.query("DELETE FROM projects WHERE id = $1", [id]);
+        res.sendStatus(200);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error deleting project");
+    }
 });
 
 // ================= START =================
