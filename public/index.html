@@ -30,12 +30,12 @@
     </head>
 
     <body>
-
         <button class="btn btn-primary" onclick="goDashboard()">← Dashboard</button>
         <div class="center-wrapper">
             <!-- INPUT -->
             <div class="card">
                 <h2 class="text-center">Cupboard Designer</h2>
+                <h3 class="text-center" style="color: beige;"><label id="projectName"></label></h3>
                 <div class="grid grid-3 mt-2" id="shelving">
                     <div class="form-group">
                         <label>Width (mm)</label>
@@ -199,6 +199,10 @@
             }
 
             function clearCabinet() {
+                if(!parts) {
+                    return;
+                }
+
                 parts.forEach(p => scene.remove(p));
                 parts = [];
             }
