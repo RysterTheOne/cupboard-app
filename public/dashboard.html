@@ -104,6 +104,7 @@
                 const container = document.getElementById("projects");
                 container.innerHTML = "";
 
+                projects.forEach(p => console.log(p));
                 projects.forEach(p => {
                     const div = document.createElement("div");
                     div.className = "card mt-1";
