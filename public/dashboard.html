@@ -198,7 +198,7 @@
 
                     alert("Project created!");
                     localStorage.removeItem("currentProject");
-                    localStorage.setItem("currentProject", JSON.stringify(data))
+                    localStorage.setItem("currentProject", JSON.stringify({cabinet_type: type,data}))
                     window.location.href = "index.html";
 
                 } catch (err) {
