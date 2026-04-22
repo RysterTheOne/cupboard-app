@@ -134,8 +134,11 @@
                     return;
                 }
 
-                const obj = JSON.parse(data);
-
+                const obj = JSON.parse(localStorage.getItem("currentProject"));
+                if(!obj || err) {
+                    return;
+                }
+                
                 projectName.value = obj.name || "";
                 const type = obj.cabinet_type;
             }

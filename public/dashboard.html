@@ -108,13 +108,48 @@
                     const div = document.createElement("div");
                     div.className = "card mt-1";
                     div.style.cursor = "pointer";
+                    div.style.display = "flex";
+                    div.style.justifyContent = "space-between";
+                    div.style.alignItems = "center";
+                    div.style.padding = "10px";
 
-                    div.innerText = p.name + " (click to open)";
-                    div.onclick = () => {
-                        localStorage.setItem("currentProject", p.data);
+                    // Project name (clickable)
+                    const name = document.createElement("span");
+                    name.innerText = p.name + " (click to open)";
+                    name.onclick = () => {
+                        localStorage.setItem("currentProject", JSON.stringify(p.data)); // 🔥 FIXED
                         window.location.href = "index.html";
                     };
 
+                    // Delete button
+                    const delBtn = document.createElement("button");
+                    delBtn.innerText = "Delete";
+                    delBtn.style.marginLeft = "10px";
+
+                    delBtn.onclick = async (e) => {
+                        e.stopPropagation(); // 🚨 prevents triggering open
+
+                        if (!confirm("Delete this project?")) return;
+
+                        try {
+                            const res = await fetch(API + "/api/projects/" + p.id, {
+                                method: "DELETE",
+                                credentials: "include"
+                            });
+
+                            if (!res.ok) throw new Error("Delete failed");
+
+                            // Reload list after delete
+                            loadProjects();
+
+                        } catch (err) {
+                            console.error(err);
+                            alert("Failed to delete project");
+                        }
+                    };
+
+                    div.appendChild(name);
+                    div.appendChild(delBtn);
                     container.appendChild(div);
                 });
             }
@@ -162,17 +197,14 @@
                     });
 
                     alert("Project created!");
+                    localStorage.removeItem("currentProject");
+                    localStorage.setItem("currentProject",)
                     window.location.href = "index.html";;
 
                 } catch (err) {
                     console.error(err);
                     alert("Error creating project");
                 }
-            }
-
-            function newProject() {
-                localStorage.removeItem("currentProject");
-                window.location.href = "index.html";
             }
 
             async function logout() {
