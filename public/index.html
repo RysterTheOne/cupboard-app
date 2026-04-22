@@ -86,7 +86,7 @@
 
         </div>
 
-        <button class="btn btn-primary" onclick="saveProject()">Save Project</button>
+        <!--<button class="btn btn-primary" onclick="saveProject()">Save Project</button>-->
         <button class="btn btn-danger" onclick="logout()">Logout</button>
 
         <script>
@@ -128,14 +128,14 @@
             LOAD PROJECT
             ========================= */
             function loadProject() {
-                const data = localStorage.getItem("currentProject");
-                if (!data) {
+                const obj = localStorage.getItem("currentProject");
+                if (!obj) {
                     window.location.href = "dashboard.html"
                     return;
                 }
 
                 console.log(data)
-                document.getElementById("projectName").innerText = data.name;
+                document.getElementById("projectName").innerText = obj.data.name;
                 const type = data.cabinet_type;
             }
 
@@ -147,7 +147,7 @@
             async function saveProject() {
                 const data = {
                     name: projectName.value,
-                    type: type.value,
+                    cabinet_type: type.value,
                 };
 
                 await fetch(API + "/api/projects", {
@@ -155,11 +155,12 @@
                     headers: {"Content-Type": "application/json"},
                     credentials: "include",
                     body: JSON.stringify({
+                        cabinet_type: type,
                         data
                     })
                 });
 
-                localStorage.setItem("projectData", JSON.stringify(data));
+                localStorage.setItem("projectData", JSON.stringify({cabinet_type: type,data}));
                 alert("Project saved");
             }
 
