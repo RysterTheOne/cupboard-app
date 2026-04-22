@@ -35,7 +35,7 @@
             <!-- INPUT -->
             <div class="card">
                 <h2 class="text-center">Cupboard Designer</h2>
-                <h3 class="text-center" style="color: beige;"><label id="projectName"></label></h3>
+                <h3 class="text-center" style="color: beige;"><label id="projectName">Project Name</label></h3>
                 <div class="grid grid-3 mt-2" id="shelving">
                     <div class="form-group">
                         <label>Width (mm)</label>
@@ -139,7 +139,7 @@
                     return;
                 }
 
-                projectName.value = obj.name || "";
+                document.getElementById("projectName").innerText = obj.name || "";
                 const type = obj.cabinet_type;
             }
 
