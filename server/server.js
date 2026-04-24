@@ -224,7 +224,7 @@ app.post("/api/logout", (req, res) => {
 
 // ================= PROJECTS =================
 // CHANGE PROJECTS COULMN NAME
-app.post("/api/projects/change", async (req, res) => {
+app.put("/api/projects/change", async (req, res) => {
     await pool.query(
         'ALTER TABLE projects RENAME COLUMN cabinet_type TO name',
     )
