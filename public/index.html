@@ -136,8 +136,8 @@
                 
                 const data = obj.data
                 console.log(obj)
-                document.getElementById("projectName").innerText = data.name;
-                const type = obj.cabinet_type;
+                document.getElementById("projectName").innerText = obj.name;
+                const type = data.cabinet_type;
             }
 
             loadProject();
