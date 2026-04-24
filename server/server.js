@@ -224,11 +224,18 @@ app.post("/api/logout", (req, res) => {
 
 // ================= PROJECTS =================
 // CHANGE PROJECTS COULMN NAME
-app.put("/api/projects/change", async (req, res) => {
-    await pool.query(
-        'ALTER TABLE projects RENAME COLUMN cabinet_type TO name',
-    )
-})
+app.get("/api/projects/change", async (req, res) => {
+    try {
+        await pool.query(
+            'ALTER TABLE projects RENAME COLUMN cabinet_type TO name'
+        );
+        res.send("Column renamed");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error renaming column");
+    }
+});
+
 // SAVE PROJECT
 app.post("/api/projects", async (req, res) => {
     const token = req.cookies.token;
