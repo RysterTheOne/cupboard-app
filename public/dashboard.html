@@ -115,9 +115,9 @@
 
                     // Project name (clickable)
                     const name = document.createElement("span");
-                    name.innerText = p.data.name + " (click to open)";
+                    name.innerText = p.name + " (click to open)";
                     name.onclick = () => {
-                        localStorage.setItem("currentProject", JSON.stringify(p.data)); // 🔥 FIXED
+                        localStorage.setItem("currentProject", JSON.stringify(p)); // 🔥 FIXED
                         window.location.href = "index.html";
                     };
 
