@@ -1,148 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        body {
+            height: 100vh;
+        }
+    </style>
+    
+    <head>
+        <title>Admin Panel</title>
+    </head>
 
-</head>
+    <body>
+        <button class="btn btn-primary" onclick="goDashboard()">← Dashboard</button>
+        <div class="center-wrapper">
+            <!-- CREATE USER -->
+            <div class="card">
+                <h3>Create New User</h3>
 
-<body>
+                <div class="grid grid-3 mt-2">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="newUser">
+                    </div>
 
-<button class="btn btn-primary" onclick="goDashboard()">← Dashboard</button>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="newPass">
+                    </div>
 
-<div class="center-wrapper">
+                    <div class="form-group">
+                        <label>Admin</label>
+                        <input type="checkbox" id="newAdmin">
+                    </div>
+                </div>
 
-    <!-- CREATE USER -->
-    <div class="card">
-        <h3>Create New User</h3>
-
-        <div class="grid grid-3 mt-2">
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" id="newUser">
+                <button class="btn btn-primary mt-2" onclick="createUser()">Add User</button>
             </div>
 
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="newPass">
+            <!-- USER LIST (same width automatically via card) -->
+            <div class="card mt-3">
+                <h3>All Users</h3>
+                <div id="users" class="mt-2"></div>
             </div>
 
-            <div class="form-group">
-                <label>Admin</label>
-                <input type="checkbox" id="newAdmin">
-            </div>
         </div>
 
-        <button class="btn btn-primary mt-2" onclick="createUser()">Add User</button>
-    </div>
-
-    <!-- USER LIST (same width automatically via card) -->
-    <div class="card mt-3">
-        <h3>All Users</h3>
-        <div id="users" class="mt-2"></div>
-    </div>
-
-</div>
-
-<!-- LOGOUT BOTTOM LEFT -->
-<div class="bottom-bar">
-    <button class="btn btn-danger" onclick="logout()">Logout</button>
-</div>
-
-<script>
-const API = "https://cupboard-app.onrender.com";
-
-/* ========================= */
-function goDashboard() {
-    window.location.href = "dashboard.html";
-}
-
-/* ========================= */
-async function checkAuth() {
-    const res = await fetch(API + "/api/admin/users", {
-        credentials: "include"
-    });
-
-    if (!res.ok) {
-        alert("Access denied");
-        window.location.href = "dashboard.html";
-    }
-}
-
-/* ========================= */
-async function loadUsers() {
-    const res = await fetch(API + "/api/admin/users", {
-        credentials: "include"
-    });
-
-    const users = await res.json();
-
-    const container = document.getElementById("users");
-
-    container.innerHTML = users.map(u => `
-        <div class="card mt-1" style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-                <strong>${u.username}</strong>
-                <span style="opacity:0.7;">
-                    (${u.is_admin ? "Admin" : "User"})
-                </span>
-            </div>
-
-            <div>
-                <button class="btn btn-danger" onclick="deleteUser(${u.id})">Delete</button>
-            </div>
+        <!-- LOGOUT BOTTOM LEFT -->
+        <div class="bottom-bar">
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
         </div>
-    `).join("");
-}
 
-/* ========================= */
-async function createUser() {
-    await fetch(API + "/api/admin/users", {
-        method: "POST",
-        credentials: "include",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            username: newUser.value,
-            password: newPass.value,
-            is_admin: newAdmin.checked
-        })
-    });
+        <script>
+            const API = "https://cupboard-app.onrender.com";
 
-    newUser.value = "";
-    newPass.value = "";
-    newAdmin.checked = false;
+            /* ========================= */
+            function goDashboard() {
+                window.location.href = "dashboard.html";
+            }
 
-    loadUsers();
-}
+            /* ========================= */
+            async function checkAuth() {
+                const res = await fetch(API + "/api/admin/users", {
+                    credentials: "include"
+                });
 
-/* ========================= */
-async function deleteUser(id) {
-    if (!confirm("Delete this user?")) return;
+                if (!res.ok) {
+                    alert("Access denied");
+                    window.location.href = "dashboard.html";
+                }
+            }
 
-    await fetch(API + "/api/admin/users/" + id, {
-        method: "DELETE",
-        credentials: "include"
-    });
+            /* ========================= */
+            async function loadUsers() {
+                const res = await fetch(API + "/api/admin/users", {
+                    credentials: "include"
+                });
 
-    loadUsers();
-}
+                const users = await res.json();
 
-/* ========================= */
-async function logout() {
-    await fetch(API + "/api/logout", {
-        method: "POST",
-        credentials: "include"
-    });
+                const container = document.getElementById("users");
 
-    window.location.href = "login.html";
-}
+                container.innerHTML = users.map(u => `
+                    <div class="card mt-1" style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <strong>${u.username}</strong>
+                            <span style="opacity:0.7;">
+                                (${u.is_admin ? "Admin" : "User"})
+                            </span>
+                        </div>
 
-/* ========================= */
-checkAuth();
-loadUsers();
-</script>
+                        <div>
+                            <button class="btn btn-danger" onclick="deleteUser(${u.id})">Delete</button>
+                        </div>
+                    </div>
+                `).join("");
+            }
 
-</body>
+            /* ========================= */
+            async function createUser() {
+                await fetch(API + "/api/admin/users", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        username: newUser.value,
+                        password: newPass.value,
+                        is_admin: newAdmin.checked
+                    })
+                });
+
+                newUser.value = "";
+                newPass.value = "";
+                newAdmin.checked = false;
+
+                loadUsers();
+            }
+
+            /* ========================= */
+            async function deleteUser(id) {
+                if (!confirm("Delete this user?")) return;
+
+                await fetch(API + "/api/admin/users/" + id, {
+                    method: "DELETE",
+                    credentials: "include"
+                });
+
+                loadUsers();
+            }
+
+            /* ========================= */
+            async function logout() {
+                await fetch(API + "/api/logout", {
+                    method: "POST",
+                    credentials: "include"
+                });
+
+                window.location.href = "login.html";
+            }
+
+            /* ========================= */
+            checkAuth();
+            loadUsers();
+        </script>
+    </body>
 </html>
