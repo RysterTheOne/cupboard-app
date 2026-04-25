@@ -9,6 +9,7 @@ body {
     background: #0f172a;
     color: white;
     height: 100vh;
+    padding: 20px;
 }
 
 .center-wrapper {
