@@ -76,7 +76,7 @@
 </table>
 
 <script>
-const API = "https:/cupboard-app.onrender.com"; // 🔥 CHANGE THIS
+const API = "https://cupboard-app.onrender.com"; // 🔥 CHANGE THIS
 
 // Load table names
 async function loadTables() {
@@ -86,7 +86,9 @@ async function loadTables() {
         });
 
         const text = await res.text();
-        console.log(text);
+        console.log("RAW RESPONSE:", text);
+
+        const tables = JSON.parse(text); // ✅ FIX
 
         const select = document.getElementById("tableSelect");
         select.innerHTML = "";
