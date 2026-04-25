@@ -151,10 +151,9 @@
                     const btn = document.createElement("button");
 
                     btn.innerText = "Delete";
-                    btn.style.background = "red";
-                    btn.style.color = "white";
-                    btn.style.border = "none";
-                    btn.style.padding = "5px";
+                    btn.className = "btn btn-danger"
+                    btn.style.width = "100%";
+                    btn.style.height = "100%";
 
                     btn.onclick = async () => {
                         const table = document.getElementById("tableSelect").value;
