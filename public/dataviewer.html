@@ -85,7 +85,8 @@ async function loadTables() {
             credentials: "include"
         });
 
-        const tables = await res.json();
+        const text = await res.text();
+        console.log(text);
 
         const select = document.getElementById("tableSelect");
         select.innerHTML = "";
