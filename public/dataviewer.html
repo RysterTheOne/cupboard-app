@@ -18,7 +18,7 @@
             font-size: 14px;
         }
 
-        tr:hover {
+        td:hover {
             background: #85a5bcb0;
         }
     </style>
@@ -37,17 +37,17 @@
                 <div class="grid grid-3 mt-2">
                     <div class="form-group">
                         <label>Table</label>
-                        <select id="tableSelect"></select>
+                        <select class="btn btn-primary" id="tableSelect"></select>
                     </div>
 
                     <div class="form-group">
                         <label>Load Table</label>
-                        <button onclick="loadTable()">Load</button>
+                        <button class="btn btn-primary mt-2" onclick="loadTable()">Load</button>
                     </div>
 
                     <div class="form-group">
                         <label>Refresh Table</label>
-                        <button onclick="refresh()">Refresh</button>
+                        <button class="btn btn-primary mt-2" onclick="refresh()">Refresh</button>
                     </div>
                 </div>
             </div>
