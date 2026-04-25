@@ -128,16 +128,23 @@
             LOAD PROJECT
             ========================= */
             function loadProject() {
-                const obj = localStorage.getItem("currentProject");
-                if (!obj) {
-                    window.location.href = "dashboard.html"
+                const raw = localStorage.getItem("currentProject");
+
+                if (!raw) {
+                    window.location.href = "dashboard.html";
                     return;
                 }
-                
-                const data = JSON.parse(obj.data)
-                console.log(typeof(data))
+
+                const obj = JSON.parse(raw); // ✅ THIS is the fix
+
+                console.log(obj);
+
                 document.getElementById("projectName").innerText = obj.name;
+
+                const data = obj.data; // already an object
                 const type = data.cabinet_type;
+
+                console.log(type);
             }
 
             loadProject();
