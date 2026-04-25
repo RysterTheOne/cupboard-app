@@ -282,6 +282,29 @@ app.delete("/api/projects/:id", async (req, res) => {
     }
 });
 
+// ============= DATA VIEW =================
+app.get("/api/admin/tables", async (req, res) => {
+    const result = await pool.query(`
+        SELECT table_name 
+        FROM information_schema.tables 
+        WHERE table_schema = 'public'
+    `);
+
+    res.json(result.rows);
+});
+
+app.get("/api/admin/table/:name", async (req, res) => {
+    const table = req.params.name;
+
+    try {
+        const result = await pool.query(`SELECT * FROM ${table}`);
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error loading table");
+    }
+});
+
 // ================= START =================
 app.listen(PORT, () => {
     console.log("Server running on port " + PORT);

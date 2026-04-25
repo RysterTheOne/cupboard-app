@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Database Viewer</title>
+
+<style>
+    body {
+        font-family: Arial;
+        background: #f4f4f4;
+        padding: 20px;
+    }
+
+    h2 {
+        margin-bottom: 10px;
+    }
+
+    .controls {
+        margin-bottom: 15px;
+    }
+
+    select, button {
+        padding: 8px;
+        margin-right: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    th {
+        background: #333;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+
+    tr:hover {
+        background: #eaeaea;
+    }
+
+    .json {
+        font-family: monospace;
+        font-size: 12px;
+        color: #444;
+    }
+</style>
+</head>
+
+<body>
+
+<h2>Database Viewer</h2>
+
+<div class="controls">
+    <select id="tableSelect"></select>
+    <button onclick="loadTable()">Load Table</button>
+    <button onclick="refresh()">Refresh</button>
+</div>
+
+<table>
+    <thead>
+        <tr id="tableHead"></tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+const API = "https:/cupboard-app.onrender.com"; // 🔥 CHANGE THIS
+
+// Load table names
+async function loadTables() {
+    try {
+        const res = await fetch(API + "/api/admin/tables", {
+            credentials: "include"
+        });
+
+        const tables = await res.json();
+
+        const select = document.getElementById("tableSelect");
+        select.innerHTML = "";
+
+        tables.forEach(t => {
+            const option = document.createElement("option");
+            option.value = t.table_name;
+            option.innerText = t.table_name;
+            select.appendChild(option);
+        });
+
+    } catch (err) {
+        console.error(err);
+        alert("Failed to load tables");
+    }
+}
+
+// Load selected table
+async function loadTable() {
+    const table = document.getElementById("tableSelect").value;
+
+    if (!table) return;
+
+    try {
+        const res = await fetch(API + "/api/admin/table/" + table, {
+            credentials: "include"
+        });
+
+        const data = await res.json();
+
+        const head = document.getElementById("tableHead");
+        const body = document.getElementById("tableBody");
+
+        head.innerHTML = "";
+        body.innerHTML = "";
+
+        if (!data.length) {
+            body.innerHTML = "<tr><td>No data</td></tr>";
+            return;
+        }
+
+        // Create headers
+        Object.keys(data[0]).forEach(key => {
+            const th = document.createElement("th");
+            th.innerText = key;
+            head.appendChild(th);
+        });
+
+        // Create rows
+        data.forEach(row => {
+            const tr = document.createElement("tr");
+
+            Object.values(row).forEach(val => {
+                const td = document.createElement("td");
+
+                if (typeof val === "object" && val !== null) {
+                    td.innerText = JSON.stringify(val, null, 2);
+                    td.className = "json";
+                } else {
+                    td.innerText = val;
+                }
+
+                tr.appendChild(td);
+            });
+
+            body.appendChild(tr);
+        });
+
+    } catch (err) {
+        console.error(err);
+        alert("Failed to load table data");
+    }
+}
+
+// Refresh current table
+function refresh() {
+    loadTable();
+}
+
+// Init
+loadTables();
+</script>
+
+</body>
+</html>
