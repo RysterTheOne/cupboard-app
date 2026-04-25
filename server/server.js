@@ -305,6 +305,23 @@ app.get("/api/admin/table/:name", async (req, res) => {
     }
 });
 
+app.delete("/api/admin/table/:table/:id", async (req, res) => {
+    const { table, id } = req.params;
+
+    try {
+        await pool.query(
+            `DELETE FROM ${table} WHERE id = $1`,
+            [id]
+        );
+
+        res.sendStatus(200);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Delete failed");
+    }
+});
+
 // ================= START =================
 app.listen(PORT, () => {
     console.log("Server running on port " + PORT);

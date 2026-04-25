@@ -136,6 +136,9 @@ async function loadTable() {
             th.innerText = key;
             head.appendChild(th);
         });
+        const th = document.createElement("th");
+        th.innerText = "Actions";
+        head.appendChild(th);
 
         // Create rows
         data.forEach(row => {
@@ -145,14 +148,39 @@ async function loadTable() {
                 const td = document.createElement("td");
 
                 if (typeof val === "object" && val !== null) {
-                    td.innerText = JSON.stringify(val, null, 2);
-                    td.className = "json";
+                    td.innerText = JSON.stringify(val);
                 } else {
                     td.innerText = val;
                 }
 
                 tr.appendChild(td);
             });
+
+            // 🔥 DELETE BUTTON CELL
+            const deleteTd = document.createElement("td");
+            const btn = document.createElement("button");
+
+            btn.innerText = "Delete";
+            btn.style.background = "red";
+            btn.style.color = "white";
+            btn.style.border = "none";
+            btn.style.padding = "5px";
+
+            btn.onclick = async () => {
+                const table = document.getElementById("tableSelect").value;
+
+                if (!confirm("Delete this row?")) return;
+
+                await fetch(`${API}/api/admin/table/${table}/${row.id}`, {
+                    method: "DELETE",
+                    credentials: "include"
+                });
+
+                loadTable(); // refresh
+            };
+
+            deleteTd.appendChild(btn);
+            tr.appendChild(deleteTd);
 
             body.appendChild(tr);
         });
