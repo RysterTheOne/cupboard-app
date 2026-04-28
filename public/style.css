@@ -87,10 +87,6 @@ input {
 .top-bar {
     width: 100%;
     min-height: 12vh;
-    
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 
     background: #1e293b; /* same as .card */
     padding: 15px 20px;
