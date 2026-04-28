@@ -24,10 +24,13 @@ body {
 }
 
 .card {
+    width: 100%;
+    max-width: 650px;
     background: #1e293b;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    font-size: 14px;
 }
 
 .text-center {
@@ -40,7 +43,7 @@ body {
 }
 
 .grid-3 {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 
 .form-group {
