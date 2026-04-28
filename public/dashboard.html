@@ -8,7 +8,12 @@
         .center-wrapper {
             min-height: calc(88vh - 40px);
         }
+
+        .top-bar {
+            width: calc(100vw - 40px);
+        }
     </style>
+
     <head>
         <title>Dashboard</title>
     </head>
@@ -65,7 +70,15 @@
             </div>
         </div>
         
-        <div class="top-bar">Cupboard App</div>
+        <div class="top-bar">
+            <table>
+                <tr>
+                    <th style="width: 25%;"></th>
+                    <th style="width: 50%;"><h1>Cupboard App</h1></th>
+                    <th style="width: 25%;"><button id="logout-btn" class="btn btn-danger" onclick="logout()">Logout</button></th>
+                </tr>
+            </table>
+        </div>
 
         <div id="main-page" class="center-wrapper">
             <div class="card">
@@ -76,8 +89,6 @@
                 <div id="projects" class="mt-2"></div>
             </div>
         </div>
-
-        <button id="logout-btn" class="btn btn-danger" onclick="logout()">Logout</button>
 
         <script>
             const API = "https://cupboard-app.onrender.com";
