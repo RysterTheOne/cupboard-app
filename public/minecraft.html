@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voxel Engine (Chunked)</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        #crosshair {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 10px; height: 10px;
+            margin-left: -5px;
+            margin-top: -5px;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+<body>
+
+<div id="crosshair"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+// === BASIC SETUP ===
+let scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb);
+
+let camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
+let renderer = new THREE.WebGLRenderer();
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0x444444));
+
+// === PLAYER ===
+let pos = new THREE.Vector3(0, 10, 0);
+let vel = new THREE.Vector3();
+let onGround = false;
+
+// === CONTROLS ===
+let keys = {};
+document.addEventListener("keydown", e => keys[e.code] = true);
+document.addEventListener("keyup", e => keys[e.code] = false);
+
+// === MOUSE LOOK ===
+let yaw = 0, pitch = 0;
+document.body.onclick = () => document.body.requestPointerLock();
+
+document.addEventListener("mousemove", e => {
+    if(document.pointerLockElement === document.body){
+        yaw -= e.movementX * 0.002;
+        pitch -= e.movementY * 0.002;
+        pitch = Math.max(-Math.PI/2, Math.min(Math.PI/2, pitch));
+    }
+});
+
+// === CHUNK SETTINGS ===
+const CHUNK_SIZE = 16;
+const WORLD_HEIGHT = 16;
+
+// store blocks
+let world = {};
+
+// height function
+function getHeight(x,z){
+    return Math.floor(Math.sin(x*0.2)*2 + Math.cos(z*0.2)*2 + 6);
+}
+
+// generate world data
+for(let x=-32; x<32; x++){
+    for(let z=-32; z<32; z++){
+        let h = getHeight(x,z);
+        for(let y=0; y<h; y++){
+            world[`${x},${y},${z}`] = 1;
+        }
+    }
+}
+
+// === FACE DATA ===
+const faces = [
+    {dir:[0,0,1], corners:[[0,0,1],[1,0,1],[1,1,1],[0,1,1]]},
+    {dir:[0,0,-1], corners:[[1,0,0],[0,0,0],[0,1,0],[1,1,0]]},
+    {dir:[1,0,0], corners:[[1,0,1],[1,0,0],[1,1,0],[1,1,1]]},
+    {dir:[-1,0,0], corners:[[0,0,0],[0,0,1],[0,1,1],[0,1,0]]},
+    {dir:[0,1,0], corners:[[0,1,1],[1,1,1],[1,1,0],[0,1,0]]},
+    {dir:[0,-1,0], corners:[[0,0,0],[1,0,0],[1,0,1],[0,0,1]]}
+];
+
+// === BUILD MESH ===
+function buildMesh(){
+    let positions = [];
+    let normals = [];
+
+    for(let key in world){
+        let [x,y,z] = key.split(",").map(Number);
+
+        for(let f of faces){
+            let nx = x + f.dir[0];
+            let ny = y + f.dir[1];
+            let nz = z + f.dir[2];
+
+            if(!world[`${nx},${ny},${nz}`]){
+                let ndx = f.dir;
+
+                let verts = f.corners;
+
+                let v = [
+                    verts[0], verts[1], verts[2],
+                    verts[0], verts[2], verts[3]
+                ];
+
+                for(let vert of v){
+                    positions.push(
+                        x + vert[0],
+                        y + vert[1],
+                        z + vert[2]
+                    );
+                    normals.push(...ndx);
+                }
+            }
+        }
+    }
+
+    let geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    geo.setAttribute("normal", new THREE.Float32BufferAttribute(normals, 3));
+
+    let mat = new THREE.MeshLambertMaterial({color: 0x55aa55});
+
+    return new THREE.Mesh(geo, mat);
+}
+
+let mesh = buildMesh();
+scene.add(mesh);
+
+// === SIMPLE MOVEMENT ===
+function updatePlayer(){
+    let speed = 0.15;
+    let gravity = -0.02;
+
+    let forward = new THREE.Vector3(Math.sin(yaw), 0, Math.cos(yaw));
+    let right = new THREE.Vector3().crossVectors(forward, new THREE.Vector3(0,1,0));
+
+    if(keys["KeyW"]) vel.add(forward.clone().multiplyScalar(-speed));
+    if(keys["KeyS"]) vel.add(forward.clone().multiplyScalar(speed));
+    if(keys["KeyA"]) vel.add(right.clone().multiplyScalar(-speed));
+    if(keys["KeyD"]) vel.add(right.clone().multiplyScalar(speed));
+
+    vel.y += gravity;
+
+    pos.add(vel);
+
+    if(pos.y < 3){
+        pos.y = 3;
+        vel.y = 0;
+        onGround = true;
+    }
+
+    vel.multiplyScalar(0.9);
+
+    camera.position.copy(pos);
+}
+
+// === LOOP ===
+function animate(){
+    requestAnimationFrame(animate);
+
+    updatePlayer();
+
+    camera.rotation.order = "YXZ";
+    camera.rotation.y = yaw;
+    camera.rotation.x = pitch;
+
+    renderer.render(scene, camera);
+}
+animate();
+</script>
+
+</body>
+</html>
