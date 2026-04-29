@@ -94,14 +94,41 @@ input:focus, select:focus {
 /* Top bar */
 .top-bar {
     width: 100%;
-    height: 8vh;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+
+    padding: 12px 20px;
     background: rgba(30,41,59,0.9);
-    padding: 15px 20px;
     backdrop-filter: blur(10px);
+
     border-bottom: 1px solid #334155;
+    gap: 10px;
+
+    flex-wrap: wrap; /* 🔥 allows safe wrapping instead of breaking */
+}
+
+/* Sections inside top bar */
+.top-left,
+.top-center,
+.top-right {
+    display: flex;
+    align-items: center;
+}
+
+.top-center {
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+}
+
+.top-right {
+    justify-content: flex-end;
+}
+
+/* Buttons inside top bar */
+.top-bar .btn {
+    white-space: nowrap;
 }
 
 /* Animations */
@@ -193,6 +220,26 @@ canvas {
 
     .center-wrapper {
         padding: 10px;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .top-left,
+    .top-center,
+    .top-right {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .top-right {
+        justify-content: center;
+    }
+
+    .top-bar .btn {
+        width: 100%;
     }
 }
 
