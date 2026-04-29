@@ -90,6 +90,9 @@ input {
     width: 100%;
     min-height: 12vh;
 
+    display: flex;
+    justify-content: flex-start;
+    
     background: #1e293b; /* same as .card */
     padding: 15px 20px;
     border-radius: 10px;
