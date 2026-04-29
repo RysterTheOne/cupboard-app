@@ -120,14 +120,140 @@ canvas {
     height: 100% !important;
 }
 
-/* Responsive tweaks */
-@media (max-width: 768px) {
+/* =========================
+   RESPONSIVE SYSTEM
+========================= */
+
+/* Large screens (default already handled) */
+
+
+/* ---------- TABLETS (≤ 1024px) ---------- */
+@media (max-width: 1024px) {
+
     .card {
+        max-width: 95%;
+        padding: 18px;
+    }
+
+    .center-wrapper {
         padding: 15px;
     }
 
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    h1 { font-size: 22px; }
+    h2 { font-size: 20px; }
+    h3 { font-size: 18px; }
+
+    .btn {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+
+/* ---------- SMALL TABLETS / LARGE PHONES (≤ 768px) ---------- */
+@media (max-width: 768px) {
+
     .top-bar {
         flex-direction: column;
+        align-items: stretch;
         gap: 10px;
+    }
+
+    .top-bar h1 {
+        text-align: center;
+    }
+
+    .top-bar button {
+        width: 100%;
+    }
+
+    .card {
+        width: 100%;
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    input, select {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .center-wrapper {
+        padding: 10px;
+    }
+}
+
+
+/* ---------- PHONES (≤ 480px) ---------- */
+@media (max-width: 480px) {
+
+    body {
+        font-size: 14px;
+    }
+
+    h1 { font-size: 20px; }
+    h2 { font-size: 18px; }
+    h3 { font-size: 16px; }
+
+    .card {
+        padding: 14px;
+        border-radius: 12px;
+    }
+
+    .center-wrapper {
+        padding: 8px;
+        gap: 15px;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    input, select {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    /* Fix canvas height on small screens */
+    .canvas-card {
+        aspect-ratio: auto !important;
+        height: 300px;
+    }
+
+    /* Prevent overflow issues */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+
+/* ---------- EXTRA SMALL (≤ 360px) ---------- */
+@media (max-width: 360px) {
+
+    h1 { font-size: 18px; }
+
+    .btn {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .card {
+        padding: 12px;
     }
 }
