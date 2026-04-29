@@ -6,7 +6,7 @@
     
     <style>
         .center-wrapper {
-            min-height: calc(88vh);
+            min-height: calc(92vh);
         }
     </style>
 
@@ -16,7 +16,7 @@
     
     <body>
 
-        <div id="createProjectModal" class="center-wrapper" style="display: none; background: rgba(0,0,0,0.5); height: 100vh;width: 100vw;">
+        <div id="createProjectModal" class="center-wrapper fade-in" style="display: none; background: rgba(0,0,0,0.5); height: 100vh;width: 100vw;">
 
             <div class="card">
                 <table>
@@ -67,19 +67,12 @@
         </div>
         
         <div class="top-bar">
-            <div class="row">
-                <button class="btn btn-primary" onclick="goAccounts()">Accounts</button>
-            </div>
-
+            <button class="btn btn-primary" onclick="goAccounts()">Accounts</button>
             <h1>Cupboard App</h1>
-
-            <div class="row">
-                <button class="btn btn-danger" onclick="logout()">Logout</button>
-            </div>
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
         </div>
 
-        <div class="container">
-            <div id="main-page" class="center-wrapper">
+            <div id="main-page" class="center-wrapper fade-in">
                 <div class="card">
                     <h2>Saved Projects</h2>
 
@@ -88,7 +81,6 @@
                     <div id="projects" class="mt-2"></div>
                 </div>
             </div>
-        </div>
 
         <script>
             const API = "https://cupboard-app.onrender.com";

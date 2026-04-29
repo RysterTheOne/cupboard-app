@@ -34,8 +34,7 @@
     </head>
 
     <body>
-        <div class="container">
-            <div class="center-wrapper">
+            <div class="center-wrapper fade-in">
                 <!-- CREATE USER -->
                 <div class="card">
                     <h3>Database Viewer</h3>
@@ -59,7 +58,7 @@
                 </div>
 
                 <!-- Table List (same width automatically via card) -->
-                <div class="card mt-3" style="max-width: 60vw; width: auto; scrollbar-color: #888888 #00000000;">
+                <div class="card mt-3" style="max-width: 60vw; width: auto; scrollbar-color: #888888 #00000000; overflow:auto;">
                     <h3>Table</h3>
                     <table>
                         <thead>
@@ -69,7 +68,6 @@
                     </table>
                 </div>
             </div>
-        </div>
         
         <script>
         const API = "https://cupboard-app.onrender.com"; // 🔥 CHANGE THIS

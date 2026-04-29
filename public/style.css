@@ -5,140 +5,129 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #0f172a;
-    color: white;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #e2e8f0;
     min-height: 100vh;
 }
 
-/* MAIN LAYOUT */
-.container {
-    width: 100%;
-    min-height: 100vh;
-    max-width: 1100px;
-    margin: auto;
-    padding: 20px;
-}
-
-/* FLEX CENTER */
+/* Layout wrapper */
 .center-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    padding: 20px;
+    gap: 20px;
 }
 
-/* CARD */
+/* Card system */
 .card {
     width: 100%;
-    background: #1e293b;
+    max-width: 900px;
+    background: rgba(30, 41, 59, 0.85);
+    backdrop-filter: blur(10px);
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    transition: all 0.2s ease;
 }
 
-/* TEXT */
-.text-center {
-    text-align: center;
+.card:hover {
+    transform: translateY(-3px);
 }
 
-/* GRID */
+/* Grid */
 .grid {
     display: grid;
-    gap: 12px;
+    gap: 15px;
 }
 
 .grid-3 {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
-/* FORM */
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
-
+/* Inputs */
 input, select {
     padding: 10px;
-    border-radius: 6px;
+    border-radius: 8px;
     border: none;
     margin-top: 5px;
+    background: #334155;
+    color: white;
+    transition: 0.2s;
 }
 
-/* BUTTONS */
+input:focus, select:focus {
+    outline: none;
+    background: #475569;
+}
+
+/* Buttons */
 .btn {
     padding: 10px 14px;
+    border-radius: 10px;
     border: none;
-    border-radius: 8px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
+    transition: 0.2s;
 }
 
 .btn-primary {
-    background: #2563eb;
+    background: #3b82f6;
     color: white;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
 }
 
 .btn-danger {
-    background: #dc2626;
+    background: #ef4444;
     color: white;
 }
 
-/* SPACING */
-.mt-1 { margin-top: 8px; }
-.mt-2 { margin-top: 12px; }
-.mt-3 { margin-top: 20px; }
+.btn-danger:hover {
+    background: #dc2626;
+}
 
-/* TOP BAR */
+/* Top bar */
 .top-bar {
+    width: 100%;
+    height: 8vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #1e293b;
+    background: rgba(30,41,59,0.9);
     padding: 15px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #334155;
 }
 
-.top-bar h1 {
-    font-size: 20px;
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.4s ease;
 }
 
-/* BUTTON GROUP */
-.row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(10px);}
+    to {opacity:1; transform:translateY(0);}
 }
 
-/* CANVAS */
+/* Canvas */
 canvas {
     width: 100% !important;
     height: 100% !important;
 }
 
-/* RESPONSIVE */
-
-/* Tablet */
-@media (max-width: 900px) {
-    .grid-3 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Phone */
-@media (max-width: 600px) {
-    .grid-3 {
-        grid-template-columns: 1fr;
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .card {
+        padding: 15px;
     }
 
     .top-bar {
         flex-direction: column;
         gap: 10px;
-        text-align: center;
-    }
-
-    .row {
-        justify-content: center;
     }
 }
