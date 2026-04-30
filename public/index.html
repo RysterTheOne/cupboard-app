@@ -1,39 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
-
-    <style>
-
-        .center-wrapper {
-            min-height: calc(92vh);
-        }
-
-        .top-bar {
-            margin-bottom: 10px;
-        }
-
-        .canvas-card {
-            display: flex;
-        }
-
-        #canvas-container {
-            width: 100%;
-            height: 100%;
-        }
-
-    </style>
-
+<html>
     <head>
-        <title>Cabinet Designer</title>
+
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+
+        <title>
+            Main
+        </title>
+
     </head>
 
     <body>
 
-        <div class="top-bar">
+        <div class="top-bar fade-in">
             <div class="top-left">
                 <button class="btn btn-primary" onclick="goDashboard()">Dashboard</button>
             </div>
@@ -46,70 +30,64 @@
                 <button class="btn btn-danger" onclick="logout()">Logout</button>
             </div>
         </div>
+        
+        <div class="center-class fade-in">
 
-            <div class="center-wrapper fade-in">
-                <!-- INPUT -->
-                <div class="card">
-                    <h2 class="text-center">Cupboard Designer</h2>
-                    <h3 class="text-center" style="color: beige;"><label id="projectName">Project Name</label></h3>
-                    <div class="grid grid-3 mt-2" id="shelving">
-                        <div class="form-group">
-                            <label>Width (mm)</label>
-                            <input type="number" id="width" value="2000">
-                        </div>
+            <div class="card">
 
-                        <div class="form-group">
-                            <label>Height (mm)</label>
-                            <input type="number" id="height" value="2200">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Depth (mm)</label>
-                            <input type="number" id="depth" value="600">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Panel Thickness (mm)</label>
-                            <input type="number" id="thickness" value="18">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Shelves</label>
-                            <input type="number" id="shelves" value="2">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Back Thickness (mm)</label>
-                            <input type="number" id="back" value="6">
-                        </div>
+                <div class="center-title-card">
+                    <div class="title-card">Measurements</div>
+                </div>
+                
+                <div class="content-columns" style="display: none;">
+                    <div class="content-rows">
+                        <div class="labels">Width</div>
+                        <div class="labels">Height</div>
+                        <div class="labels">Depth</div>
+                        <div class="labels">Thickness</div>
+                        <div class="labels">Shelves</div>
+                        <div class="labels">Back Thickness</div>
                     </div>
 
-                    <button class="btn btn-primary mt-2" onclick="updateCabinet(); generateCutList();">
-                        Update
-                    </button>
+                    <div class="content-rows">
+                        <div class="labels"><input type="text" class="inputs" id="width"></div>
+                        <div class="labels"><input type="text" class="inputs" id="height"></div>
+                        <div class="labels"><input type="text" class="inputs" id="depth"></div>
+                        <div class="labels"><input type="text" class="inputs" id="thickness"></div>
+                        <div class="labels"><input type="text" class="inputs" id="shelves"></div>
+                        <div class="labels"><input type="text" class="inputs" id="back"></div>
+                    </div>
                 </div>
-
-                <!-- VIEWPORT -->
-                <div class="card mt-3 canvas-card fade-in" style="aspect-ratio: 1 / 0.8; overflow:hidden;">
-                    <div id="canvas-container"></div>
-                </div>
-
-                <!-- CUT LIST -->
-                <div class="card mt-3">
-                <h3>Cut List</h3>
-                <div id="cutList"></div>
-                </div>
-
             </div>
 
-            <!--<button class="btn btn-primary" onclick="saveProject()">Save Project</button>-->
-            <button class="btn btn-primary" onclick="saveProject()">Save</button>
+            <div class="card">
+
+                <div class="center-title-card">
+                    <div class="title-card">Cupboard Render</div>
+                </div>
+
+                <div class="content-columns">
+                    <div id="canvas-container"></div>
+                </div>
+            </div>
+
+            <div class="card">
+
+                <div class="center-title-card">
+                    <div class="title-card">Cut List</div>
+                </div>
+
+                <div class="content-columns" id="cutList">
+                    <div id="canvas-container"></div>
+                </div>
+            </div>
+        </div>
 
         <script>
+
             const API = "https://cupboard-app.onrender.com";
-            /* =========================
-            AUTH CHECK (BACKEND ONLY)
-            ========================= */
+            
+            // Auth Functions //
             async function checkAuth() {
                 try {
                     const res = await fetch(API + "/api/me", {
@@ -125,7 +103,7 @@
                     window.location.href = "login.html";
                 }
             }
-            checkAuth();
+            //checkAuth();
 
             async function logout() {
                 await fetch(API + "/api/logout", {
@@ -133,17 +111,13 @@
                     credentials: "include"
                 });
 
-                // force clear UI state
                 window.location.href = "login.html";
             }
 
-            function goDashboard() {
-                window.location.href = "dashboard.html"
-            }
-            /* =========================
-            LOAD PROJECT
-            ========================= */
+            //Project Functions//
             function loadProject() {
+
+                
                 const raw = localStorage.getItem("currentProject");
 
                 if (!raw) {
@@ -151,23 +125,21 @@
                     return;
                 }
 
-                const obj = JSON.parse(raw); // ✅ THIS is the fix
+                const obj = JSON.parse(raw);
+                document.title = obj.name;
 
-                console.log(obj);
-
-                document.getElementById("projectName").innerText = obj.name;
-
-                const data = obj.data; // already an object
+                const data = obj.data;
                 const type = data.cabinet_type;
 
-                console.log(type);
+                //document.getElementById("width").value = 1;
+                //document.getElementById("height").value = 1;
+                //document.getElementById("depth").value = 1;
+                //document.getElementById("thickness").value = 1;
+                //document.getElementById("shelves").value = 1
+                //document.getElementById("back").value = 1
             }
+            //loadProject();
 
-            loadProject();
-
-            /* =========================
-            SAVE PROJECT (BACKEND)
-            ========================= */
             async function saveProject() {
                 const data = {
                     name: projectName.value,
@@ -188,9 +160,7 @@
                 alert("Project saved");
             }
 
-            /* =========================
-            3D ENGINE
-            ========================= */
+            //3D Engine Handling//
             let scene, camera, renderer, controls;
             let parts = [];
 
@@ -274,9 +244,15 @@
                 buildCabinet();
             }
 
-            /* =========================
-            CUT LIST (MM)
-            ========================= */
+            function animate(){
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene,camera);
+            }
+
+            //init3D();
+
+            //Cutlist Generation//
             function generateCutList(){
                 const W = +width.value;
                 const H = +height.value;
@@ -301,36 +277,12 @@
                     `<div>${i.name} | ${i.qty}x | ${i.w} × ${i.h} × ${i.t} mm</div>`
                 ).join("");
             }
+            //generateCutList();
 
-            /* ========================= */
-            async function logout() {
-                await fetch(API + "/api/logout", {
-                    method: "POST",
-                    credentials: "include"
-                });
-
-                // force clear UI state
-                window.location.href = "login.html";
+            //Href Functions//
+            function goDashboard() {
+                window.location.href = "dashboard.html"
             }
-
-            /* ========================= */
-            function animate(){
-                requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene,camera);
-            }
-
-            init3D();
-            generateCutList();
-
-            window.addEventListener("resize", () => {
-                const container = document.getElementById("canvas-container");
-
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            });
         </script>
     </body>
 </html>
