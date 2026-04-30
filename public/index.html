@@ -66,8 +66,7 @@
                     <div class="title-card">Cupboard Render</div>
                 </div>
 
-                <div class="content-canvas">
-                    <div id="canvas-container"></div>
+                <div class="content-canvas" id="canvas-container">
                 </div>
             </div>
 
@@ -164,7 +163,6 @@
 
             function init3D() {
                 const container = document.getElementById("canvas-container");
-
                 scene = new THREE.Scene();
                 scene.background = new THREE.Color(0x0f172a);
 

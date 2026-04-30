@@ -211,6 +211,10 @@ canvas {
     height: 100% !important;
 }
 
+#canvas-container {
+    flex: 1;
+}
+
 /* Buttons */
 .btn {
     padding: 10px 14px;
