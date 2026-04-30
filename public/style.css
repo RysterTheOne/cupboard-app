@@ -200,6 +200,12 @@ body {
     border-bottom: 1px solid #334155
 }
 
+.content-canvas {
+    width: 100%;
+    height: calc(72.25vh - 20px);
+    display: block;
+}
+
 canvas {
     width: 100% !important;
     height: 100% !important;
@@ -314,5 +320,11 @@ canvas {
         border-radius: 8px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         transition: all 0.2s ease;
+    }
+
+    .content-canvas {
+        width: 100%;
+        height: calc((72.25vh - 20px)/2);
+        display: block;
     }
 }
