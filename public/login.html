@@ -27,9 +27,7 @@
                 </div>
             </div>
 
-        <script>
-            const API = "https://cupboard-app.onrender.com";
-
+        <script src="script.js">
             async function login() {
                 const username = document.getElementById("username").value;
                 const password = document.getElementById("password").value;
@@ -50,23 +48,6 @@
                 }
             }
 
-            async function checkAuth() {
-                try {
-                    const res = await fetch(API + "/api/me", {
-                        credentials: "include"
-                    });
-
-                    const data = await res.json();
-
-                    if (!data || !data.userId) {
-                        return;
-                    } else {
-                        window.location.href = "dashboard.html";
-                    }
-                } catch (err) {
-                    return;
-                }
-            }
             checkAuth();
         </script>
     </body>

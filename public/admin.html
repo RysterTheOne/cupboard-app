@@ -57,24 +57,11 @@
 
             </div>
         
-        <script>
-            const API = "https://cupboard-app.onrender.com";
-
+        <script src="script.js">
+            checkAuth();
             /* ========================= */
             function goDashboard() {
                 window.location.href = "dashboard.html";
-            }
-
-            /* ========================= */
-            async function checkAuth() {
-                const res = await fetch(API + "/api/admin/users", {
-                    credentials: "include"
-                });
-
-                if (!res.ok) {
-                    alert("Access denied");
-                    window.location.href = "dashboard.html";
-                }
             }
 
             /* ========================= */
@@ -146,7 +133,6 @@
             }
 
             /* ========================= */
-            checkAuth();
             loadUsers();
         </script>
     </body>
