@@ -48,7 +48,26 @@
                 }
             }
 
-            checkAuth();
+            async function checkAuth2() {
+                try {
+                    const res = await fetch(API + "/api/me", {
+                        credentials: "include"
+                    });
+
+                    const data = await res.json();
+
+                    if (data || data.userId) {
+                        window.location.href = "dashboard.html"
+                    }
+                } catch (err) {
+                    return;
+                }
+            }
+
+            while (true) {
+                await wait(2000);
+                checkAuth2();
+            };
         </script>
     </body>
 </html>
