@@ -152,10 +152,11 @@
                             alert("Failed to delete project");
                         }
                     };
-
+                    
+                    par.appendChild(div)
                     div.appendChild(name);
                     div.appendChild(delBtn);
-                    container.appendChild(div);
+                    container.appendChild(par);
                 });
             }
             loadProjects();
