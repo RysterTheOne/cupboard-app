@@ -103,7 +103,7 @@
                     window.location.href = "login.html";
                 }
             }
-            //checkAuth();
+            checkAuth();
 
             async function logout() {
                 await fetch(API + "/api/logout", {
@@ -138,7 +138,7 @@
                 //document.getElementById("shelves").value = 1
                 //document.getElementById("back").value = 1
             }
-            //loadProject();
+            loadProject();
 
             async function saveProject() {
                 const data = {
@@ -250,7 +250,7 @@
                 renderer.render(scene,camera);
             }
 
-            //init3D();
+            init3D();
 
             //Cutlist Generation//
             function generateCutList(){
@@ -277,7 +277,7 @@
                     `<div>${i.name} | ${i.qty}x | ${i.w} × ${i.h} × ${i.t} mm</div>`
                 ).join("");
             }
-            //generateCutList();
+            generateCutList();
 
             //Href Functions//
             function goDashboard() {
