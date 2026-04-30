@@ -92,8 +92,6 @@
             </div>
 
         <script src="script.js">
-            checkAuth();
-
             async function loadProjects() {
                 const res = await fetch(API + "/api/projects", {
                     credentials: "include"
@@ -211,6 +209,8 @@
                     alert("Error creating project");
                 }
             }
+
+            checkAuth();
         </script>
     </body>
 </html>
