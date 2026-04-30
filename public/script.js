@@ -16,7 +16,6 @@ async function checkAuth() {
         window.location.href = "login.html";
     }
 }
-checkAuth();
 
 async function logout() {
     await fetch(API + "/api/logout", {

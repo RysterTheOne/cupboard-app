@@ -48,7 +48,7 @@
                 }
             }
 
-            async function Auth2() {
+            async function checkAuth2() {
                 try {
                     const res = await fetch(API + "/api/me", {
                         credentials: "include"
@@ -64,7 +64,10 @@
                 }
             }
 
-
+            while (true) {
+                await wait(2000);
+                checkAuth2();
+            };
         </script>
     </body>
 </html>
