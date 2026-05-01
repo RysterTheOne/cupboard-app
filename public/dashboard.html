@@ -87,9 +87,9 @@
 
         <div id="main-page" class="center-class fade-in">
             <div class="card">
-                <h2>Saved Projects</h2>
-                <button class="btn btn-primary" onclick="showCreateProject()">New Project</button>
-
+                <div class="center-title-card">
+                    <div class="title-card">Saved Projects</div>
+                </div>
                 <div id="projects" class="center-title-card"></div>
             </div>
         </div>
@@ -105,15 +105,20 @@
                 const container = document.getElementById("projects");
                 container.innerHTML = "";
 
+                const newProj = document.createElement("button");
+                newProj.className = "btn btn-primary";
+                newProj.onclick = (showCreateProject());
+                container.appendChild(newProj)
+
                 projects.forEach(p => {
 
                     const div = document.createElement("div");
                     div.className = "title-card";
                     div.style.cursor = "pointer";
                     div.style.display = "flex";
-                    div.style.flexDirection = "row"
+                    div.style.flexDirection = "row";
                     div.style.justifyContent = "space-between";
-                    div.id = "projectBtn"
+                    div.id = "projectBtn";
 
                     div.onclick = () => {
                         localStorage.setItem("currentProject", JSON.stringify(p));
