@@ -90,7 +90,9 @@
                 <div class="center-title-card">
                     <div class="title-card">Saved Projects</div>
                 </div>
-                <div id="projects" class="center-title-card"></div>
+                <div id="projects" class="content-columns" style="flex-direction: row;">
+                    <!--Projects generate in here later with loadProjects()-->
+                </div>
             </div>
         </div>
 
@@ -117,7 +119,8 @@
                 projects.forEach(p => {
 
                     const div = document.createElement("div");
-                    div.className = "title-card";
+                    div.className = "labels";
+                    div.style.width = "90%"
                     div.style.cursor = "pointer";
                     div.style.display = "flex";
                     div.style.flexDirection = "row";
