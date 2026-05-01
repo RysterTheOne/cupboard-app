@@ -246,7 +246,7 @@ canvas {
 /*Phone Scaling*/
 @media (max-width: 768px) {
     .top-bar {
-        font-size: 8px;
+        font-size: 10px;
     }
 
     .card {
