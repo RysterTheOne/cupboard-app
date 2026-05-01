@@ -65,10 +65,13 @@
                 }
             }
 
-            while (true) {
-                await wait(2000);
-                checkAuth2();
-            };
+            async function AuthLoop() {
+                while (true) {
+                    await wait(2000);
+                    checkAuth2();
+                };
+            }
+            AuthLoop();
         </script>
     </body>
 </html>
