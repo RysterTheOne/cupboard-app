@@ -91,7 +91,7 @@
                     <div class="title-card">Saved Projects</div>
                 </div>
 
-                <div id="projects" class="content-columns" style="flex-direction: column;">
+                <div id="projects" class="content-columns" style="flex-direction: column; justify-content: center;">
                     <!--Projects generate in here later with loadProjects()-->
                 </div>
             </div>
@@ -115,6 +115,8 @@
                     document.getElementById("top").style.display = "none";
                     document.getElementById("main-page").style.display = "none";
                 };
+                newProj.style.width = "90%"
+                newProj.innerText = "New Project"
                 container.appendChild(newProj)
 
                 projects.forEach(p => {
