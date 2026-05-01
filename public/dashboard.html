@@ -71,7 +71,7 @@
             </div>
         </div>
         
-        <div class="top-bar">
+        <div class="top-bar" id="top">
             <div class="top-left">
                 <button class="btn btn-primary" onclick="goAccounts()">Accounts</button>
             </div>
@@ -167,16 +167,14 @@
 
             function showCreateProject() {
                 document.getElementById("createProjectModal").style.display = "flex";
-                document.getElementById("top-bar").style.display = "none";
-                document.getElementById("logout-btn").style.display = "none";
-                document.getElementById("accounts-btn").style.display = "none";
+                document.getElementById("top").style.display = "none";
+                document.getElementById("main-page").style.display = "none";
             }
 
             function hideCreateProject() {
                 document.getElementById("createProjectModal").style.display = "none";
-                document.getElementById("top-bar").style.display = "flex";
-                document.getElementById("logout-btn").style.display = "block";
-                document.getElementById("accounts-btn").style.display = "block";
+                document.getElementById("top").style.display = "flex";
+                document.getElementById("main-page").style.display = "block";
             }
 
             async function createProject() {
