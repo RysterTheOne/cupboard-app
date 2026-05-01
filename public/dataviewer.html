@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-    <html lang="en">
+<html lang="en">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    
     <style>
         table {
             width: 100%;
@@ -70,128 +71,127 @@
             </div>
         
         <script>
-        const API = "https://cupboard-app.onrender.com";
+            const API = "https://cupboard-app.onrender.com";
 
-        // Load table names
-        async function loadTables() {
-            try {
-                const res = await fetch(API + "/api/admin/tables", {
-                    credentials: "include"
-                });
-
-                const text = await res.text();
-                console.log("RAW RESPONSE:", text);
-
-                const tables = JSON.parse(text)
-
-                const select = document.getElementById("tableSelect");
-                select.innerHTML = "";
-
-                tables.forEach(t => {
-                    const option = document.createElement("option");
-                    option.value = t.table_name;
-                    option.innerText = t.table_name;
-                    select.appendChild(option);
-                });
-
-            } catch (err) {
-                console.error(err);
-                alert("Failed to load tables");
-            }
-        }
-
-        // Load selected table
-        async function loadTable() {
-            const table = document.getElementById("tableSelect").value;
-
-            if (!table) return;
-
-            try {
-                const res = await fetch(API + "/api/admin/table/" + table, {
-                    credentials: "include"
-                });
-
-                const data = await res.json();
-
-                const head = document.getElementById("tableHead");
-                const body = document.getElementById("tableBody");
-
-                head.innerHTML = "";
-                body.innerHTML = "";
-
-                if (!data.length) {
-                    body.innerHTML = "<tr><td>No data</td></tr>";
-                    return;
-                }
-
-                // Create headers
-                Object.keys(data[0]).forEach(key => {
-                    const th = document.createElement("th");
-                    th.innerText = key;
-                    head.appendChild(th);
-                });
-                const th = document.createElement("th");
-                th.innerText = "Actions";
-                head.appendChild(th);
-
-                // Create rows
-                data.forEach(row => {
-                    const tr = document.createElement("tr");
-
-                    Object.values(row).forEach(val => {
-                        const td = document.createElement("td");
-
-                        if (typeof val === "object" && val !== null) {
-                            td.innerText = JSON.stringify(val);
-                        } else {
-                            td.innerText = val;
-                        }
-
-                        tr.appendChild(td);
+            // Load table names
+            async function loadTables() {
+                try {
+                    const res = await fetch(API + "/api/admin/tables", {
+                        credentials: "include"
                     });
 
-                    // 🔥 DELETE BUTTON CELL
-                    const deleteTd = document.createElement("td");
-                    const btn = document.createElement("button");
+                    const text = await res.text();
+                    console.log("RAW RESPONSE:", text);
 
-                    btn.innerText = "Delete";
-                    btn.className = "btn btn-danger"
-                    btn.style.width = "100%";
-                    btn.style.height = "100%";
+                    const tables = JSON.parse(text)
 
-                    btn.onclick = async () => {
-                        const table = document.getElementById("tableSelect").value;
+                    const select = document.getElementById("tableSelect");
+                    select.innerHTML = "";
 
-                        if (!confirm("Delete this row?")) return;
+                    tables.forEach(t => {
+                        const option = document.createElement("option");
+                        option.value = t.table_name;
+                        option.innerText = t.table_name;
+                        select.appendChild(option);
+                    });
 
-                        await fetch(`${API}/api/admin/table/${table}/${row.id}`, {
-                            method: "DELETE",
-                            credentials: "include"
+                } catch (err) {
+                    console.error(err);
+                    alert("Failed to load tables");
+                }
+            }
+
+            // Load selected table
+            async function loadTable() {
+                const table = document.getElementById("tableSelect").value;
+
+                if (!table) return;
+
+                try {
+                    const res = await fetch(API + "/api/admin/table/" + table, {
+                        credentials: "include"
+                    });
+
+                    const data = await res.json();
+
+                    const head = document.getElementById("tableHead");
+                    const body = document.getElementById("tableBody");
+
+                    head.innerHTML = "";
+                    body.innerHTML = "";
+
+                    if (!data.length) {
+                        body.innerHTML = "<tr><td>No data</td></tr>";
+                        return;
+                    }
+
+                    // Create headers
+                    Object.keys(data[0]).forEach(key => {
+                        const th = document.createElement("th");
+                        th.innerText = key;
+                        head.appendChild(th);
+                    });
+                    const th = document.createElement("th");
+                    th.innerText = "Actions";
+                    head.appendChild(th);
+
+                    // Create rows
+                    data.forEach(row => {
+                        const tr = document.createElement("tr");
+
+                        Object.values(row).forEach(val => {
+                            const td = document.createElement("td");
+
+                            if (typeof val === "object" && val !== null) {
+                                td.innerText = JSON.stringify(val);
+                            } else {
+                                td.innerText = val;
+                            }
+
+                            tr.appendChild(td);
                         });
 
-                        loadTable(); // refresh
-                    };
+                        // 🔥 DELETE BUTTON CELL
+                        const deleteTd = document.createElement("td");
+                        const btn = document.createElement("button");
 
-                    deleteTd.appendChild(btn);
-                    tr.appendChild(deleteTd);
+                        btn.innerText = "Delete";
+                        btn.className = "btn btn-danger"
+                        btn.style.width = "100%";
+                        btn.style.height = "100%";
 
-                    body.appendChild(tr);
-                });
+                        btn.onclick = async () => {
+                            const table = document.getElementById("tableSelect").value;
 
-            } catch (err) {
-                console.error(err);
-                alert("Failed to load table data");
+                            if (!confirm("Delete this row?")) return;
+
+                            await fetch(`${API}/api/admin/table/${table}/${row.id}`, {
+                                method: "DELETE",
+                                credentials: "include"
+                            });
+
+                            loadTable(); // refresh
+                        };
+
+                        deleteTd.appendChild(btn);
+                        tr.appendChild(deleteTd);
+
+                        body.appendChild(tr);
+                    });
+
+                } catch (err) {
+                    console.error(err);
+                    alert("Failed to load table data");
+                }
             }
-        }
 
-        // Refresh current table
-        function refresh() {
-            loadTable();
-        }
+            // Refresh current table
+            function refresh() {
+                loadTable();
+            }
 
-        // Init
-        loadTables();
+            // Init
+            loadTables();
         </script>
-
     </body>
 </html>
