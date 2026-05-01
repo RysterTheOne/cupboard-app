@@ -107,7 +107,11 @@
 
                 const newProj = document.createElement("button");
                 newProj.className = "btn btn-primary";
-                newProj.onclick = (showCreateProject());
+                newProj.onclick = () => {
+                    document.getElementById("createProjectModal").style.display = "flex";
+                    document.getElementById("top").style.display = "none";
+                    document.getElementById("main-page").style.display = "none";
+                };
                 container.appendChild(newProj)
 
                 projects.forEach(p => {
