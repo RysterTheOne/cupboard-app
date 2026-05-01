@@ -90,7 +90,8 @@
                 <div class="center-title-card">
                     <div class="title-card">Saved Projects</div>
                 </div>
-                <div id="projects" class="content-columns">
+
+                <div id="projects" class="content-columns" style="flex-direction: column;">
                     <!--Projects generate in here later with loadProjects()-->
                 </div>
             </div>
@@ -174,12 +175,6 @@
 
             function goAccounts() {
                 window.location.href = "admin.html";
-            }
-
-            function showCreateProject() {
-                document.getElementById("createProjectModal").style.display = "flex";
-                document.getElementById("top").style.display = "none";
-                document.getElementById("main-page").style.display = "none";
             }
 
             function hideCreateProject() {
