@@ -65,9 +65,10 @@
                 }
             }
 
+            const sleep = (ms) => new Promise(r => setTimeout(r, ms));
             async function AuthLoop() {
                 while (true) {
-                    await wait(2000);
+                    await sleep(2000);
                     checkAuth2();
                 };
             }
