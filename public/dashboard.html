@@ -85,15 +85,14 @@
             </div>
         </div>
 
-            <div id="main-page" class="center-wrapper fade-in">
-                <div class="card">
-                    <h2>Saved Projects</h2>
+        <div id="main-page" class="center-class fade-in">
+            <div class="card">
+                <h2>Saved Projects</h2>
+                <button class="btn btn-primary" onclick="showCreateProject()">New Project</button>
 
-                    <button class="btn btn-primary" onclick="showCreateProject()">New Project</button>
-
-                    <div id="projects" class="center-title-card"></div>
-                </div>
+                <div id="projects" class="center-title-card"></div>
             </div>
+        </div>
 
         <script>
             async function loadProjects() {
@@ -174,7 +173,7 @@
             function hideCreateProject() {
                 document.getElementById("createProjectModal").style.display = "none";
                 document.getElementById("top").style.display = "flex";
-                document.getElementById("main-page").style.display = "block";
+                document.getElementById("main-page").style.display = "flex";
             }
 
             async function createProject() {
