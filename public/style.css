@@ -145,7 +145,8 @@ body {
 .labels {
     max-width: 80%;
     width: 80%;
-    height: calc((72.25vh - 20px)*10/100);
+    height: calc((72.25vh - 20px)*15/100);
+    padding: 14px;
     margin-top: calc((72.25vh - 20px)*2/100);
     margin-bottom: calc((72.25vh - 20px)*2/100);
 
@@ -154,7 +155,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    background: rgba(55, 82, 126, 0.85);
+    background: #334155;;
     backdrop-filter: blur(10px);
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
@@ -314,7 +315,8 @@ canvas {
     .labels {
         max-width: 80%;
         width: 80%;
-        height: calc(((72.25vh - 20px)*10/100)/2);
+        height: calc(((72.25vh - 20px)*15/100)/2);
+        padding: 14px;
         margin-top: calc(((72.25vh - 20px)*2/100)/2);
         margin-bottom: calc(((72.25vh - 20px)*2/100)/2);
 
