@@ -9,6 +9,10 @@
         .center-wrapper {
             min-height: calc(92vh);
         }
+
+        #projectBtn:hover {
+            background: rgba(74, 109, 165, 0.85);
+        }
     </style>
 
     <head>
@@ -110,8 +114,7 @@
                     div.style.display = "flex";
                     div.style.flexDirection = "row"
                     div.style.justifyContent = "space-between";
-                    div.style.alignItems = "center";
-                    div.style.padding = "10px";
+                    div.id = "projectBtn"
 
                     div.onclick = () => {
                         localStorage.setItem("currentProject", JSON.stringify(p));
