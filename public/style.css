@@ -115,6 +115,11 @@ body {
     transition: all 0.2s ease;
 }
 
+.content-btn {
+    height: calc((var(--CardContentHeight) - 20px)* 16,4 / 100);
+    margin-top: calc((var(--CardContentHeight) - 20px) * 2 / 100);
+    margin-bottom: calc((var(--CardContentHeight) - 20px) * 2 / 100);
+}
 .content-columns {
     width: 100%;
     height: var(--CardContentHeight);
@@ -300,14 +305,20 @@ canvas {
         transition: all 0.2s ease;
     }
 
+    .content-btn {
+        height: calc(((var(--CardContentHeight) - 20px)* 16,4 / 100) / 2);
+        margin-top: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
+        margin-bottom: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
+    }
+
     .content-columns {
         width: 100%;
-        height: calc((72.25vh - 20px)/2);
+        height: calc(var(--CardContentHeight) / 2);
         display: flex;
     }
 
     .content-rows {
-        height: calc((72.25vh - 20px)/2);
+        height: calc(var(--CardContentHeight) / 2);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -319,10 +330,10 @@ canvas {
     .labels {
         max-width: 80%;
         width: 80%;
-        height: calc(((72.25vh - 20px)*15/100)/2);
         padding: 14px;
-        margin-top: calc(((72.25vh - 20px)*2/100)/2);
-        margin-bottom: calc(((72.25vh - 20px)*2/100)/2);
+        height: calc(((var(--CardContentHeight) - 20px)* 16,4 / 100) / 2);
+        margin-top: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
+        margin-bottom: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
 
         display: flex;
         flex-direction: column;
@@ -339,21 +350,15 @@ canvas {
     .inputs {
         text-align: center;
         width: 80%;
-        height: calc(((72.25vh - 20px)*15/100)/2);
         padding: 14px;
-        margin-top: calc(((72.25vh - 20px)*2/100)/2);
-        margin-bottom: calc(((72.25vh - 20px)*2/100)/2);
+        height: calc(((var(--CardContentHeight) - 20px)* 16,4 / 100) / 2);
+        margin-top: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
+        margin-bottom: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
 
         background: rgba(25, 42, 70, 0.85);
         backdrop-filter: blur(10px);
         border-radius: 8px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         transition: all 0.2s ease;
-    }
-
-    .content-canvas {
-        width: 100%;
-        height: calc((72.25vh - 20px)/2);
-        display: block;
     }
 }
