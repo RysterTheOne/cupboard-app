@@ -169,7 +169,7 @@ body {
 .inputs {
     text-align: center;
     box-sizing: border-box;
-    line-height: normal;
+    line-height: calc((var(--CardContentHeight) - 40px) * 16,4 / 100);;
     width: 80%;
     height: calc((var(--CardContentHeight) - 20px) * 16,4 / 100);
     padding: 10px;
