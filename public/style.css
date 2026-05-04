@@ -168,12 +168,9 @@ body {
 
 .inputs {
     text-align: center;
-    box-sizing: border-box;
-    line-height: calc((var(--CardContentHeight) - 40px) * 16,4 / 100);
-    font-size: 16px;
+    font-size: 18.78260869565217px;
     width: 80%;
-    min-height: calc((var(--CardContentHeight) - 20px) * 16,4 / 100);
-    max-height: calc((var(--CardContentHeight) - 20px) * 16,4 / 100);
+    height: calc((var(--CardContentHeight) - 20px) * 16,4 / 100);
     padding: 10px;
     margin-top: calc((var(--CardContentHeight) - 20px) * 2 / 100);
     margin-bottom: calc((var(--CardContentHeight) - 20px) * 2 / 100);
