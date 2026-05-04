@@ -144,6 +144,9 @@ body {
 }
 
 .labels {
+    text-align: center;
+    box-sizing: border-box;
+    line-height: normal;
     max-width: 80%;
     width: 80%;
     height: calc((var(--CardContentHeight) - 20px)* 16,4 / 100);
@@ -165,6 +168,8 @@ body {
 
 .inputs {
     text-align: center;
+    box-sizing: border-box;
+    line-height: normal;
     width: 80%;
     height: calc((var(--CardContentHeight) - 20px) * 16,4 / 100);
     padding: 10px;
