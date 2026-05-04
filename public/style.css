@@ -1,6 +1,6 @@
 :root {
     --TopHeight: 15vh;
-    --CenterMinHeight: calc(100vh - (var(--TopHeight) + var(--TopBetween)));
+    --CenterMinHeight: calc(100vh - var(--TopHeight));
     --CardHeight: calc(var(--CenterMinHeight) - 10vh);
     --CardContentHeight: calc((var(--CardHeight) - 40px) * 85 / 100);
 }
