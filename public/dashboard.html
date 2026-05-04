@@ -103,14 +103,13 @@
                 container.innerHTML = "";
 
                 const newProj = document.createElement("button");
-                newProj.className = "btn btn-primary";
+                newProj.className = "btn btn-primary content-btn";
                 newProj.onclick = () => {
                     document.getElementById("createProjectModal").style.display = "flex";
                     document.getElementById("top").style.display = "none";
                     document.getElementById("main-page").style.display = "none";
                 };
                 newProj.style.width = "95%"
-                newProj.className = ""
                 newProj.innerText = "New Project"
                 container.appendChild(newProj)
 
