@@ -260,10 +260,10 @@ canvas {
     .card {
         max-width: 80vw;
         width: 80vw;
-        min-height: calc(var(--CardHeight) / 2);
-        max-height: calc(var(--CardHeight) / 2);
-        margin-top: calc(5vh * 2);
-        margin-bottom: calc(3vh * 2);
+        min-height: calc(var(--CardHeight) / 1.5);
+        max-height: calc(var(--CardHeight) / 1.5);
+        margin-top: calc(5vh * 1.5);
+        margin-bottom: calc(3vh * 1.5);
 
         display: flex;
         flex-direction: column;
@@ -276,22 +276,12 @@ canvas {
         transition: all 0.2s ease;
     }
 
-    .center-title-card {
-        height: calc((8.6vh - 20px)/2);
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 2.15vh;
-    }
-
     .title-card {
         max-width: 90%;
         width: 90%;
-        height: calc(((var(--CardHeight) - 40px) * 10 / 100) / 2);
-        max-height: calc(((var(--CardHeight) - 40px) * 10 / 100) / 2);
-        margin-bottom: calc(((var(--CardHeight) - 40px) * 5 / 100) / 2);
+        height: calc(((var(--CardHeight) - 40px) * 10 / 100) / 1.5);
+        max-height: calc(((var(--CardHeight) - 40px) * 10 / 100) / 1.5);
+        margin-bottom: calc(((var(--CardHeight) - 40px) * 5 / 100) / 1.5);
 
         display: flex;
         flex-direction: column;
@@ -307,19 +297,19 @@ canvas {
     }
 
     .content-btn {
-        height: calc(((var(--CardContentHeight) - 20px)* 16,4 / 100) / 2);
-        margin-top: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
-        margin-bottom: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
+        height: calc(((var(--CardContentHeight) - 20px)* 16,4 / 100) / 1.5);
+        margin-top: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 1.5);
+        margin-bottom: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 1.5);
     }
 
     .content-columns {
         width: 100%;
-        height: calc(var(--CardContentHeight) / 2);
+        height: calc(var(--CardContentHeight) / 1.5);
         display: flex;
     }
 
     .content-rows {
-        height: calc(var(--CardContentHeight) / 2);
+        height: calc(var(--CardContentHeight) / 1.5);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -332,9 +322,9 @@ canvas {
         max-width: 80%;
         width: 80%;
         padding: 14px;
-        height: calc(((var(--CardContentHeight) - 20px)* 16,4 / 100) / 2);
-        margin-top: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
-        margin-bottom: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
+        height: calc(((var(--CardContentHeight) - 20px)* 16,4 / 100) / 1.5);
+        margin-top: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 1.5);
+        margin-bottom: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 1.5);
 
         display: flex;
         flex-direction: column;
@@ -352,9 +342,9 @@ canvas {
         text-align: center;
         width: 80%;
         padding: 14px;
-        height: calc(((var(--CardContentHeight) - 20px)* 16,4 / 100) / 2);
-        margin-top: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
-        margin-bottom: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 2);
+        height: calc(((var(--CardContentHeight) - 20px)* 16,4 / 100) / 1.5);
+        margin-top: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 1.5);
+        margin-bottom: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 1.5);
 
         background: rgba(25, 42, 70, 0.85);
         backdrop-filter: blur(10px);
