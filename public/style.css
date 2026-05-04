@@ -147,6 +147,7 @@ body {
     text-align: center;
     box-sizing: border-box;
     line-height: normal;
+    font-size: 16px;
     max-width: 80%;
     width: 80%;
     height: calc((var(--CardContentHeight) - 20px)* 16,4 / 100);
