@@ -129,7 +129,7 @@ body {
     background: rgba(21, 30, 43, 0.85);
     overflow-y: scroll;
     scrollbar-color: #888888 #00000000;
-    padding: 5%;
+    padding: 10px;
     border-radius: 16px;
 }
 
