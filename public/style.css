@@ -210,6 +210,8 @@ body {
 
     position: fixed;
     top: 0;
+    z-index: 1000; /*Always on top layer wise*/
+
     padding: 12px 20px;
     background: rgba(30,41,59,0.9);
     backdrop-filter: blur(10px);
