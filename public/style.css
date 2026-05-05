@@ -115,7 +115,7 @@ body {
 }
 
 .content-btn {
-    height: calc((var(--CardContentHeight) - 20px)* 16,4 / 100);
+    height: calc((var(--CardContentHeight) - 20px)* 16.4 / 100);
     margin-top: calc((var(--CardContentHeight) - 20px) * 2 / 100);
     margin-bottom: calc((var(--CardContentHeight) - 20px) * 2 / 100);
 }
@@ -135,7 +135,7 @@ body {
 }
 
 .content-row {
-    height: calc((var(--CardContentHeight) - 20px)* 18 / 100);
+    height: calc((var(--CardContentHeight) - 20px)* 16.4 / 100);
     display: flex;
 
     flex-direction: row;
@@ -284,7 +284,7 @@ canvas {
     }
 
     .content-btn {
-        height: calc(((var(--CardContentHeight) - 20px)* 16,4 / 100) / 1.5);
+        height: calc(((var(--CardContentHeight) - 20px)* 16.4 / 100) / 1.5);
         margin-top: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 1.5);
         margin-bottom: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 1.5);
     }
@@ -294,7 +294,7 @@ canvas {
     }
 
     .content-rows {
-        height: calc(((var(--CardContentHeight) - 20px)* 16,4 / 100) / 1.5);
+        height: calc(((var(--CardContentHeight) - 20px)* 16.4 / 100) / 1.5);
         margin-top: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 1.5);
         margin-bottom: calc(((var(--CardContentHeight) - 20px) * 2 / 100) / 1.5);
     }
