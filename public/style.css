@@ -101,7 +101,6 @@ body {
     max-height: calc((var(--CardHeight) - 40px) * 10 / 100);
     margin-bottom: calc((var(--CardHeight) - 40px) * 5 / 100);
 
-    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -208,6 +207,7 @@ body {
     justify-content: center;
     align-items: center;
 
+    position: fixed;
     padding: 12px 20px;
     background: rgba(30,41,59,0.9);
     backdrop-filter: blur(10px);
