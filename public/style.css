@@ -208,7 +208,8 @@ body {
     justify-content: center;
     align-items: center;
 
-    position: absolute;
+    position: fixed;
+    top: 0;
     padding: 12px 20px;
     background: rgba(30,41,59,0.9);
     backdrop-filter: blur(10px);
