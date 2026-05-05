@@ -119,6 +119,7 @@ body {
     margin-top: calc((var(--CardContentHeight) - 20px) * 2 / 100);
     margin-bottom: calc((var(--CardContentHeight) - 20px) * 2 / 100);
 }
+
 .content-columns {
     width: 100%;
     height: var(--CardContentHeight);
@@ -134,7 +135,7 @@ body {
 }
 
 .content-row {
-    height: calc((var(--CardContentHeight) - 20px)* 16,4 / 100);
+    height: calc((var(--CardContentHeight) - 20px)* 18 / 100);
     display: flex;
 
     flex-direction: row;
