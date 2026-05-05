@@ -127,7 +127,7 @@ body {
     flex-direction: column;
     background: rgba(21, 30, 43, 0.85);
     overflow-y: scroll;
-    scrollbar-color: #888888 #00000000;
+    scrollbar-color: #88888800 #00000000;
     padding: 10px;
     border-radius: 16px;
 }
