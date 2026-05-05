@@ -192,6 +192,7 @@ body {
 }
 
 .center-class {
+    margin-top: var(--TopHeight);
     min-height: var(--CenterMinHeight);
     width: 100%;
     display: flex;
