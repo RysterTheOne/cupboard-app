@@ -95,7 +95,7 @@ body {
 }
 
 .title-card {
-    width: calc(60vw - 40px);
+    width: 100%;
     max-width: calc(60vw - 40px);
     height: calc((var(--CardHeight) - 40px) * 10 / 100);
     max-height: calc((var(--CardHeight) - 40px) * 10 / 100);
