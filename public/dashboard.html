@@ -68,7 +68,7 @@
         </div>
         
         <div class="top-bar" id="top">
-            <div class="top-left">
+            <div class="top-left" id="TopBtns" style="display: none;">
                 <button class="btn btn-primary" onclick="goAccounts()">Accounts</button>
             </div>
 
@@ -76,22 +76,45 @@
                 <h1>Cupboard App</h1>
             </div>
 
-            <div class="top-right">
+            <div class="top-right" id="TopBtns" style="display: none;">
                 <button class="btn btn-danger" onclick="logout()">Logout</button>
             </div>
         </div>
 
         <div id="main-page" class="center-class fade-in">
-            <div class="card">
-                <div class="title-card">Saved Projects</div>
+            <div id="OfflineScreen">
+                <div class="card">
+                    <div class="title-card">ALERT</div>
 
-                <div id="projects" class="content-columns">
-                    <!--Projects generate in here later with loadProjects()-->
+                    <div class="content-columns">
+                        <div class="img-sleep">
+                            <img src="SleepWthoutBg.png" style="height: 100%; width: 100%; margin: 0px; padding: 0px;">
+                        </div>
+
+                        <div class="content-row">
+                            <font color="Red" size="16px">Server Offline</font>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <div class="Main" style="display: none;">
+
+                <div class="card">
+                    <div class="title-card">Saved Projects</div>
+
+                    <div id="projects" class="content-columns">
+                        <!--Projects generate in here later with loadProjects()-->
+                    </div>
+                </div>
+
             </div>
         </div>
 
         <script>
+            waitForServer();
+            checkAuth();
+            
             async function loadProjects() {
                 const res = await fetch(API + "/api/projects", {
                     credentials: "include"
@@ -214,7 +237,6 @@
                 }
             }
 
-            checkAuth();
         </script>
     </body>
 </html>

@@ -24,7 +24,7 @@
     <body>
 
         <div class="top-bar">
-            <div class="top-left">
+            <div class="top-left" id="TopBtns" style="display: none;">
                 <button class="btn btn-primary" onclick="goDashboard()">Dashboard</button>
             </div>
 
@@ -32,44 +32,65 @@
                 <h1>Cupboard App</h1>
             </div>
 
-            <div class="top-right">
+            <div class="top-right" id="TopBtns" style="display: none;">
                 <button class="btn btn-danger" onclick="logout()">Logout</button>
             </div>
         </div>
 
         <div class="center-class fade-in">
+            <div id="OfflineScreen">
+                <div class="card">
+                    <div class="title-card">ALERT</div>
 
-            <div class="card" id="newUser">
-                <div class="title-card">New User</div>
+                    <div class="content-columns">
+                        <div class="img-sleep">
+                            <img src="SleepWthoutBg.png" style="height: 100%; width: 100%; margin: 0px; padding: 0px;">
+                        </div>
 
-                <div class="content-columns">
-                    <div class="content-rows">
-                        <div class="labels">Username</div>
-                        <div class="labels">Password</div>
-                        <div class="labels">Admin</div>
+                        <div class="content-row">
+                            <font color="Red" size="16px">Server Offline</font>
+                        </div>
                     </div>
-
-                    <div class="content-rows">
-                        <input class="inputs" type="text" id="newUsername">
-                        <input class="inputs" type="password" id="newPass">
-                        <input class="inputs" type="checkbox" id="newAdmin">
-                    </div>
-
-                    <button class="btn btn-primary" onclick="createUser()">Add User</button>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="title-card">All Users</div>
+            <div class="Main" style="display: none;">
 
-                <div class="content-columns" id="users">
-                    <!--Users here-->
+                <div class="card" id="newUser">
+                    <div class="title-card">New User</div>
+
+                    <div class="content-columns">
+                        <div class="content-rows">
+                            <div class="labels">Username</div>
+                            <div class="labels">Password</div>
+                            <div class="labels">Admin</div>
+                        </div>
+
+                        <div class="content-rows">
+                            <input class="inputs" type="text" id="newUsername">
+                            <input class="inputs" type="password" id="newPass">
+                            <input class="inputs" type="checkbox" id="newAdmin">
+                        </div>
+
+                        <button class="btn btn-primary" onclick="createUser()">Add User</button>
+                    </div>
                 </div>
+
+                <div class="card">
+                    <div class="title-card">All Users</div>
+
+                    <div class="content-columns" id="users">
+                        <!--Users here-->
+                    </div>
+                </div>
+
             </div>
         </div>
 
         <script>
+            waitForServer();
             checkAuth();
+
             /* ========================= */
             function goDashboard() {
                 window.location.href = "dashboard.html";
@@ -141,6 +162,7 @@
 
             /* ========================= */
             loadUsers();
+            
         </script>
     </body>
 </html>

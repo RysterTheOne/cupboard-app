@@ -4,16 +4,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
-    
+
     <style>
         table {
             width: 100%;
-            table-layout: fixed;  /* 🔥 key line */
+            table-layout: fixed;
+            /* 🔥 key line */
             border-collapse: collapse;
             background: rgb(0, 0, 0, 0);
         }
 
-        th, td {
+        th,
+        td {
             padding: 8px;
             text-align: left;
             font-size: 14px;
@@ -35,7 +37,39 @@
     </head>
 
     <body>
-            <div class="center-clasa fade-in">
+        <div class="top-bar" id="top">
+            <div class="top-left" id="TopBtns" style="display: none;">
+                <button class="btn btn-primary" onclick="goDashboard()">Accounts</button>
+            </div>
+
+            <div class="top-center">
+                <h1>Cupboard App</h1>
+            </div>
+
+            <div class="top-right" id="TopBtns" style="display: none;">
+                <button class="btn btn-danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="center-class fade-in">
+            <div id="OfflineScreen">
+                <div class="card">
+                    <div class="title-card">ALERT</div>
+
+                    <div class="content-columns">
+                        <div class="img-sleep">
+                            <img src="SleepWthoutBg.png" style="height: 100%; width: 100%; margin: 0px; padding: 0px;">
+                        </div>
+
+                        <div class="content-row">
+                            <font color="Red" size="16px">Server Offline</font>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="Main" style="display: none;">
+
                 <!-- CREATE USER -->
                 <div class="card">
                     <h3>Database Viewer</h3>
@@ -58,7 +92,6 @@
                     </div>
                 </div>
 
-                <!-- Table List (same width automatically via card) -->
                 <div class="card mt-3" style="max-width: 60vw; width: auto; scrollbar-color: #888888 #00000000; overflow:auto;">
                     <h3>Table</h3>
                     <table>
@@ -68,9 +101,14 @@
                         <tbody id="tableBody"></tbody>
                     </table>
                 </div>
+
             </div>
-        
+        </div>
+
         <script>
+            waitForServer();
+            checkAuth();
+            
             // Load table names
             async function loadTables() {
                 try {
@@ -188,8 +226,14 @@
                 loadTable();
             }
 
+            //Href Functions//
+            function goDashboard() {
+                window.location.href = "dashboard.html"
+            }
+
             // Init
             loadTables();
         </script>
     </body>
+
 </html>

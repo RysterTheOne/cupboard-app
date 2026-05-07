@@ -11,30 +11,60 @@
 
     <body>
         <div class="top-bar fade-in">
+            <div class="top-left" id="TopBtns" style="display: none;">
+                <button class="btn btn-primary" style="display: none;"></button>
+            </div>
+
             <div class="top-center">
                 <h1>Cupboard App</h1>
+            </div>
+
+            <div class="top-right" id="TopBtns" style="display: none;">
+                <button class="btn btn-danger" style="display: none;"></button>
             </div>
         </div>
 
         <div class="center-class fade-in">
-            <div class="card">
-                <h2 class="text-center">Login</h2>
+            <div id="OfflineScreen">
+                <div class="card">
+                    <div class="title-card">ALERT</div>
 
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" id="username">
+                    <div class="content-columns">
+                        <div class="img-sleep">
+                            <img src="SleepWthoutBg.png" style="height: 100%; width: 100%; margin: 0px; padding: 0px;">
+                        </div>
+
+                        <div class="content-row">
+                            <font color="Red" size="16px">Server Offline</font>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="Main" style="display: none;">
+
+                <div class="card">
+                    <h2 class="text-center">Login</h2>
+
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="password">
+                    </div>
+
+                    <button class="btn btn-primary mt-2" onclick="login()">Login</button>
                 </div>
 
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="password">
-                </div>
-
-                <button class="btn btn-primary mt-2" onclick="login()">Login</button>
             </div>
         </div>
 
         <script>
+            waitForServer();
+            
             async function login() {
                 const username = document.getElementById("username").value;
                 const password = document.getElementById("password").value;

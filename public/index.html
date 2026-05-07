@@ -19,7 +19,7 @@
     <body>
 
         <div class="top-bar fade-in">
-            <div class="top-left">
+            <div class="top-left" id="TopBtns" style="display: none;">
                 <button class="btn btn-primary" onclick="goDashboard()">Dashboard</button>
             </div>
 
@@ -27,71 +27,91 @@
                 <h1>Cupboard App</h1>
             </div>
 
-            <div class="top-right">
+            <div class="top-right" id="TopBtns" style="display: none;">
                 <button class="btn btn-danger" onclick="logout()">Logout</button>
             </div>
         </div>
         
         <div class="center-class fade-in">
+            <div id="OfflineScreen">
+                <div class="card">
+                    <div class="title-card">ALERT</div>
 
-            <div class="card">
+                    <div class="content-columns">
+                        <div class="img-sleep">
+                            <img src="SleepWthoutBg.png" style="height: 100%; width: 100%; margin: 0px; padding: 0px;">
+                        </div>
 
-                <div class="title-card">Measurements</div>
+                        <div class="content-row">
+                            <font color="Red" size="16px">Server Offline</font>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Main" style="display: none;">
                 
-                <div class="content-columns">
-                    <div class="content-row">
-                        <div class="labels">Width</div>
-                        <input type="text" class="inputs" id="width" value="700">
-                    </div>
+                <div class="card">
 
-                    <div class="content-row">
-                        <div class="labels">Height</div>
-                        <input type="text" class="inputs" id="height" value="1400">
-                    </div>
+                    <div class="title-card">Measurements</div>
+                    
+                    <div class="content-columns">
+                        <div class="content-row">
+                            <div class="labels">Width</div>
+                            <input type="text" class="inputs" id="width" value="700">
+                        </div>
 
-                    <div class="content-row">
-                        <div class="labels">Depth</div>
-                        <input type="text" class="inputs" id="depth" value="400">
-                    </div>
+                        <div class="content-row">
+                            <div class="labels">Height</div>
+                            <input type="text" class="inputs" id="height" value="1400">
+                        </div>
 
-                    <div class="content-row">
-                        <div class="labels">Thickness</div>
-                        <input type="text" class="inputs" id="thickness" value="50">
-                    </div>
-                    <div class="content-row">
-                        <div class="labels">Shelves</div>
-                        <input type="text" class="inputs" id="shelves" value="2">
-                    </div>
+                        <div class="content-row">
+                            <div class="labels">Depth</div>
+                            <input type="text" class="inputs" id="depth" value="400">
+                        </div>
 
-                    <div class="content-row">
-                        <div class="labels">Back Thickness</div>
-                        <input type="text" class="inputs" id="back" value="50">
-                    </div>
-                </div>
-            </div>
+                        <div class="content-row">
+                            <div class="labels">Thickness</div>
+                            <input type="text" class="inputs" id="thickness" value="50">
+                        </div>
+                        <div class="content-row">
+                            <div class="labels">Shelves</div>
+                            <input type="text" class="inputs" id="shelves" value="2">
+                        </div>
 
-            <div class="card">
-
-                <div class="title-card">Cupboard Render</div>
-
-                <div class="content-columns">
-                    <div class="content-canvas" id="canvas-container">
-                        <!--Canvas-->
+                        <div class="content-row">
+                            <div class="labels">Back Thickness</div>
+                            <input type="text" class="inputs" id="back" value="50">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
+                <div class="card">
 
-                <div class="title-card">Cut List</div>
+                    <div class="title-card">Cupboard Render</div>
 
-                <div class="content-columns" id="cutList">
-                    <!--Cut list-->
+                    <div class="content-columns">
+                        <div class="content-canvas" id="canvas-container">
+                            <!--Canvas-->
+                        </div>
+                    </div>
                 </div>
+
+                <div class="card">
+
+                    <div class="title-card">Cut List</div>
+
+                    <div class="content-columns" id="cutList">
+                        <!--Cut list-->
+                    </div>
+                </div>
+
             </div>
         </div>
 
         <script>
+            waitForServer();
             checkAuth();
 
             //Project Functions//

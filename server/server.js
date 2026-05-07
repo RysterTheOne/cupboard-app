@@ -322,6 +322,11 @@ app.delete("/api/admin/table/:table/:id", async (req, res) => {
     }
 });
 
+// ==============CHECK HEALTH===============
+app.get("/health", (req, res) => {
+    res.json({ status: "online" });
+});
+
 // ================= START =================
 app.listen(PORT, () => {
     console.log("Server running on port " + PORT);
