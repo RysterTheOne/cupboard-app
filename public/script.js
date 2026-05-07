@@ -24,3 +24,23 @@ async function logout() {
     });
     window.location.href = "login.html";
 }
+
+async function waitForServer() {
+    document.getElementById("OfflineScreen").style.display = "block";
+    document.getElementById("Main").style.display = "none";
+    document.getElementById("TopBtns").display = "none"
+
+    while (true) {
+        try {
+            const res = await fetch(API + "/health");
+            if (res.ok) {
+                document.getElementById("OfflineScreen").style.display = "none";
+                document.getElementById("Main").style.display = "block";
+                document.getElementById("TopBtns").display = "block"
+                return;
+            }
+        } catch (err) {}
+
+        await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+}
