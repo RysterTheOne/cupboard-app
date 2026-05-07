@@ -111,8 +111,28 @@
         </div>
 
         <script>
-            
-            waitForServer();
+            async function waitForServer1() {
+                document.getElementById("OfflineScreen").style.display = "block";
+                document.getElementById("Main").style.display = "none";
+                document.getElementById("TopBtns").display = "none"
+
+                while (true) {
+                    try {
+                        const res = await fetch(API + "/health");
+                        if (res.ok) {
+                            document.getElementById("OfflineScreen").style.display = "none";
+                            document.getElementById("Main").style.display = "block";
+                            document.getElementById("TopBtns").display = "block";
+                            init3D();
+                            generateCutList();
+                            return;
+                        }
+                    } catch (err) {}
+
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+            }
+            waitForServer1();
             checkAuth();
 
             //Project Functions//
@@ -250,8 +270,6 @@
                 renderer.render(scene,camera);
             }
 
-            init3D();
-
             //Cutlist Generation//
             function generateCutList(){
                 const W = +width.value;
@@ -277,7 +295,6 @@
                     `<div class="labels">${i.name}</div> <input type="text" class="inputs" value="${i.qty}x | ${i.w} × ${i.h} × ${i.t} mm"></input>`
                 ).join("");
             }
-            generateCutList();
 
             //Href Functions//
             function goDashboard() {
