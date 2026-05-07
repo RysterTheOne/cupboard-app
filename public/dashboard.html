@@ -138,6 +138,8 @@
                 container.appendChild(newProj)
 
                 projects.forEach(p => {
+                    const row = document.createElement("div");
+                    row.className = "content-row";
 
                     const div = document.createElement("div");
                     div.className = "labels";
@@ -189,7 +191,8 @@
                     
                     div.appendChild(name);
                     div.appendChild(delBtn);
-                    container.appendChild(div);
+                    row.appendChild(div)
+                    container.appendChild(row);
                 });
             }
             loadProjects();
