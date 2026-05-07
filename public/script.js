@@ -26,6 +26,10 @@ async function logout() {
 }
 
 async function waitForServer() {
+    document.getElementById("OfflineScreen").style.display = "block";
+    document.getElementById("Main").style.display = "none";
+    document.getElementById("TopBtns").display = "none"
+
     while (true) {
         try {
             const res = await fetch(API + "/health");
