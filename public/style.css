@@ -126,6 +126,8 @@ body {
     display: flex;
 
     flex-direction: column;
+    justify-content: center;
+
     background: rgba(21, 30, 43, 0.85);
     overflow-y: scroll;
     scrollbar-color: #88888800 #00000000;
@@ -164,7 +166,6 @@ body {
 }
 
 .labels {
-    align-self: left;
     text-align: center;
     box-sizing: border-box;
     line-height: normal;
