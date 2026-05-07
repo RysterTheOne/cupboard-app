@@ -126,7 +126,7 @@ body {
     display: flex;
 
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
 
     background: rgba(21, 30, 43, 0.85);
     overflow-y: scroll;
