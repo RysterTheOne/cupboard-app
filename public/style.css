@@ -143,6 +143,8 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
 
     max-width: 100%;
     width: 100%;
