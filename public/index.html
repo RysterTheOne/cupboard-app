@@ -293,7 +293,9 @@
                 }
 
                 cutList.innerHTML = list.map(i =>
-                    `<div class="labels">${i.name}</div> <input type="text" class="inputs" value="${i.qty}x | ${i.w} × ${i.h} × ${i.t} mm"></input>`
+                    `<div class="content-row">
+                        <div class="labels">${i.name}</div> <input type="text" class="inputs" value="${i.qty}x | ${i.w} × ${i.h} × ${i.t} mm"></input>
+                    </div`
                 ).join("");
             }
 
