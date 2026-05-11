@@ -91,13 +91,14 @@
 
                     <div class="title-card">Cupboard Render</div>
 
-                    <div class="content-columns">
+                    <div class="content-columns" id="canvas-parent">
                         <div class="content-canvas" id="canvas-container">
                             <!--Canvas-->
-                            <button class="fullscreen-btn" onclick="toggleFullscreen()">
-                                ⛶
-                            </button>
                         </div>
+
+                        <button class="fullscreen-btn" onclick="toggleFullscreen()">
+                            ⛶
+                        </button>
                     </div>
                 </div>
 
@@ -311,7 +312,7 @@
             window.addEventListener("resize", resizeRenderer);
 
             function toggleFullscreen() {
-                const elem = document.querySelector(".canvas-card");
+                const elem = document.querySelector("#canvas-parent");
 
                 if (!document.fullscreenElement) {
                     elem.requestFullscreen().then(() => {
