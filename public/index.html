@@ -94,6 +94,9 @@
                     <div class="content-columns">
                         <div class="content-canvas" id="canvas-container">
                             <!--Canvas-->
+                            <button class="fullscreen-btn" onclick="toggleFullscreen()">
+                                ⛶
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -294,7 +297,7 @@
 
                 cutList.innerHTML = list.map(i =>
                     `<div class="content-row">
-                        <div class="labels">${i.name}</div> <div class="inputs">"${i.qty}x | ${i.w} × ${i.h} × ${i.t} mm"</div>
+                        <div class="labels">${i.name}</div> <div class="inputs">${i.qty}x | ${i.w} × ${i.h} × ${i.t} mm</div>
                     </div>`
                 ).join("");
             }
@@ -302,6 +305,32 @@
             //Href Functions//
             function goDashboard() {
                 window.location.href = "dashboard.html"
+            }
+
+            //Canvas Fullscreen//
+            window.addEventListener("resize", resizeRenderer);
+
+            function toggleFullscreen() {
+                const elem = document.querySelector(".canvas-card");
+
+                if (!document.fullscreenElement) {
+                    elem.requestFullscreen().then(() => {
+                        resizeRenderer();
+                    });
+                } else {
+                    document.exitFullscreen().then(() => {
+                        resizeRenderer();
+                    });
+                }
+            }
+
+            function resizeRenderer() {
+                const container = document.getElementById("canvas-container");
+
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+
+                renderer.setSize(container.clientWidth, container.clientHeight);
             }
         </script>
     </body>
