@@ -141,10 +141,8 @@ body {
     display: flex;
 
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
 
     max-width: 100%;
     width: 100%;
@@ -175,6 +173,8 @@ body {
     width:  40%;
     height: 100%;
     padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     
     display: flex;
     flex-direction: column;
@@ -195,6 +195,8 @@ body {
     width: 40%;
     height: 100%;
     padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
 
     background: rgba(25, 42, 70, 0.85);
     backdrop-filter: blur(10px);
