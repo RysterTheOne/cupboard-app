@@ -26,9 +26,7 @@ async function logout() {
 }
 
 async function waitForServer() {
-    document.getElementById("OfflineScreen").style.display = "block";
-    document.getElementById("Main").style.display = "none";
-    document.getElementById("TopBtns").display = "none"
+    
 
     while (true) {
         try {
@@ -39,7 +37,11 @@ async function waitForServer() {
                 document.getElementById("TopBtns").display = "block"
                 return;
             }
-        } catch (err) {}
+        } catch (err) {
+            document.getElementById("OfflineScreen").style.display = "block";
+            document.getElementById("Main").style.display = "none";
+            document.getElementById("TopBtns").display = "none"
+        }
 
         await new Promise(resolve => setTimeout(resolve, 2000));
     }
