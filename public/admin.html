@@ -62,17 +62,22 @@
                     <div class="content-columns">
                         <div class="content-row">
                             <div class="labels">Username</div>
-                            <div class="labels">Password</div>
-                            <div class="labels">Admin</div>
+                            <input class="inputs" type="text" id="newUsername">
                         </div>
 
                         <div class="content-row">
-                            <input class="inputs" type="text" id="newUsername">
+                            <div class="labels">Password</div>
                             <input class="inputs" type="password" id="newPass">
+                        </div>
+
+                        <div class="content-row">
+                            <div class="labels">Admin</div>
                             <input class="inputs" type="checkbox" id="newAdmin">
                         </div>
 
-                        <button class="btn btn-primary" onclick="createUser()">Add User</button>
+                        <div class="content-row">
+                            <button class="btn btn-primary content-btn" style="width: 95%;" onclick="createUser()">Add User</button>
+                        </div>
                     </div>
                 </div>
 
