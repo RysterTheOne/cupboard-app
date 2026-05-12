@@ -26,8 +26,6 @@ async function logout() {
 }
 
 async function waitForServer() {
-    
-
     while (true) {
         try {
             const res = await fetch(API + "/health");
@@ -36,6 +34,10 @@ async function waitForServer() {
                 document.getElementById("Main").style.display = "block";
                 document.getElementById("TopBtns").display = "block"
                 return;
+            } else {
+                document.getElementById("OfflineScreen").style.display = "block";
+                document.getElementById("Main").style.display = "none";
+                document.getElementById("TopBtns").display = "none"
             }
         } catch (err) {
             document.getElementById("OfflineScreen").style.display = "block";
