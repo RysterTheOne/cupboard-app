@@ -113,15 +113,18 @@
                 const container = document.getElementById("users");
 
                 container.innerHTML = users.map(u => `
-                        <div class="labels">
+                    <div class="content-row">
+                        <div class="labels" style="max-width: 90%; width: 90%; flex-direction: row; justify-content: space-between;">
                             <strong>${u.username}</strong>
+                            
                             <span style="opacity:0.7;">
                                 (${u.is_admin ? "Admin" : "User"})
                             </span>
 
                             <button class="btn btn-danger" onclick="deleteUser(${u.id})">Delete</button>
                         </div>
-                    `).join("");
+                    </div>
+                `).join("");
             }
 
             /* ========================= */
