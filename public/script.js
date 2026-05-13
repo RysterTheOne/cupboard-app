@@ -34,7 +34,8 @@ async function waitForServer() {
                 document.getElementById("Main").style.display = "block";
                 document.getElementById("TopBtns").display = "block"
                 return;
-            } else {
+            }
+            if (!res.ok) {
                 document.getElementById("OfflineScreen").style.display = "block";
                 document.getElementById("Main").style.display = "none";
                 document.getElementById("TopBtns").display = "none"
