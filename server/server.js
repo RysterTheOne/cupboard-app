@@ -6,27 +6,14 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const SECRET = "supersecretkey"; // change later
+const SECRET = process.env.JWT_SECRET;
 const path = require("path");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(cookieParser());
 
-//temp startpoint to create a user, remove later
-app.get("/create-user", async (req, res) => {
-    const hash = await bcrypt.hash("1234", 10);
-
-    await pool.query(
-        "INSERT INTO users (username, password_hash) VALUES ($1, $2) ON CONFLICT DO NOTHING",
-        ["admin", hash]
-    );
-
-    res.send("User created");
-});
-// temp endpoint to create a user, remove later
-
-// ✅ IMPORTANT for frontend connection
+//IMPORTANT for frontend connection
 app.use(cors({
     origin: "https://cupboard-app.vercel.app",
     credentials: true
@@ -40,6 +27,42 @@ const pool = new Pool({
         rejectUnauthorized: false
     }
 });
+
+app.get("/setup-admin", async (req, res) => {
+
+    try {
+
+        const existing = await pool.query(
+            "SELECT * FROM users WHERE username = $1",
+            ["admin"]
+        );
+
+        if (existing.rows.length > 0) {
+            return res.send("Admin already exists");
+        }
+
+        const hash = await bcrypt.hash("123", 10);
+
+        await pool.query(
+            `INSERT INTO users (
+                username,
+                password_hash,
+                is_admin
+            )
+            VALUES ($1, $2, TRUE)`,
+            ["admin", hash]
+        );
+
+        res.send("Admin created");
+
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).send("Failed to create admin");
+
+    }
+});
+
 // ================= DB =================
 
 app.get("/setup-admin", async (req, res) => {
@@ -63,6 +86,8 @@ app.get("/setup-admin", async (req, res) => {
 
 // Create tables if not exist
 async function initDB() {
+
+    // USERS TABLE
     await pool.query(`
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
@@ -71,20 +96,51 @@ async function initDB() {
         )
     `);
 
+    // ADD MISSING COLUMNS
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE
+    `);
+
+    // PROJECTS TABLE
     await pool.query(`
         CREATE TABLE IF NOT EXISTS projects (
             id SERIAL PRIMARY KEY,
             user_id INTEGER,
-            cabinet_type TEXT,
+            name TEXT,
             data JSONB,
             last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     `);
 
+    // OLD COLUMN FIX
+    await pool.query(`
+        DO $$
+        BEGIN
+            IF EXISTS (
+                SELECT 1
+                FROM information_schema.columns
+                WHERE table_name='projects'
+                AND column_name='cabinet_type'
+            ) THEN
+                ALTER TABLE projects
+                RENAME COLUMN cabinet_type TO name;
+            END IF;
+        END $$;
+    `);
+
     console.log("Postgres tables ready");
 }
 
-initDB();
+async function ensureColumn(table, column, definition) {
+    await pool.query(`
+        ALTER TABLE ${table}
+        ADD COLUMN IF NOT EXISTS ${column} ${definition}
+    `);
+}
+
+await ensureColumn("users", "is_admin", "BOOLEAN DEFAULT FALSE");
+await ensureColumn("projects", "name", "TEXT");
 
 // ================= AUTH =================
 
@@ -223,18 +279,6 @@ app.post("/api/logout", (req, res) => {
 });
 
 // ================= PROJECTS =================
-// CHANGE PROJECTS COULMN NAME
-app.get("/api/projects/change", async (req, res) => {
-    try {
-        await pool.query(
-            'ALTER TABLE projects RENAME COLUMN cabinet_type TO name'
-        );
-        res.send("Column renamed");
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Error renaming column");
-    }
-});
 
 // SAVE PROJECT
 app.post("/api/projects", async (req, res) => {
@@ -293,8 +337,15 @@ app.get("/api/admin/tables", async (req, res) => {
     res.json(result.rows);
 });
 
+const allowedTables = ["users", "projects"];
+
 app.get("/api/admin/table/:name", async (req, res) => {
+
     const table = req.params.name;
+
+    if (!allowedTables.includes(table)) {
+        return res.status(400).send("Invalid table");
+    }
 
     try {
         const result = await pool.query(`SELECT * FROM ${table}`);
