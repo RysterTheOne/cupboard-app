@@ -106,29 +106,6 @@ async function initDB() {
         "BOOLEAN DEFAULT FALSE"
     );
 
-    // ================= CREATE DEFAULT ADMIN =================
-
-    const existingAdmin = await pool.query(
-        "SELECT * FROM users WHERE username = $1",
-        ["admin"]
-    );
-
-    if (existingAdmin.rows.length === 0) {
-
-        const hash = await bcrypt.hash("admin123", 10);
-
-        await pool.query(`
-            INSERT INTO users (
-                username,
-                password_hash,
-                is_admin
-            )
-            VALUES ($1, $2, TRUE)
-        `, ["admin", hash]);
-
-        console.log("Default admin created");
-    }
-
     console.log("Postgres tables ready");
 }
 
