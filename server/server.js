@@ -131,6 +131,7 @@ async function initDB() {
 
     console.log("Postgres tables ready");
 }
+initDB()
 
 async function ensureColumn(table, column, definition) {
     await pool.query(`
@@ -139,8 +140,11 @@ async function ensureColumn(table, column, definition) {
     `);
 }
 
-await ensureColumn("users", "is_admin", "BOOLEAN DEFAULT FALSE");
-await ensureColumn("projects", "name", "TEXT");
+async function tableCorrection() {
+    await ensureColumn("users", "is_admin", "BOOLEAN DEFAULT FALSE");
+    await ensureColumn("projects", "name", "TEXT");
+}
+tableCorrection()
 
 // ================= AUTH =================
 
