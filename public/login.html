@@ -101,6 +101,10 @@
                     if (data || data.userId) {
                         window.location.href = "dashboard.html"
                     }
+
+                    if (res = null) {
+                        return true;
+                    }
                 } catch (err) {
                     return;
                 }
@@ -108,9 +112,10 @@
 
             const sleep = (ms) => new Promise(r => setTimeout(r, ms));
             async function AuthLoop() {
-                while (true) {
+                const check = false
+                while (check = false) {
                     await sleep(2000);
-                    checkAuth2();
+                    check = checkAuth2();
                 };
             }
             AuthLoop();
