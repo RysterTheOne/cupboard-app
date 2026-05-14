@@ -112,7 +112,7 @@
 
             const sleep = (ms) => new Promise(r => setTimeout(r, ms));
             async function AuthLoop() {
-                const check = false
+                check = false
                 while (check = false) {
                     await sleep(2000);
                     check = checkAuth2();
