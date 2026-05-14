@@ -27,7 +27,6 @@ async function logout() {
 
 async function waitForServer() {
     while (true) {
-
         try {
 
             const timeout = new Promise((_, reject) =>
