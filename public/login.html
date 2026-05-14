@@ -102,7 +102,7 @@
                         window.location.href = "dashboard.html"
                     }
 
-                    if (res = null) {
+                    if (res == null) {
                         return true;
                     }
                 } catch (err) {
@@ -113,7 +113,7 @@
             const sleep = (ms) => new Promise(r => setTimeout(r, ms));
             async function AuthLoop() {
                 check = false
-                while (check = false) {
+                while (check == false) {
                     await sleep(2000);
                     check = checkAuth2();
                 };
