@@ -27,23 +27,37 @@ async function logout() {
 
 async function waitForServer() {
     while (true) {
+
         try {
-            const res = await fetch(API + "/health");
+
+            const timeout = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error("Timeout")), 500)
+            );
+
+            const res = await Promise.race([
+                fetch(API + "/health"),
+                timeout
+            ]);
+
             if (res.ok) {
+
                 document.getElementById("OfflineScreen").style.display = "none";
                 document.getElementById("Main").style.display = "block";
-                document.getElementById("TopBtns").display = "block"
+                document.getElementById("TopBtns").style.display = "block";
+
                 return;
             }
-            if (!res.ok) {
-                document.getElementById("OfflineScreen").style.display = "block";
-                document.getElementById("Main").style.display = "none";
-                document.getElementById("TopBtns").display = "none"
-            }
-        } catch (err) {
+
             document.getElementById("OfflineScreen").style.display = "block";
             document.getElementById("Main").style.display = "none";
-            document.getElementById("TopBtns").display = "none"
+            document.getElementById("TopBtns").style.display = "none";
+
+        } catch (err) {
+
+            document.getElementById("OfflineScreen").style.display = "block";
+            document.getElementById("Main").style.display = "none";
+            document.getElementById("TopBtns").style.display = "none";
+
         }
 
         await new Promise(resolve => setTimeout(resolve, 2000));
