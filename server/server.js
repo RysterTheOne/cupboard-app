@@ -239,7 +239,8 @@ app.post("/api/logout", (req, res) => {
     res.clearCookie("token", {
         httpOnly: true,
         secure: true,
-        sameSite: "None"
+        sameSite: "None",
+        maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
     res.json({ success: true });
