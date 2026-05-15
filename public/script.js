@@ -36,7 +36,7 @@ async function waitForServer() {
         document.getElementById("Main").style.display = "none";
         document.getElementById("TopBtns").style.display = "none";
 
-    }, 2000);
+    }, 2500);
 
     while (true) {
         try {
