@@ -26,24 +26,30 @@ async function logout() {
 }
 
 async function waitForServer() {
+    let timedOut = false;
+
+    const timeout = setTimeout(() => {
+
+        timedOut = true;
+
+        document.getElementById("OfflineScreen").style.display = "block";
+        document.getElementById("Main").style.display = "none";
+        document.getElementById("TopBtns").style.display = "none";
+
+    }, 500);
+
     while (true) {
         try {
 
-            const timeout = new Promise((_, reject) =>
-                setTimeout(() => reject(new Error("Timeout")), 500)
-            );
+            const res = await fetch(API + "/health");
 
-            const res = await Promise.race([
-                fetch(API + "/health"),
-                timeout
-            ]);
+            clearTimeout(timeout);
 
             if (res.ok) {
 
                 document.getElementById("OfflineScreen").style.display = "none";
                 document.getElementById("Main").style.display = "block";
                 document.getElementById("TopBtns").style.display = "block";
-
                 return;
             }
 
@@ -53,6 +59,7 @@ async function waitForServer() {
 
         } catch (err) {
 
+            clearTimeout(timeout);
             document.getElementById("OfflineScreen").style.display = "block";
             document.getElementById("Main").style.display = "none";
             document.getElementById("TopBtns").style.display = "none";
