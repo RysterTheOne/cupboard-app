@@ -55,14 +55,14 @@ async function waitForServer() {
 
             document.getElementById("OfflineScreen").style.display = "block";
             document.getElementById("Main").style.display = "none";
-            document.getElementById("TopBtns").style.display = "none";
+            document.getElementsByName("TopBtns").style.display = "none";
 
         } catch (err) {
 
             clearTimeout(timeout);
             document.getElementById("OfflineScreen").style.display = "block";
             document.getElementById("Main").style.display = "none";
-            document.getElementById("TopBtns").style.display = "none";
+            document.getElementsByName("TopBtns").style.display = "none";
 
         }
 
