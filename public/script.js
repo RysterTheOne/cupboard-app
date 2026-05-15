@@ -36,7 +36,7 @@ async function waitForServer() {
         document.getElementById("Main").style.display = "none";
         document.getElementById("TopBtns").style.display = "none";
 
-    }, 500);
+    }, 1000);
 
     while (true) {
         try {
@@ -49,7 +49,7 @@ async function waitForServer() {
 
                 document.getElementById("OfflineScreen").style.display = "none";
                 document.getElementById("Main").style.display = "block";
-                document.getElementById("TopBtns").style.display = "block";
+                document.getElementsByName("TopBtns").style.display = "block";
                 return;
             }
 
