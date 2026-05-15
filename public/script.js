@@ -49,20 +49,26 @@ async function waitForServer() {
 
                 document.getElementById("OfflineScreen").style.display = "none";
                 document.getElementById("Main").style.display = "block";
-                document.getElementsByName("TopBtns").style.display = "block";
+                document.getElementsByName("TopBtns").forEach(Btn => {
+                    Btn.style.display = "block"
+                });
                 return;
             }
 
             document.getElementById("OfflineScreen").style.display = "block";
             document.getElementById("Main").style.display = "none";
-            document.getElementsByName("TopBtns").style.display = "none";
+            document.getElementsByName("TopBtns").forEach(Btn => {
+                Btn.style.display = "none"
+            });
 
         } catch (err) {
 
             clearTimeout(timeout);
             document.getElementById("OfflineScreen").style.display = "block";
             document.getElementById("Main").style.display = "none";
-            document.getElementsByName("TopBtns").style.display = "none";
+            document.getElementsByName("TopBtns").forEach(Btn => {
+                Btn.style.display = "none"
+            });
 
         }
 
