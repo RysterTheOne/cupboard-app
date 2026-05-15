@@ -34,7 +34,9 @@ async function waitForServer() {
 
         document.getElementById("OfflineScreen").style.display = "block";
         document.getElementById("Main").style.display = "none";
-        document.getElementById("TopBtns").style.display = "none";
+        document.getElementsByName("TopBtns").forEach(Btn => {
+            Btn.style.display = "none"
+        });
 
     }, 2500);
 
