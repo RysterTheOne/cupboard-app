@@ -43,7 +43,15 @@
                 );
                 crusher.position.set(0, 0.5, 0);
                 scene.add(crusher);
+                updateCamera(5,5,5);
                 animate();
+            }
+
+            function updateCamera(w,h,d){
+                const max = Math.max(w,h,d);
+                camera.position.set(max*2,max*1.5,max*2);
+                controls.target.set(0,0,0);
+                controls.update();
             }
 
             function animate(){
