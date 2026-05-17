@@ -4,6 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/MTLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/OBJLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
     <head>
         <title>Test Designer</title>
@@ -13,9 +17,6 @@
         <div id="canvas-container" style="width: 100vw; height: 100vh;"></div>
 
         <script>
-            const loader = new THREE.TextureLoader();
-            const CrusherTexture = loader.load("Crusher.png");
-
             let scene, camera, renderer, controls;
 
             function init3D() {
@@ -51,19 +52,21 @@
                 dirLight.position.set(5, 10, 5);
                 scene.add(dirLight);
 
-                // Cube
-                const crusher = new THREE.Mesh(
-                    new THREE.BoxGeometry(1, 1, 1),
-                    new THREE.MeshStandardMaterial({
-                        map: CrusherTexture
-                    })
-                );
+                const mtlLoader = new THREE.MTLLoader();
+                mtlLoader.load("Crusher.mtl", (materials) => {
 
-                crusher.position.set(0, 0.5, 0);
-                scene.add(crusher);
+                    materials.preload();
+                    // LOAD OBJ
+                    const objLoader = new THREE.OBJLoader();
+                    objLoader.setMaterials(materials);
+                    objLoader.load("BlockStuff/Crusher.png.obj", (object) => {
+                        scene.add(object);
+                        object.position.set(0, 0, 0);
+                        object.scale.set(1, 1, 1);
+                        updateCamera(5, 5, 5);
+                    });
 
-                // IMPORTANT
-                updateCamera(5, 5, 5);
+                });
 
                 animate();
 
