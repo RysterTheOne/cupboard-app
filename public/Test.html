@@ -52,13 +52,13 @@
                 scene.add(dirLight);
 
                 const mtlLoader = new THREE.MTLLoader();
-                mtlLoader.load("BlockStuff/Crusher.png.mtl", (materials) => {
+                mtlLoader.load("BlockStuff/crusher.png.mtl", (materials) => {
 
                     materials.preload();
                     // LOAD OBJ
                     const objLoader = new THREE.OBJLoader();
                     objLoader.setMaterials(materials);
-                    objLoader.load("BlockStuff/Crusher.png.obj", (object) => {
+                    objLoader.load("BlockStuff/crusher.png.obj", (object) => {
                         scene.add(object);
                         object.position.set(0, 0, 0);
                         object.scale.set(1, 1, 1);
