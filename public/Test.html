@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+
+    <head>
+        <title>Test Designer</title>
+    </head>
+
+    <body>
+        <div id="canvas-container" style="width: 100%; height: 100%;"></div>
+
+        <script>
+            const loader = new THREE.TextureLoader();
+            const CrusherTexture = loader.load('Crusher.png');
+
+            let scene, camera, renderer, controls;
+            let parts = [];
+
+            function init3D() {
+                const container = document.getElementById("canvas-container");
+
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x0f172a);
+
+                camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                container.appendChild(renderer.domElement);
+
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enablePan = false;
+
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                scene.add(ambientLight);
+
+                const crusher = new THREE.Mesh(
+                    new THREE.BoxGeometry(1,1,1),
+                    new THREE.MeshStandardMaterial({ map: CrusherTexture })
+                );
+                crusher.position.set(0, 0.5, 0);
+                scene.add(crusher);
+                animate();
+            }
+
+            function animate(){
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene,camera);
+            }
+            init3D();
+        </script>
+    </body>
+</html>
