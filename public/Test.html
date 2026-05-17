@@ -54,6 +54,19 @@
                 mtlLoader.load("crusher.mtl", (materials) => {
 
                     materials.preload();
+                    Object.values(materials.materials).forEach((mat) => {
+
+                        if (mat.map) {
+
+                            mat.map.magFilter = THREE.NearestFilter;
+                            mat.map.minFilter = THREE.NearestFilter;
+
+                            mat.map.generateMipmaps = false;
+
+                            mat.map.needsUpdate = true;
+                        }
+
+                    });
                     // LOAD OBJ
                     const objLoader = new THREE.OBJLoader();
                     objLoader.setMaterials(materials);
@@ -104,3 +117,4 @@
         </script>
     </body>
 </html>
+
