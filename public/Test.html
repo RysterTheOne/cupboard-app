@@ -77,6 +77,13 @@
                         updateCamera(5, 5, 5);
                     });
 
+                    objLoader.load("crusher.obj", (object) => {
+                        scene.add(object);
+                        object.position.set(-1, 0, -1);
+                        object.scale.set(1, 1, 1);
+                        updateCamera(5, 5, 5);
+                    });
+
                 });
 
                 animate();
