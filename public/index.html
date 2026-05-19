@@ -278,7 +278,7 @@
 
             function addBox(w,h,d,x,y,z){
                 const geo = new THREE.BoxGeometry(w,h,d);
-                const mat = new THREE.MeshStandardMaterial({map: woodTexture ,displacementMap: woodDepth});
+                const mat = new THREE.MeshStandardMaterial({map: woodTexture ,normalMap: woodDepth});
                 const mesh = new THREE.Mesh(geo,mat);
                 mesh.position.set(x,y,z);
                 scene.add(mesh);
