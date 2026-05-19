@@ -43,7 +43,7 @@ async function waitForServer() {
     while (true) {
         try {
 
-            const res = await fetch(API + "/health");
+            const res = await fetch(API + "/status");
 
             clearTimeout(timeout);
 

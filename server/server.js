@@ -344,7 +344,7 @@ app.delete("/api/admin/table/:table/:id", async (req, res) => {
 initDB().catch(console.error);
 
 // ==============CHECK HEALTH===============
-app.get("/health", (req, res) => {
+app.get("/status", (req, res) => {
     res.json({ status: "online" });
 });
 
