@@ -215,7 +215,8 @@
             let parts = [];
 
             const textureLoader = new THREE.TextureLoader();
-            const woodTexture = textureLoader.load("WalnutTxtr.jpg")
+            const woodTexture = textureLoader.load("WalnutTxtr.jpg");
+            const woodDepth = textureLoader.load("WalnutTxtrDepth.png")
             function init3D() {
                 const container = document.getElementById("canvas-container");
                 scene = new THREE.Scene();
@@ -277,7 +278,7 @@
 
             function addBox(w,h,d,x,y,z){
                 const geo = new THREE.BoxGeometry(w,h,d);
-                const mat = new THREE.MeshStandardMaterial({map: woodTexture});
+                const mat = new THREE.MeshStandardMaterial({map: woodTexture ,displacementMap: woodDepth});
                 const mesh = new THREE.Mesh(geo,mat);
                 mesh.position.set(x,y,z);
                 scene.add(mesh);
