@@ -275,7 +275,7 @@
 
             function addBox(w,h,d,x,y,z){
                 const geo = new THREE.BoxGeometry(w,h,d);
-                const mat = new THREE.MeshStandardMaterial({color:0x8b5a2b});
+                const mat = new THREE.MeshStandardMaterial({map: "WalnutTxtr.jpg"});
                 const mesh = new THREE.Mesh(geo,mat);
                 mesh.position.set(x,y,z);
                 scene.add(mesh);
