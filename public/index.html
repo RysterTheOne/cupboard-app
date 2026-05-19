@@ -214,6 +214,8 @@
             let scene, camera, renderer, controls;
             let parts = [];
 
+            const textureLoader = new THREE.TextureLoader();
+            const woodTexture = textureLoader.load("WalnutTxtr.jpg")
             function init3D() {
                 const container = document.getElementById("canvas-container");
                 scene = new THREE.Scene();
@@ -275,7 +277,7 @@
 
             function addBox(w,h,d,x,y,z){
                 const geo = new THREE.BoxGeometry(w,h,d);
-                const mat = new THREE.MeshStandardMaterial({map: "WalnutTxtr.jpg"});
+                const mat = new THREE.MeshStandardMaterial({map: woodTexture});
                 const mesh = new THREE.Mesh(geo,mat);
                 mesh.position.set(x,y,z);
                 scene.add(mesh);
