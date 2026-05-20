@@ -131,6 +131,7 @@
                         const res = await fetch(API + "/status");
 
                         if (res.ok) {
+                            serverOnline = true;
                             console.log("Res is okay")
                             document.getElementById("OfflineScreen").style.display = "none";
                             document.getElementById("Main").style.display = "block";
@@ -142,9 +143,6 @@
                             loadProject();
                             init3D();
                             generateCutList();
-
-                            serverOnline = true;
-
                         }
 
                         if (!res.ok) {
