@@ -283,10 +283,10 @@
             }
 
             function addBox(w,h,d,x,y,z){
-                const geo = new THREE.BoxGeometry(w,h,d);
+                const geo = new THREE.BoxGeometry(w,h,d,50,50,50);
                 const mat = new THREE.MeshStandardMaterial({
 
-                    map: woodColor,
+                    map: woodTexture,
 
                     roughnessMap: woodRoughness,
                     roughness: 1,
