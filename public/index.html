@@ -116,46 +116,49 @@
         <script>
             async function waitForServer1() {
 
-                let timedOut = false;
-
-                const timeout = setTimeout(() => {
-
-                    timedOut = true;
-
-                    document.getElementById("OfflineScreen").style.display = "block";
-                    document.getElementById("Main").style.display = "none";
-                    document.getElementsByName("TopBtns").forEach(Btn => {
-                        Btn.style.display = "none"
-                    });
-
-                }, 2500);
-
                 while (true) {
-                    const res = await fetch(API + "/status");
 
-                    clearTimeout(timeout);
-            
                     try {
+
+                        const timeout = setTimeout(() => {
+
+                            document.getElementById("OfflineScreen").style.display = "block";
+                            document.getElementById("Main").style.display = "none";
+
+                            document.getElementsByName("TopBtns").forEach(Btn => {
+                                Btn.style.display = "none";
+                            });
+
+                        }, 2500);
+
                         const res = await fetch(API + "/status");
+
+                        clearTimeout(timeout);
+
                         if (res.ok) {
 
                             document.getElementById("OfflineScreen").style.display = "none";
                             document.getElementById("Main").style.display = "block";
+
                             document.getElementsByName("TopBtns").forEach(Btn => {
-                                Btn.style.display = "block"
+                                Btn.style.display = "block";
                             });
+
                             init3D();
                             generateCutList();
+
                             return;
                         }
+
                     } catch (err) {
 
-                        clearTimeout(timeout);
                         document.getElementById("OfflineScreen").style.display = "block";
                         document.getElementById("Main").style.display = "none";
+
                         document.getElementsByName("TopBtns").forEach(Btn => {
-                            Btn.style.display = "none"
+                            Btn.style.display = "none";
                         });
+
                     }
 
                     await new Promise(resolve => setTimeout(resolve, 2000));
