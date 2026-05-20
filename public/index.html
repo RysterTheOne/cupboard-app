@@ -118,28 +118,16 @@
 
             async function waitForServer1() {
                 let finished = false;
+                document.getElementById("OfflineScreen").style.display = "block";
+                document.getElementById("Main").style.display = "none";
 
-                    await sleep(500);
-                    const timeout = setTimeout(() => {
-
-                        if (finished) return;
-
-                        document.getElementById("OfflineScreen").style.display = "block";
-                        document.getElementById("Main").style.display = "none";
-
-                        document.getElementsByName("TopBtns").forEach(Btn => {
-                            Btn.style.display = "none";
-                        });
-
-                    }, 2500);
-
+                document.getElementsByName("TopBtns").forEach(Btn => {
+                    Btn.style.display = "none";
+                });
+                while (true) {
                     try {
 
                         const res = await fetch(API + "/status");
-
-                        finished = true;
-
-                        clearTimeout(timeout);
 
                         if (res.ok) {
 
@@ -153,6 +141,8 @@
                             init3D();
                             generateCutList();
 
+                            return;
+
                         } else {
 
                             document.getElementById("OfflineScreen").style.display = "block";
@@ -162,10 +152,6 @@
 
                     } catch (err) {
 
-                        finished = true;
-
-                        clearTimeout(timeout);
-
                         document.getElementById("OfflineScreen").style.display = "block";
                         document.getElementById("Main").style.display = "none";
 
@@ -174,7 +160,9 @@
                         });
 
                     }
+                    await sleep(1000);
                 }
+            }
             waitForServer1();
             checkAuth();
 
