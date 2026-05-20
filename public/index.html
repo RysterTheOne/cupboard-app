@@ -125,15 +125,6 @@
             const woodDisp = textureLoader.load("WoodDisplacement.png");
             const woodNorm = textureLoader.load("WoodNormal.png");
             const woodRough = textureLoader.load("WoodRoughness.png");
-
-            [woodTexture, woodDisp, woodRough, woodNorm].forEach(tex => {
-
-                tex.wrapS = THREE.RepeatWrapping;
-                tex.wrapT = THREE.RepeatWrapping;
-
-                tex.repeat.set(2, 2);
-
-            });
                 
             async function waitForServer1() {
                 let serverOnline = false
@@ -283,7 +274,7 @@
             }
 
             function addBox(w,h,d,x,y,z){
-                const geo = new THREE.BoxGeometry(w,h,d,50,50,50);
+                const geo = new THREE.BoxGeometry(w,h,d,100,100,100);
                 const mat = new THREE.MeshStandardMaterial({
 
                     map: woodTexture,
