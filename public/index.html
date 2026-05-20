@@ -117,6 +117,24 @@
             const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
             checkAuth();
 
+            let scene, camera, renderer, controls;
+            let parts = [];
+
+            const textureLoader = new THREE.TextureLoader();
+            const woodTexture = textureLoader.load("WoodTxtr.png");
+            const woodDisp = textureLoader.load("WoodDisplacement.png");
+            const woodNorm = textureLoader.load("WoodNormal.png");
+            const woodRough = textureLoader.load("WoodRoughness.png");
+
+            [woodTexture, woodDisp, woodRough, woodNorm].forEach(tex => {
+
+                tex.wrapS = THREE.RepeatWrapping;
+               tex.wrapT = THREE.RepeatWrapping;
+
+                tex.repeat.set(2, 2);
+
+            });
+                
             async function waitForServer1() {
                 let serverOnline = false
                 while (serverOnline === false) {
@@ -206,24 +224,6 @@
             }
 
             function init3D() {
-
-                let scene, camera, renderer, controls;
-                let parts = [];
-
-                const textureLoader = new THREE.TextureLoader();
-                const woodTexture = textureLoader.load("WoodTxtr.png");
-                const woodDisp = textureLoader.load("WoodDisplacement.png");
-                const woodNorm = textureLoader.load("WoodNormal.png");
-                const woodRough = textureLoader.load("WoodRoughness.png");
-
-                [woodTexture, woodDisp, woodRough, woodNorm].forEach(tex => {
-
-                    tex.wrapS = THREE.RepeatWrapping;
-                    tex.wrapT = THREE.RepeatWrapping;
-
-                    tex.repeat.set(2, 2);
-
-                });
 
                 const container = document.getElementById("canvas-container");
                 scene = new THREE.Scene();
