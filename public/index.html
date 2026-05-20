@@ -115,14 +115,11 @@
 
         <script>
             async function waitForServer1() {
-
-                while (true) {
-
-                    let offlineShown = false;
+                let finished = false;
 
                     const timeout = setTimeout(() => {
 
-                        offlineShown = true;
+                        if (finished) return;
 
                         document.getElementById("OfflineScreen").style.display = "block";
                         document.getElementById("Main").style.display = "none";
@@ -137,6 +134,8 @@
 
                         const res = await fetch(API + "/status");
 
+                        finished = true;
+
                         clearTimeout(timeout);
 
                         if (res.ok) {
@@ -148,15 +147,8 @@
                                 Btn.style.display = "block";
                             });
 
-                            // only initialize once
-                            if (!window.appStarted) {
-
-                                window.appStarted = true;
-
-                                init3D();
-                                generateCutList();
-
-                            }
+                            init3D();
+                            generateCutList();
 
                         } else {
 
@@ -166,6 +158,8 @@
                         }
 
                     } catch (err) {
+
+                        finished = true;
 
                         clearTimeout(timeout);
 
@@ -177,10 +171,7 @@
                         });
 
                     }
-
-                    await new Promise(resolve => setTimeout(resolve, 2000));
                 }
-            }
             waitForServer1();
             checkAuth();
 
