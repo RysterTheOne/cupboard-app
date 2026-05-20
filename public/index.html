@@ -139,6 +139,7 @@
             async function waitForServer1() {
                 let serverOnline = false
                 while (serverOnline === false) {
+                    await sleep(1000);
                     try {
 
                         const res = await fetch(API + "/status");
@@ -175,7 +176,6 @@
                         });
 
                     }
-                    await sleep(1000);
                 }
             }
             waitForServer1();
@@ -226,7 +226,7 @@
             }
 
             function init3D() {
-                console.log("Building project")
+                console.log("init3D()")
                 const container = document.getElementById("canvas-container");
                 scene = new THREE.Scene();
                 scene.background = new THREE.Color(0x0f172a);
@@ -260,6 +260,7 @@
             }
 
             function buildCabinet() {
+                console.log("buildCabinet()")
                 clearCabinet();
 
                 const W = document.getElementById("width").value / 1000;
@@ -317,6 +318,7 @@
             }
 
             function animate(){
+                console.log("animate()")
                 requestAnimationFrame(animate);
                 controls.update();
                 renderer.render(scene,camera);
