@@ -216,10 +216,11 @@
 
             const textureLoader = new THREE.TextureLoader();
             const woodTexture = textureLoader.load("WoodTxtr.png");
-            const woodDisp = textureLoader.load("WoodDisplacement.png")
-            const woodNorm = textureLoader.load("WoodNormal.png")
-            const woodRough = textureLoader.load("WoodRoughness.png")
-            [woodTexture, woodRough, woodDisp, woodNorm].forEach(tex => {
+            const woodDisp = textureLoader.load("WoodDisplacement.png");
+            const woodNorm = textureLoader.load("WoodNormal.png");
+            const woodRough = textureLoader.load("WoodRoughness.png");
+
+            [woodTexture, woodDisp, woodRough, woodNorm].forEach(tex => {
 
                 tex.wrapS = THREE.RepeatWrapping;
                 tex.wrapT = THREE.RepeatWrapping;
