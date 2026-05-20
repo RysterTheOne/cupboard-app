@@ -129,7 +129,7 @@
                                 Btn.style.display = "none";
                             });
 
-                        }, 2500);
+                        }, 1500);
 
                         const res = await fetch(API + "/status");
 
@@ -161,7 +161,7 @@
 
                     }
 
-                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    await new Promise(resolve => setTimeout(resolve, 1500));
                 }
             }
             waitForServer1();
