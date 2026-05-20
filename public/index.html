@@ -226,7 +226,7 @@
                     tex.repeat.set(2, 2);
 
                 });
-                
+
                 const container = document.getElementById("canvas-container");
                 scene = new THREE.Scene();
                 scene.background = new THREE.Color(0x0f172a);
@@ -300,6 +300,7 @@
 
                     normalMap: woodNorm,
                 });
+                console.log("Mat is good")
                 const mesh = new THREE.Mesh(geo,mat);
                 mesh.position.set(x,y,z);
                 scene.add(mesh);
