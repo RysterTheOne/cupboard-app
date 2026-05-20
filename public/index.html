@@ -124,7 +124,8 @@
                 document.getElementsByName("TopBtns").forEach(Btn => {
                     Btn.style.display = "none";
                 });
-                while (true) {
+                serverOnline = false
+                while (serverOnline == false) {
                     try {
 
                         const res = await fetch(API + "/status");
@@ -142,7 +143,7 @@
                             init3D();
                             generateCutList();
 
-                            return;
+                            serverOnline = true;
 
                         } else {
 
@@ -191,7 +192,6 @@
                 //document.getElementById("shelves").value = 1
                 //document.getElementById("back").value = 1
             }
-            loadProject();
 
             async function saveProject() {
                 const data = {
