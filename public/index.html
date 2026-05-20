@@ -115,6 +115,26 @@
 
         <script>
             const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+            checkAuth();
+
+            //3D Engine Handling//
+            let scene, camera, renderer, controls;
+            let parts = [];
+
+            const textureLoader = new THREE.TextureLoader();
+            const woodTexture = textureLoader.load("WoodTxtr.png");
+            const woodDisp = textureLoader.load("WoodDisplacement.png");
+            const woodNorm = textureLoader.load("WoodNormal.png");
+            const woodRough = textureLoader.load("WoodRoughness.png");
+
+            [woodTexture, woodDisp, woodRough, woodNorm].forEach(tex => {
+
+                tex.wrapS = THREE.RepeatWrapping;
+                tex.wrapT = THREE.RepeatWrapping;
+
+                tex.repeat.set(2, 2);
+
+            });
 
             async function waitForServer1() {
                 let serverOnline = false
@@ -159,7 +179,6 @@
                 }
             }
             waitForServer1();
-            checkAuth();
 
             //Project Functions//
             function loadProject() {
@@ -205,25 +224,6 @@
                 localStorage.setItem("projectData", JSON.stringify({cabinet_type: type,data}));
                 alert("Project saved");
             }
-
-            //3D Engine Handling//
-            let scene, camera, renderer, controls;
-            let parts = [];
-
-            const textureLoader = new THREE.TextureLoader();
-            const woodTexture = textureLoader.load("WoodTxtr.png");
-            const woodDisp = textureLoader.load("WoodDisplacement.png");
-            const woodNorm = textureLoader.load("WoodNormal.png");
-            const woodRough = textureLoader.load("WoodRoughness.png");
-
-            [woodTexture, woodDisp, woodRough, woodNorm].forEach(tex => {
-
-                tex.wrapS = THREE.RepeatWrapping;
-                tex.wrapT = THREE.RepeatWrapping;
-
-                tex.repeat.set(2, 2);
-
-            });
 
             function init3D() {
                 console.log("Building project")
