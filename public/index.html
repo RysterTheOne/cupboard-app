@@ -125,7 +125,7 @@
                     Btn.style.display = "none";
                 });
                 let serverOnline = false
-                while (serverOnline == false) {
+                while (serverOnline === false) {
                     try {
 
                         const res = await fetch(API + "/status");
@@ -143,10 +143,11 @@
                             init3D();
                             generateCutList();
 
-                            serverOnline = true;
-                            console.log(serverOnline.value)
+                            let serverOnline = true;
 
-                        } else {
+                        }
+
+                        if (!res.ok) {
 
                             document.getElementById("OfflineScreen").style.display = "block";
                             document.getElementById("Main").style.display = "none";
