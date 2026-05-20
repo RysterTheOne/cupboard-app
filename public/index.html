@@ -164,7 +164,6 @@
             //Project Functions//
             function loadProject() {
 
-                console.log("Loading project")
                 const raw = localStorage.getItem("currentProject");
 
                 if (!raw) {
@@ -207,7 +206,6 @@
             }
 
             function init3D() {
-                console.log("init3D()")
 
                 let scene, camera, renderer, controls;
                 let parts = [];
@@ -260,22 +258,13 @@
             }
 
             function buildCabinet() {
-                console.log("buildCabinet()")
 
                 const W = document.getElementById("width").value / 1000;
-                console.log("width loaded")
                 const H = document.getElementById("height").value / 1000;
-                console.log("height loaded")
                 const D = document.getElementById("depth").value / 1000;
-                console.log("depth loaded")
                 const T = document.getElementById("thickness").value / 1000;
-                console.log("thickness loaded")
                 const shelves = parseInt(document.getElementById("shelves").value);
-                console.log("shelves loaded")
                 const backT = document.getElementById("back").value / 1000;
-                console.log("back loaded")
-
-                console.log("measurements loaded")
 
                 addBox(T,H,D,-W/2+T/2,0,0);
                 addBox(T,H,D,W/2-T/2,0,0);
@@ -295,7 +284,6 @@
 
             function addBox(w,h,d,x,y,z){
                 const geo = new THREE.BoxGeometry(w,h,d);
-                console.log("goe is good")
                 const mat = new THREE.MeshStandardMaterial({
 
                     map: woodColor,
@@ -308,7 +296,6 @@
 
                     normalMap: woodNorm,
                 });
-                console.log("Mat is good")
                 const mesh = new THREE.Mesh(geo,mat);
                 mesh.position.set(x,y,z);
                 scene.add(mesh);
