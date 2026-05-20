@@ -114,9 +114,12 @@
         </div>
 
         <script>
+            const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
             async function waitForServer1() {
                 let finished = false;
 
+                    await sleep(500);
                     const timeout = setTimeout(() => {
 
                         if (finished) return;
