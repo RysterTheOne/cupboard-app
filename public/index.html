@@ -138,6 +138,7 @@
                                 Btn.style.display = "block";
                             });
 
+                            loadProject();
                             init3D();
                             generateCutList();
 
@@ -169,7 +170,7 @@
             //Project Functions//
             function loadProject() {
 
-                
+                console.log("Loading project")
                 const raw = localStorage.getItem("currentProject");
 
                 if (!raw) {
@@ -232,6 +233,7 @@
             });
 
             function init3D() {
+                console.log("Building project")
                 const container = document.getElementById("canvas-container");
                 scene = new THREE.Scene();
                 scene.background = new THREE.Color(0x0f172a);
@@ -329,6 +331,7 @@
 
             //Cutlist Generation//
             function generateCutList(){
+                console.log("Generating cutlist")
                 const W = +width.value;
                 const H = +height.value;
                 const D = +depth.value;
