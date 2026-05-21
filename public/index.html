@@ -84,6 +84,14 @@
                             <div class="labels">Back Thickness</div>
                             <input type="text" class="inputs" id="back" value="50">
                         </div>
+
+                        <div class="content-row">
+                            <div class="labels">Wood Type</div>
+                            <select class="inputs" id="wood_type" onblur="init3D()">
+                                <option value="oak_type">Oak</option>
+                                <option value="walnut_type">Walnut</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -121,10 +129,14 @@
             let parts = [];
 
             const textureLoader = new THREE.TextureLoader();
-            const woodTexture = textureLoader.load("WoodTxtr.png");
-            const woodDisp = textureLoader.load("WoodDisplacement.png");
-            const woodNorm = textureLoader.load("WoodNormal.png");
-            const woodRough = textureLoader.load("WoodRoughness.png");
+
+            const oakTexture = textureLoader.load("/textures/oak/WoodTxtr.png");
+            const oakNorm = textureLoader.load("/textures/oak/WoodNormal.png");
+            const oakRough = textureLoader.load("/textures/oak/WoodRoughness.png");
+            
+            const walnutTexture = textureLoader.load("/textures/walnut/WoodTxtr.png");
+            const walnutNorm= textureLoader.load("/textures/walnut/WoodNormal.png");
+            const walnutRough = textureLoader.load("/textures/walnut/WoodRoughness.png");
                 
             async function waitForServer1() {
                 let serverOnline = false
@@ -243,6 +255,7 @@
                 if (!parts || parts.length === 0) {
                     return;
                 }
+
                 parts.forEach(part => {
                     scene.remove(part);
                     if (part.geometry) {
@@ -267,34 +280,51 @@
                 const T = document.getElementById("thickness").value / 1000;
                 const shelves = parseInt(document.getElementById("shelves").value);
                 const backT = document.getElementById("back").value / 1000;
+                const wood = document.getElementById("wood_type").value;
 
-                addBox(T,H,D,-W/2+T/2,0,0);
-                addBox(T,H,D,W/2-T/2,0,0);
+                addBox(T,H,D,-W/2+T/2,0,0,wood);
+                addBox(T,H,D,W/2-T/2,0,0,wood);
 
-                addBox(W,T,D,0,H/2-T/2,0);
-                addBox(W,T,D,0,-H/2+T/2,0);
+                addBox(W,T,D,0,H/2-T/2,0,wood);
+                addBox(W,T,D,0,-H/2+T/2,0,wood);
 
-                addBox(W,H,backT,0,0,-D/2);
+                addBox(W,H,backT,0,0,-D/2),wood;
 
                 for(let i=1;i<=shelves;i++){
                     const y = -H/2 + (H/(shelves+1))*i;
-                    addBox(W-2*T,T,D*0.95,0,y,0);
+                    addBox(W-2*T,T,D*0.95,0,y,0,wood);
                 }
 
                 updateCamera(W,H,D);
             }
 
-            function addBox(w,h,d,x,y,z){
+            function addBox(w,h,d,x,y,z,woodtype){
                 const geo = new THREE.BoxGeometry(w,h,d,100,100,100);
-                const mat = new THREE.MeshStandardMaterial({
+                let mat = ""
+                if (woodtype === "oak_type") {
+                    mat = new THREE.MeshStandardMaterial({
 
-                    map: woodTexture,
+                        map: oakTexture,
 
-                    roughnessMap: woodRough,
-                    roughness: 1,
+                        roughnessMap: oakRough,
+                        roughness: 1,
 
-                    normalMap: woodNorm,
-                });
+                        normalMap: oakNorm,
+                    });
+                };
+
+                if (woodtype == "walnut_type") {
+                    mat = new THREE.MeshStandardMaterial({
+
+                        map: walnutTexture,
+
+                        roughnessMap: walnutRough,
+                        roughness: 1,
+
+                        normalMap: walnutNorm,
+                    });
+                };
+                
                 const mesh = new THREE.Mesh(geo,mat);
                 mesh.position.set(x,y,z);
                 scene.add(mesh);
