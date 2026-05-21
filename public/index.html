@@ -136,7 +136,7 @@
 
                         if (res.ok) {
                             serverOnline = true;
-                            console.log("Res is okay")
+                            console.log(res)
                             document.getElementById("OfflineScreen").style.display = "none";
                             document.getElementById("Main").style.display = "block";
 
@@ -215,7 +215,7 @@
             }
 
             function init3D() {
-
+                clearCabinet();
                 const container = document.getElementById("canvas-container");
                 scene = new THREE.Scene();
                 scene.background = new THREE.Color(0x0f172a);
@@ -240,11 +240,22 @@
             }
 
             function clearCabinet() {
-                if(!parts) {
+                if (!parts || parts.length === 0) {
                     return;
                 }
-
-                parts.forEach(p => scene.remove(p));
+                parts.forEach(part => {
+                    scene.remove(part);
+                    if (part.geometry) {
+                        part.geometry.dispose();
+                    }
+                    if (part.material) {
+                        if (Array.isArray(part.material)) {
+                            part.material.forEach(mat => mat.dispose());
+                        } else {
+                            part.material.dispose();
+                        }
+                    }
+                });
                 parts = [];
             }
 
@@ -301,8 +312,14 @@
                 buildCabinet();
             }
 
+            function clearCabinet(p){
+                if (!Array.isArray(p)) {return} 
+                p.forEach(part => {
+                    document.dele
+                });
+            }
+
             function animate(){
-                console.log("animate()")
                 requestAnimationFrame(animate);
                 controls.update();
                 renderer.render(scene,camera);
@@ -310,7 +327,6 @@
 
             //Cutlist Generation//
             function generateCutList(){
-                console.log("Generating cutlist")
                 const W = +width.value;
                 const H = +height.value;
                 const D = +depth.value;
