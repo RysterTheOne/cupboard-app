@@ -125,6 +125,7 @@
             const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
             checkAuth();
 
+            let animationId;
             let scene, camera, renderer, controls;
             let parts = [];
 
@@ -259,11 +260,90 @@
             }
 
             function clearCabinet() {
-                if (!parts || parts.length === 0) {
+
+                // Stop animation loop if running
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+
+                // Nothing to clear
+                if (!scene) {
                     return;
                 }
-                scene.dispose()
+
+                // Dispose cabinet meshes/materials/geometries
+                parts.forEach(part => {
+
+                    scene.remove(part);
+
+                    if (part.geometry) {
+                        part.geometry.dispose();
+                    }
+
+                    if (part.material) {
+
+                        if (Array.isArray(part.material)) {
+
+                            part.material.forEach(material => {
+                                material.dispose();
+                            });
+
+                        } else {
+
+                            part.material.dispose();
+
+                        }
+                    }
+                });
+
+                // Clear parts array
                 parts = [];
+
+                // Dispose renderer
+                if (renderer) {
+
+                    renderer.dispose();
+
+                    // Remove canvas from DOM
+                    if (renderer.domElement) {
+                        renderer.domElement.remove();
+                    }
+                }
+
+                // Dispose controls
+                if (controls) {
+                    controls.dispose();
+                }
+
+                // Clear scene objects fully
+                scene.traverse(object => {
+
+                    if (object.geometry) {
+                        object.geometry.dispose();
+                    }
+
+                    if (object.material) {
+
+                        if (Array.isArray(object.material)) {
+
+                            object.material.forEach(material => {
+                                material.dispose();
+                            });
+
+                        } else {
+
+                            object.material.dispose();
+
+                        }
+                    }
+                });
+
+                // Clean references
+                scene = null;
+                camera = null;
+                renderer = null;
+                controls = null;
             }
 
             function buildCabinet() {
@@ -337,9 +417,9 @@
             }
 
             function animate(){
-                requestAnimationFrame(animate);
+                animationId = requestAnimationFrame(animate);
                 controls.update();
-                renderer.render(scene,camera);
+                renderer.render(scene, camera);
             }
 
             //Cutlist Generation//
