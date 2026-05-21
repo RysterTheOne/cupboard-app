@@ -262,20 +262,7 @@
                 if (!parts || parts.length === 0) {
                     return;
                 }
-
-                parts.forEach(part => {
-                    scene.remove(part);
-                    if (part.geometry) {
-                        part.geometry.dispose();
-                    }
-                    if (part.material) {
-                        if (Array.isArray(part.material)) {
-                            part.material.forEach(mat => mat.dispose());
-                        } else {
-                            part.material.dispose();
-                        }
-                    }
-                });
+                scene.dispose()
                 parts = [];
             }
 
