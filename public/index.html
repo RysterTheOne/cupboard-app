@@ -140,6 +140,14 @@
                 
             async function waitForServer1() {
                 let serverOnline = false
+                new Promise(resolve => setTimeout(() => {
+                    document.getElementById("OfflineScreen").style.display = "block";
+                    document.getElementById("Main").style.display = "none";
+
+                    document.getElementsByName("TopBtns").forEach(Btn => {
+                        Btn.style.display = "none";
+                    });
+                }, 1000))
                 while (serverOnline === false) {
                     await sleep(1000);
                     try {
@@ -176,7 +184,6 @@
                         document.getElementsByName("TopBtns").forEach(Btn => {
                             Btn.style.display = "none";
                         });
-
                     }
                 }
             }
@@ -279,8 +286,8 @@
                 const D = document.getElementById("depth").value / 1000;
                 const T = document.getElementById("thickness").value / 1000;
                 const shelves = parseInt(document.getElementById("shelves").value);
-                const backT = document.getElementById("back").value / 1000;
                 const wood = document.getElementById("wood_type").value;
+                const backT = document.getElementById("back").value / 1000;
 
                 addBox(T,H,D,-W/2+T/2,0,0,wood);
                 addBox(T,H,D,W/2-T/2,0,0,wood);
@@ -340,13 +347,6 @@
 
             function updateCabinet(){
                 buildCabinet();
-            }
-
-            function clearCabinet(p){
-                if (!Array.isArray(p)) {return} 
-                p.forEach(part => {
-                    document.dele
-                });
             }
 
             function animate(){
