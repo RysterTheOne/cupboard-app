@@ -90,6 +90,7 @@
                             <select class="inputs" id="wood_type" onblur="init3D()">
                                 <option value="oak_type">Oak</option>
                                 <option value="walnut_type">Walnut</option>
+                                <option value="maple_type">Maple</option>
                             </select>
                         </div>
                     </div>
@@ -122,8 +123,10 @@
         </div>
 
         <script>
-            const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
             checkAuth();
+            const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+            let projectType;
 
             let animationId;
             let scene, camera, renderer, controls;
@@ -138,6 +141,10 @@
             const walnutTexture = textureLoader.load("/textures/walnut/WoodTxtr.png");
             const walnutNorm= textureLoader.load("/textures/walnut/WoodNormal.png");
             const walnutRough = textureLoader.load("/textures/walnut/WoodRoughness.png");
+
+            const mapleTexture = textureLoader.load("/textures/maple/WoodTxtr.png");
+            const mapleNorm= textureLoader.load("/textures/maple/WoodNormal.png");
+            const mapleRough = textureLoader.load("/textures/maple/WoodRoughness.png");
                 
             async function waitForServer1() {
                 let serverOnline = false
@@ -205,19 +212,31 @@
 
                 const data = obj.data;
                 const type = data.cabinet_type;
+                projectType = type
 
-                //document.getElementById("width").value = 1;
-                //document.getElementById("height").value = 1;
-                //document.getElementById("depth").value = 1;
-                //document.getElementById("thickness").value = 1;
-                //document.getElementById("shelves").value = 1
-                //document.getElementById("back").value = 1
+                if (data.width) {
+                    document.getElementById("width").value = data.width;
+                    document.getElementById("height").value = data.height;
+                    document.getElementById("depth").value = data.depth;
+                    document.getElementById("thickness").value = data.thickness;
+                    document.getElementById("shelves").value = data.shelves;
+                    document.getElementById("back").value = data.back;
+                    document.getElementById("wood_type").value = data.wood_type;
+                }
+                
+                saveProject();
             }
 
             async function saveProject() {
                 const data = {
-                    name: projectName.value,
-                    cabinet_type: type.value,
+                    cabinet_type: projectType,
+                    width: document.getElementById("width").value,
+                    height: document.getElementById("height").value,
+                    depth: document.getElementById("depth").value,
+                    thickness: document.getElementById("thickness").value,
+                    shelves: document.getElementById("shelves").value,
+                    back: document.getElementById("back").value,
+                    woodtype: document.getElementById("wood_type").value,
                 };
 
                 await fetch(API + "/api/projects", {
@@ -225,13 +244,12 @@
                     headers: {"Content-Type": "application/json"},
                     credentials: "include",
                     body: JSON.stringify({
-                        cabinet_type: type,
+                        name: document.title,
                         data
                     })
                 });
 
-                localStorage.setItem("projectData", JSON.stringify({cabinet_type: type,data}));
-                alert("Project saved");
+                localStorage.setItem("projectData", JSON.stringify({name: document.title, data}));
             }
 
             function init3D() {
@@ -398,6 +416,18 @@
                         normalMap: walnutNorm,
                     });
                 };
+
+                if (woodtype == "maple_type") {
+                    mat = new THREE.MeshStandardMaterial({
+
+                        map: mapleTexture,
+
+                        roughnessMap: mapleRough,
+                        roughness: 1,
+
+                        normalMap: mapleNorm,
+                    });
+                };
                 
                 const mesh = new THREE.Mesh(geo,mat);
                 mesh.position.set(x,y,z);
@@ -477,6 +507,12 @@
                 camera.updateProjectionMatrix();
 
                 renderer.setSize(container.clientWidth, container.clientHeight);
+            }
+
+            async function incrimentalSave() {
+                await new Promise(resolve => setTimeout(() => {},20000));
+                saveProject();
+                console.log("Saved");
             }
         </script>
     </body>
