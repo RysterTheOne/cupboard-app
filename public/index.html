@@ -221,7 +221,16 @@
                     document.getElementById("thickness").value = data.thickness;
                     document.getElementById("shelves").value = data.shelves;
                     document.getElementById("back").value = data.back;
-                    document.getElementById("wood_type").value = data.wood_type;
+
+                    if (data.wood_type === "oak_type") {
+                        document.getElementById("wood_type").selectedIndex = 1;
+                    }
+                    if (data.wood_type === "walnut_type") {
+                        document.getElementById("wood_type").selectedIndex = 2;
+                    }
+                    if (data.wood_type === "maple_type") {
+                        document.getElementById("wood_type").selectedIndex = 3;
+                    }
                 }
                 
                 saveProject();
