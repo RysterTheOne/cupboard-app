@@ -510,10 +510,14 @@
             }
 
             async function incrimentalSave() {
-                await new Promise(resolve => setTimeout(() => {},20000));
-                saveProject();
-                console.log("Saved");
+                while (true) {
+                    await new Promise(resolve => setTimeout(() => {},20000));
+                    saveProject();
+                    console.log("Saved");
+                }
             }
+            incrimentalSave();
+            
         </script>
     </body>
 </html>
