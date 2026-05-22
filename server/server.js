@@ -248,7 +248,13 @@ app.post("/api/logout", (req, res) => {
 });
 
 // ================= PROJECTS =================
-
+app.get("/onetime", async (req, res)=> {
+    await pool.query(`
+        ALTER TABLE projects
+        ADD CONSTRAINT unique_user_project
+        UNIQUE (user_id, name)
+    `);
+})
 // SAVE PROJECT
 app.post("/api/projects", async (req, res) => {
 
