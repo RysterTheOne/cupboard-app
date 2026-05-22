@@ -254,6 +254,8 @@ app.get("/onetime", async (req, res)=> {
         ADD CONSTRAINT unique_user_project
         UNIQUE (user_id, name)
     `);
+
+    res.send("Table fixed");
 })
 // SAVE PROJECT
 app.post("/api/projects", async (req, res) => {
