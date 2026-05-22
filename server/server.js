@@ -251,20 +251,33 @@ app.post("/api/logout", (req, res) => {
 
 // SAVE PROJECT
 app.post("/api/projects", async (req, res) => {
+
     const token = req.cookies.token;
     if (!token) return res.status(401).send("Not logged in");
 
     const decoded = jwt.verify(token, SECRET);
+
     const { name, data } = req.body;
 
     const result = await pool.query(
-        `INSERT INTO projects (user_id, name, data)
-         VALUES ($1, $2, $3)
-         RETURNING id`,
+        `
+        INSERT INTO projects (user_id, name, data)
+        VALUES ($1, $2, $3)
+
+        ON CONFLICT (user_id, name)
+
+        DO UPDATE SET
+            data = EXCLUDED.data,
+            last_modified = CURRENT_TIMESTAMP
+
+        RETURNING id
+        `,
         [decoded.id, name, data]
     );
 
-    res.json({ id: result.rows[0].id });
+    res.json({
+        id: result.rows[0].id
+    });
 });
 
 // GET PROJECTS
