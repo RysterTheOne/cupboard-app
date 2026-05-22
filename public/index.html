@@ -511,13 +511,13 @@
 
             async function incrimentalSave() {
                 while (true) {
-                    await new Promise(resolve => setTimeout(() => {},20000));
+                    await sleep(20000);
                     saveProject();
                     console.log("Saved");
                 }
             }
             incrimentalSave();
-            
+
         </script>
     </body>
 </html>
