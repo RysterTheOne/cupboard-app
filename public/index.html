@@ -91,6 +91,7 @@
                                 <option value="oak_type">Oak</option>
                                 <option value="walnut_type">Walnut</option>
                                 <option value="maple_type">Maple</option>
+                                <option value="mahogany_type">Mahogany</option>
                             </select>
                         </div>
                     </div>
@@ -145,6 +146,10 @@
             const mapleTexture = textureLoader.load("/textures/maple/WoodTxtr.png");
             const mapleNorm= textureLoader.load("/textures/maple/WoodNormal.png");
             const mapleRough = textureLoader.load("/textures/maple/WoodRoughness.png");
+
+            const mahoganyTexture = textureLoader.load("/textures/mahogany/WoodTxtr.png");
+            const mahoganyNorm= textureLoader.load("/textures/mahogany/WoodNormal.png");
+            const mahoganyRough = textureLoader.load("/textures/mahogany/WoodRoughness.png");
                 
             async function waitForServer1() {
                 let serverOnline = false
@@ -426,6 +431,18 @@
                         roughness: 1,
 
                         normalMap: mapleNorm,
+                    });
+                };
+
+                if (woodtype == "mahogany_type") {
+                    mat = new THREE.MeshStandardMaterial({
+
+                        map: mahoganyTexture,
+
+                        roughnessMap: mahoganyRough,
+                        roughness: 1,
+
+                        normalMap: mahoganyNorm,
                     });
                 };
                 
