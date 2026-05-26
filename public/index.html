@@ -396,7 +396,7 @@
             }
 
             function addBox(w,h,d,x,y,z,woodtype){
-                const geo = new THREE.BoxGeometry(w,h,d,100,100,100);
+                const geo = new THREE.BoxGeometry(w,h,d);
                 let mat = ""
                 if (woodtype === "oak_type") {
                     mat = new THREE.MeshStandardMaterial({

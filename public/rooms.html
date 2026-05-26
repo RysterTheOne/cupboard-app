@@ -1,0 +1,579 @@
+# rooms.html
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Room Editor</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/TransformControls.js"></script>
+
+    <script src="script.js"></script>
+
+</head>
+<body>
+
+    <div class="top-bar fade-in">
+
+        <div class="top-left" name="TopBtns">
+            <button class="btn btn-primary" onclick="goDashboard()">
+                Dashboard
+            </button>
+        </div>
+
+        <div class="top-center">
+            <h1>Room Editor</h1>
+        </div>
+
+        <div class="top-right" name="TopBtns">
+            <button class="btn btn-danger" onclick="logout()">
+                Logout
+            </button>
+        </div>
+
+    </div>
+
+    <div class="center-class fade-in">
+
+        <div id="OfflineScreen" style="display:none;">
+
+            <div class="card">
+
+                <div class="title-card">
+                    ALERT
+                </div>
+
+                <div class="content-columns">
+
+                    <div class="content-row">
+                        <font color="red" size="16px">
+                            Server Offline
+                        </font>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="Main" style="display:none;">
+
+            <div class="card">
+
+                <div class="title-card">
+                    Room Controls
+                </div>
+
+                <div class="content-columns">
+
+                    <div class="content-row">
+                        <button class="content-btn" onclick="addCupboard()">
+                            Add Cupboard
+                        </button>
+                    </div>
+
+                    <div class="content-row">
+                        <button class="content-btn" onclick="saveRoom()">
+                            Save Room
+                        </button>
+                    </div>
+
+                    <div class="content-row">
+                        <div class="labels">Transform Mode</div>
+
+                        <div class="inputs">
+                            G = Move | R = Rotate | S = Scale
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="title-card">
+                    3D Room
+                </div>
+
+                <div class="content-columns" id="canvas-parent">
+
+                    <div class="content-canvas" id="canvas-container">
+
+                        <button class="fullscreen-btn" onclick="toggleFullscreen()">
+                            ⛶
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<script>
+
+checkAuth();
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+let animationId;
+
+let scene;
+let camera;
+let renderer;
+let controls;
+let transformControls;
+
+let raycaster = new THREE.Raycaster();
+let mouse = new THREE.Vector2();
+
+let roomObjects = [];
+let selectedObject = null;
+
+const textureLoader = new THREE.TextureLoader();
+
+const woodTexture = textureLoader.load("/textures/oak/WoodTxtr.png");
+const woodNormal = textureLoader.load("/textures/oak/WoodNormal.png");
+const woodRough = textureLoader.load("/textures/oak/WoodRoughness.png");
+
+[woodTexture, woodNormal, woodRough].forEach(tex => {
+
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+
+    tex.repeat.set(2, 2);
+
+});
+
+async function waitForServer() {
+
+    let serverOnline = false;
+
+    while (!serverOnline) {
+
+        try {
+
+            const res = await fetch(API + "/status");
+
+            if (res.ok) {
+
+                serverOnline = true;
+
+                document.getElementById("OfflineScreen").style.display = "none";
+                document.getElementById("Main").style.display = "block";
+
+                document.getElementsByName("TopBtns").forEach(btn => {
+                    btn.style.display = "block";
+                });
+
+                init3D();
+                loadRoom();
+            }
+
+        } catch(err) {
+
+            document.getElementById("OfflineScreen").style.display = "block";
+            document.getElementById("Main").style.display = "none";
+
+            console.log(err);
+        }
+
+        await sleep(1000);
+    }
+}
+
+waitForServer();
+
+function init3D() {
+
+    clearScene();
+
+    const container = document.getElementById("canvas-container");
+
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f172a);
+
+    camera = new THREE.PerspectiveCamera(
+        75,
+        container.clientWidth / container.clientHeight,
+        0.1,
+        1000
+    );
+
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+
+    renderer.setSize(
+        container.clientWidth,
+        container.clientHeight
+    );
+
+    container.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(10, 10, 10);
+
+    scene.add(light);
+
+    controls = new THREE.OrbitControls(
+        camera,
+        renderer.domElement
+    );
+
+    controls.enablePan = true;
+
+    transformControls = new THREE.TransformControls(
+        camera,
+        renderer.domElement
+    );
+
+    transformControls.addEventListener("dragging-changed", function(event) {
+
+        controls.enabled = !event.value;
+
+    });
+
+    scene.add(transformControls);
+
+    createRoomFloor();
+
+    camera.position.set(5, 5, 5);
+
+    controls.target.set(0, 0, 0);
+    controls.update();
+
+    renderer.domElement.addEventListener("click", onMouseClick);
+
+    animate();
+}
+
+function clearScene() {
+
+    if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+    }
+
+    if (!scene) {
+        return;
+    }
+
+    scene.traverse(object => {
+
+        if (object.geometry) {
+            object.geometry.dispose();
+        }
+
+        if (object.material) {
+
+            if (Array.isArray(object.material)) {
+
+                object.material.forEach(material => {
+                    material.dispose();
+                });
+
+            } else {
+
+                object.material.dispose();
+            }
+        }
+    });
+
+    if (renderer) {
+
+        renderer.dispose();
+
+        if (renderer.domElement) {
+            renderer.domElement.remove();
+        }
+    }
+
+    roomObjects = [];
+
+    scene = null;
+    camera = null;
+    renderer = null;
+    controls = null;
+}
+
+function createRoomFloor() {
+
+    const geo = new THREE.PlaneGeometry(20, 20);
+
+    const mat = new THREE.MeshStandardMaterial({
+        color: 0x808080,
+        side: THREE.DoubleSide
+    });
+
+    const floor = new THREE.Mesh(geo, mat);
+
+    floor.rotation.x = -Math.PI / 2;
+
+    scene.add(floor);
+}
+
+function createCupboard(width, height, depth) {
+
+    const group = new THREE.Group();
+
+    const material = new THREE.MeshStandardMaterial({
+
+        map: woodTexture,
+        normalMap: woodNormal,
+        roughnessMap: woodRough,
+        roughness: 1
+
+    });
+
+    const left = new THREE.Mesh(
+        new THREE.BoxGeometry(0.02, height, depth),
+        material
+    );
+
+    left.position.x = -width / 2;
+
+    const right = new THREE.Mesh(
+        new THREE.BoxGeometry(0.02, height, depth),
+        material
+    );
+
+    right.position.x = width / 2;
+
+    const top = new THREE.Mesh(
+        new THREE.BoxGeometry(width, 0.02, depth),
+        material
+    );
+
+    top.position.y = height / 2;
+
+    const bottom = new THREE.Mesh(
+        new THREE.BoxGeometry(width, 0.02, depth),
+        material
+    );
+
+    bottom.position.y = -height / 2;
+
+    group.add(left);
+    group.add(right);
+    group.add(top);
+    group.add(bottom);
+
+    return group;
+}
+
+function addCupboard() {
+
+    const cupboard = createCupboard(1, 2, 0.6);
+
+    cupboard.position.y = 1;
+
+    scene.add(cupboard);
+
+    roomObjects.push(cupboard);
+}
+
+function onMouseClick(event) {
+
+    const rect = renderer.domElement.getBoundingClientRect();
+
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(
+        roomObjects,
+        true
+    );
+
+    if (intersects.length > 0) {
+
+        let obj = intersects[0].object;
+
+        while (obj.parent && obj.parent.type !== "Scene") {
+            obj = obj.parent;
+        }
+
+        selectedObject = obj;
+
+        transformControls.attach(selectedObject);
+    }
+}
+
+window.addEventListener("keydown", (event) => {
+
+    if (!transformControls) {
+        return;
+    }
+
+    switch(event.key.toLowerCase()) {
+
+        case "g":
+            transformControls.setMode("translate");
+            break;
+
+        case "r":
+            transformControls.setMode("rotate");
+            break;
+
+        case "s":
+            transformControls.setMode("scale");
+            break;
+    }
+});
+
+function animate() {
+
+    animationId = requestAnimationFrame(animate);
+
+    controls.update();
+
+    renderer.render(scene, camera);
+}
+
+async function saveRoom() {
+
+    const roomData = roomObjects.map(obj => {
+
+        return {
+
+            position: {
+                x: obj.position.x,
+                y: obj.position.y,
+                z: obj.position.z
+            },
+
+            rotation: {
+                x: obj.rotation.x,
+                y: obj.rotation.y,
+                z: obj.rotation.z
+            },
+
+            scale: {
+                x: obj.scale.x,
+                y: obj.scale.y,
+                z: obj.scale.z
+            }
+        };
+    });
+
+    await fetch(API + "/api/rooms", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        credentials: "include",
+
+        body: JSON.stringify({
+
+            name: document.title,
+            data: roomData
+
+        })
+    });
+
+    console.log("Room saved");
+}
+
+async function loadRoom() {
+
+    const raw = localStorage.getItem("currentRoom");
+
+    if (!raw) {
+        return;
+    }
+
+    const room = JSON.parse(raw);
+
+    document.title = room.name;
+
+    if (!room.data) {
+        return;
+    }
+
+    room.data.forEach(savedObj => {
+
+        const cupboard = createCupboard(1, 2, 0.6);
+
+        cupboard.position.set(
+            savedObj.position.x,
+            savedObj.position.y,
+            savedObj.position.z
+        );
+
+        cupboard.rotation.set(
+            savedObj.rotation.x,
+            savedObj.rotation.y,
+            savedObj.rotation.z
+        );
+
+        cupboard.scale.set(
+            savedObj.scale.x,
+            savedObj.scale.y,
+            savedObj.scale.z
+        );
+
+        scene.add(cupboard);
+
+        roomObjects.push(cupboard);
+    });
+}
+
+function goDashboard() {
+    window.location.href = "dashboard.html";
+}
+
+function toggleFullscreen() {
+
+    const elem = document.querySelector("#canvas-parent");
+
+    if (!document.fullscreenElement) {
+
+        elem.requestFullscreen().then(() => {
+            resizeRenderer();
+        });
+
+    } else {
+
+        document.exitFullscreen().then(() => {
+            resizeRenderer();
+        });
+    }
+}
+
+function resizeRenderer() {
+
+    const container = document.getElementById("canvas-container");
+
+    camera.aspect = container.clientWidth / container.clientHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+        container.clientWidth,
+        container.clientHeight
+    );
+}
+
+</script>
+
+</body>
+</html>

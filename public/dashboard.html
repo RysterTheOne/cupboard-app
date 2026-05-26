@@ -16,56 +16,6 @@
     </head>
     
     <body>
-
-        <div id="createProjectModal" class="center-class fade-in" style="display: none; background: rgba(0,0,0,0.5); height: 100vh;width: 100vw;">
-
-            <div class="card">
-                <table>
-                    <tr>
-                        <th colspan="4" align="center"><h1>Create Project</h1></th>
-                    </tr>
-
-                    <tr><td colspan="4" align="center"><h3 style="color: beige;">Project Name</h3></td></tr>
-
-                    <tr>
-                        <td colspan="4" align="center">
-                            <!-- Name field -->
-                            <input 
-                                type="text" 
-                                id="projectName" 
-                                placeholder="Enter name" 
-                                class="btn btn-primary"
-                                style="background: azure; color: black;"
-                            >
-                        </td>
-                    </tr>
-
-                    <tr><td colspan="4" align="center"><h3 style="color: beige; padding-top: 7px;">Project Type</h3></td></tr>
-
-                    <tr>
-                        <td colspan="4" align="center">
-                            <!-- Type dropdown -->
-                            <select class="btn btn-primary" id="projectType" style="background: azure;  color: black;">
-                                <option value="" disabled selected></option>
-                                <option value="shelving">Shelving</option>
-                                <option value="base_cabinet">Base Cabinet</option>
-                                <option value="wall_cabinet">Wall Cabinet</option>
-                            </select>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="4">
-                            <!-- Buttons -->
-                            <div style="display: flex; justify-content: space-between; padding-top: 15px;">
-                                <button class="btn btn-danger" onclick="hideCreateProject()">Cancel</button>
-                                <button class="btn btn-primary" onclick="createProject()">Create</button>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
         
         <div class="top-bar" id="top">
             <div class="top-left" name="TopBtns">
@@ -82,6 +32,34 @@
         </div>
 
         <div id="main-page" class="center-class fade-in">
+            <div id="createProjectModal">
+                <div class="card">
+                    <div class="title-card">Create Project</div>
+                    
+                    <div class="content-columns">
+                        <div class="content-row">
+                            <div class="labels">Project Name</div>
+                        <input class="inputs" type="text" id="projectName">
+                        </div>
+
+                        <div class="content-row">
+                            <div class="labels">Preset</div>
+                            <select class="inputs" id="projectType">
+                                <option value="" disabled selected></option>
+                                <option value="shelving">Shelving</option>
+                                <option value="base_cabinet">Base Cabinet</option>
+                                <option value="wall_cabinet">Wall Cabinet</option>
+                            </select>
+                        </div>
+
+                        <div class="content-row">
+                            <button class="btn btn-primary" onclick="hideCreateProject()">Cancel</button>
+                            <button class="btn btn-primary" onclick="createProject()">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div id="OfflineScreen" style="display: none;">
                 <div class="card">
                     <div class="title-card">ALERT</div>

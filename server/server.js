@@ -98,6 +98,16 @@ async function initDB() {
         )
     `);
 
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS rooms (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER,
+            name TEXT,
+            data JSONB,
+            last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
     // ================= THEN FIX/ADD COLUMNS =================
 
     await ensureColumn(
@@ -250,13 +260,14 @@ app.post("/api/logout", (req, res) => {
 // ================= PROJECTS =================
 app.get("/onetime", async (req, res)=> {
     await pool.query(`
-        ALTER TABLE projects
-        ADD CONSTRAINT unique_user_project
+        ALTER TABLE rooms
+        ADD CONSTRAINT unique_user_room
         UNIQUE (user_id, name)
-    `);
+    `)
 
     res.send("Table fixed");
 })
+
 // SAVE PROJECT
 app.post("/api/projects", async (req, res) => {
 
@@ -313,6 +324,89 @@ app.delete("/api/projects/:id", async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send("Error deleting project");
+    }
+});
+
+//=============== ROOMS ==================//
+
+// SAVE ROOMS
+app.post("/api/rooms", async (req, res) => {
+
+    const token = req.cookies.token;
+
+    if (!token) {
+        return res.status(401).send("Not logged in");
+    }
+
+    const decoded = jwt.verify(token, SECRET);
+
+    const { name, data } = req.body;
+
+    const result = await pool.query(
+        `
+        INSERT INTO rooms (user_id, name, data)
+        VALUES ($1, $2, $3)
+
+        ON CONFLICT (user_id, name)
+
+        DO UPDATE SET
+            data = EXCLUDED.data,
+            last_modified = CURRENT_TIMESTAMP
+
+        RETURNING id
+        `,
+        [decoded.id, name, data]
+    );
+
+    res.json({
+        id: result.rows[0].id
+    });
+});
+
+// GET ROOMS
+app.get("/api/rooms", async (req, res) => {
+
+    const token = req.cookies.token;
+
+    if (!token) {
+        return res.status(401).send("Not logged in");
+    }
+
+    const decoded = jwt.verify(token, SECRET);
+
+    const result = await pool.query(
+        "SELECT * FROM rooms WHERE user_id = $1",
+        [decoded.id]
+    );
+
+    res.json(result.rows);
+});
+
+// DELETE ROOMS
+app.delete("/api/rooms/:id", async (req, res) => {
+
+    const token = req.cookies.token;
+
+    if (!token) {
+        return res.status(401).send("Not logged in");
+    }
+
+    const { id } = req.params;
+
+    try {
+
+        await pool.query(
+            "DELETE FROM rooms WHERE id = $1",
+            [id]
+        );
+
+        res.sendStatus(200);
+
+    } catch (err) {
+
+        console.error(err);
+
+        res.status(500).send("Delete failed");
     }
 });
 
@@ -373,3 +467,4 @@ app.get("/status", (req, res) => {
 app.listen(PORT, () => {
     console.log("Server running on port " + PORT);
 });
+
