@@ -206,7 +206,7 @@
                     credentials: "include"
                 });
 
-                const projects = await res.json();
+                const rooms = await res.json();
 
                 const container = document.getElementById("rooms");
                 container.innerHTML = "";
@@ -220,9 +220,9 @@
                 };
                 newRoom.style.width = "95%"
                 newRoom.innerText = "New Project"
-                container.appendChild(newProj)
+                container.appendChild(newRoom)
 
-                projects.forEach(p => {
+                rooms.forEach(p => {
                     const row = document.createElement("div");
                     row.className = "content-row";
 
