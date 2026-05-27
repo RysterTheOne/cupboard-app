@@ -134,8 +134,7 @@
                 newProj.className = "btn btn-primary content-btn";
                 newProj.onclick = () => {
                     document.getElementById("createProjectModal").style.display = "flex";
-                    document.getElementById("top").style.display = "none";
-                    document.getElementById("main").style.display = "none";
+                    document.getElementById("Main").style.display = "none";
                 };
                 newProj.style.width = "95%"
                 newProj.innerText = "New Project"
@@ -215,8 +214,7 @@
                 newRoom.className = "btn btn-primary content-btn";
                 newRoom.onclick = () => {
                     document.getElementById("createRoomModal").style.display = "flex";
-                    document.getElementById("top").style.display = "none";
-                    document.getElementById("main").style.display = "none";
+                    document.getElementById("Main").style.display = "none";
                 };
                 newRoom.style.width = "95%"
                 newRoom.innerText = "New Room"
@@ -288,14 +286,12 @@
 
             function hideCreateProject() {
                 document.getElementById("createProjectModal").style.display = "none";
-                document.getElementById("top").style.display = "flex";
-                document.getElementById("main").style.display = "flex";
+                document.getElementById("Main").style.display = "flex";
             }
             
             function hideCreateRoom() {
                 document.getElementById("createRoomModal").style.display = "none";
-                document.getElementById("top").style.display = "flex";
-                document.getElementById("main").style.display = "flex";
+                document.getElementById("Main").style.display = "flex";
             }
 
             async function createProject() {
@@ -335,7 +331,6 @@
 
             async function createRoom() {
                 const name = document.getElementById("roomName").value
-                const type = document.getElementById("roomType").value
                 
                 if (!name) {
                     alert("Please enter a name");
