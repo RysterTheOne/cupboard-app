@@ -96,7 +96,7 @@
 
             <div id="Main" style="display: none;">
 
-                <div class="card">
+                <div class="card" id="savedProjects">
                     <div class="title-card">Saved Projects</div>
 
                     <div id="projects" class="content-columns">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card" id="savedRooms">
                     <div class="title-card">Saved Rooms</div>
 
                     <div id="rooms" class="content-columns">
@@ -134,6 +134,8 @@
                 newProj.className = "btn btn-primary content-btn";
                 newProj.onclick = () => {
                     document.getElementById("createProjectModal").style.display = "flex";
+                    document.getElementById("savedProjects").style.display = "none";
+                    document.getElementById("savedRooms").style.display = "none";
                     document.getElementById("Main").style.display = "none";
                 };
                 newProj.style.width = "95%"
@@ -214,6 +216,8 @@
                 newRoom.className = "btn btn-primary content-btn";
                 newRoom.onclick = () => {
                     document.getElementById("createRoomModal").style.display = "flex";
+                    document.getElementById("savedProjects").style.display = "none";
+                    document.getElementById("savedRooms").style.display = "none";
                     document.getElementById("Main").style.display = "none";
                 };
                 newRoom.style.width = "95%"
@@ -287,11 +291,15 @@
             function hideCreateProject() {
                 document.getElementById("createProjectModal").style.display = "none";
                 document.getElementById("Main").style.display = "flex";
+                document.getElementById("savedProjects").style.display = "flex";
+                document.getElementById("savedRooms").style.display = "flex";
             }
             
             function hideCreateRoom() {
                 document.getElementById("createRoomModal").style.display = "none";
                 document.getElementById("Main").style.display = "flex";
+                document.getElementById("savedProjects").style.display = "flex";
+                document.getElementById("savedRooms").style.display = "flex";
             }
 
             async function createProject() {
