@@ -118,6 +118,7 @@ body {
     height: calc((var(--CardContentHeight) - 20px)* 16.4 / 100);
     margin-top: calc((var(--CardContentHeight) - 20px) * 2 / 100);
     margin-bottom: calc((var(--CardContentHeight) - 20px) * 2 / 100);
+    width: 95%;
 }
 
 .content-columns {
