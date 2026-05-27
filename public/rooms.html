@@ -1,113 +1,136 @@
 <!DOCTYPE html>
 <html>
-<head>
+    <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Room Editor</title>
+        <title>Room Editor</title>
 
-    <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style.css">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/TransformControls.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/TransformControls.js"></script>
 
-    <script src="script.js"></script>
+        <script src="script.js"></script>
 
-</head>
+    </head>
 
-<body>
+    <body>
 
-    <div class="top-bar fade-in">
+        <div class="top-bar fade-in">
 
-        <div class="top-left" name="TopBtns">
-            <button class="btn btn-primary" onclick="goDashboard()">
-                Dashboard
-            </button>
-        </div>
+            <div class="top-left" name="TopBtns">
+                <button class="btn btn-primary" onclick="goDashboard()">
+                    Dashboard
+                </button>
+            </div>
 
-        <div class="top-center">
-            <h1>Room Editor</h1>
-        </div>
+            <div class="top-center">
+                <h1>Room Editor</h1>
+            </div>
 
-        <div class="top-right" name="TopBtns">
-            <button class="btn btn-danger" onclick="logout()">
-                Logout
-            </button>
-        </div>
-
-    </div>
-
-    <div class="center-class fade-in">
-
-        <div id="OfflineScreen" style="display:none;">
-
-            <div class="card">
-
-                <div class="title-card">
-                    ALERT
-                </div>
-
-                <div class="content-columns">
-
-                    <div class="content-row">
-                        <font color="red" size="16px">Server Offline</font>
-                    </div>
-
-                </div>
-
+            <div class="top-right" name="TopBtns">
+                <button class="btn btn-danger" onclick="logout()">
+                    Logout
+                </button>
             </div>
 
         </div>
 
-        <div id="Main" style="display:none;">
+        <div class="center-class fade-in">
 
-            <div class="card">
+            <div id="OfflineScreen" style="display:none;">
 
-                <div class="title-card">
-                    Room Controls
-                </div>
+                <div class="card">
 
-                <div class="content-columns">
-
-                    <div class="content-row">
-                        <button class="btn btn-primary content-btn" onclick="addCupboard()">
-                            Add Cupboard
-                        </button>
+                    <div class="title-card">
+                        ALERT
                     </div>
 
-                    <div class="content-row">
-                        <button class="btn btn-primary content-btn" onclick="saveRoom()">
-                            Save Room
-                        </button>
-                    </div>
+                    <div class="content-columns">
 
-                    <div class="content-row">
-                        <div class="labels">Transform Mode</div>
-
-                        <div class="inputs">
-                            G = Move | R = Rotate | S = Scale
+                        <div class="content-row">
+                            <font color="red" size="16px">Server Offline</font>
                         </div>
+
                     </div>
 
                 </div>
 
             </div>
 
-            <div class="card">
+            <div id="Main" style="display:none;">
 
-                <div class="title-card">
-                    3D Room
+                <div class="card">
+
+                    <div class="title-card">
+                        Room Controls
+                    </div>
+
+                    <div class="content-columns">
+
+                        <div class="content-row">
+                            <button class="btn btn-primary content-btn" onclick="addCupboard()">
+                                Add Cupboard
+                            </button>
+                        </div>
+
+                        <div class="content-row">
+                            <button class="btn btn-primary content-btn" onclick="saveRoom()">
+                                Save Room
+                            </button>
+                        </div>
+
+                        <div class="content-row">
+                            <div class="labels">Transform Mode</div>
+
+                            <div class="inputs">G = Move | R = Rotate | S = Scale</div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="card">
+
+                    <div class="title-card">
+                        Selected Projects
+                    </div>
+
+                    <div class="content-columns" id="selectedProjects">
+                        <!--selectedprojects go here-->
+                    </div>
+
                 </div>
 
-                <div class="content-columns" id="canvas-parent">
+                <div class="card">
 
-                    <div class="content-canvas" id="canvas-container">
+                    <div class="title-card">
+                        Available Projects
+                    </div>
 
-                        <button class="fullscreen-btn" onclick="toggleFullscreen()">
-                            ⛶
-                        </button>
+                    <div class="content-columns" id="availableProjects">
+                        <!--availableprojects go here-->
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="title-card">
+                        Room Render
+                    </div>
+
+                    <div class="content-columns" id="canvas-parent">
+
+                        <div class="content-canvas" id="canvas-container">
+
+                            <button class="fullscreen-btn" onclick="toggleFullscreen()">
+                                ⛶
+                            </button>
+
+                        </div>
 
                     </div>
 
@@ -117,463 +140,528 @@
 
         </div>
 
-    </div>
+        <script>
 
-<script>
+            checkAuth();
 
-checkAuth();
+            const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+            let animationId;
 
-let animationId;
+            let scene;
+            let camera;
+            let renderer;
+            let controls;
+            let transformControls;
 
-let scene;
-let camera;
-let renderer;
-let controls;
-let transformControls;
+            let raycaster = new THREE.Raycaster();
+            let mouse = new THREE.Vector2();
 
-let raycaster = new THREE.Raycaster();
-let mouse = new THREE.Vector2();
+            let roomObjects = [];
+            let cachedProjects= [];
+            let selectedObject = null;
 
-let roomObjects = [];
-let selectedObject = null;
+            const textureLoader = new THREE.TextureLoader();
 
-const textureLoader = new THREE.TextureLoader();
+            const woodTexture = textureLoader.load("/textures/oak/WoodTxtr.png");
+            const woodNormal = textureLoader.load("/textures/oak/WoodNormal.png");
+            const woodRough = textureLoader.load("/textures/oak/WoodRoughness.png");
 
-const woodTexture = textureLoader.load("/textures/oak/WoodTxtr.png");
-const woodNormal = textureLoader.load("/textures/oak/WoodNormal.png");
-const woodRough = textureLoader.load("/textures/oak/WoodRoughness.png");
+            async function waitForServer() {
 
-[woodTexture, woodNormal, woodRough].forEach(tex => {
+                let serverOnline = false;
 
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.RepeatWrapping;
+                while (!serverOnline) {
 
-    tex.repeat.set(2, 2);
+                    try {
 
-});
+                        const res = await fetch(API + "/status");
 
-async function waitForServer() {
+                        if (res.ok) {
 
-    let serverOnline = false;
+                            serverOnline = true;
 
-    while (!serverOnline) {
+                            document.getElementById("OfflineScreen").style.display = "none";
+                            document.getElementById("Main").style.display = "block";
 
-        try {
+                            document.getElementsByName("TopBtns").forEach(btn => {
+                                btn.style.display = "block";
+                            });
 
-            const res = await fetch(API + "/status");
+                            loadProjects();
+                            init3D();
+                            loadRoom();
+                        }
 
-            if (res.ok) {
+                    } catch(err) {
 
-                serverOnline = true;
+                        document.getElementById("OfflineScreen").style.display = "block";
+                        document.getElementById("Main").style.display = "none";
 
-                document.getElementById("OfflineScreen").style.display = "none";
-                document.getElementById("Main").style.display = "block";
+                        console.log(err);
+                    }
 
-                document.getElementsByName("TopBtns").forEach(btn => {
-                    btn.style.display = "block";
+                    await sleep(1000);
+                }
+            }
+            waitForServer();
+
+            async function loadProjects() {
+                const raw = localStorage.getItem("currentRoom");
+
+                if (!raw) {
+                    window.location.href = "dashboard.html";
+                    return;
+                }
+
+                const obj = JSON.parse(raw);
+                document.title = obj.name;
+
+                const data = obj.data;
+                const projects = data.projects;
+                cachedProjects = projects;
+
+                const res = await fetch(API + "/api/projects", {
+                    credentials: "include"
                 });
 
-                init3D();
-                loadRoom();
+                const availableProjects = await res.json();
+
+                const container = document.getElementById("availableProjects");
+                container.innerHTML = "";
+
+                const selectedContainer = document.getElementById("selectedProjects");
+                selectedContainer.innerHTML = "";
+
+                projects.forEach(p => {
+                    const row = document.createElement("div");
+                    row.className = "content-row";
+
+                    const div = document.createElement("div");
+                    div.className = "labels";
+                    div.style.maxWidth = "90%"
+                    div.style.width = "90%"
+                    div.style.cursor = "pointer";
+                    div.style.display = "flex";
+                    div.style.flexDirection = "row";
+                    div.style.justifyContent = "space-between";
+                    div.id = "projectBtn";
+
+                    // Project name 
+                    const name = document.createElement("span");
+                    name.innerText = p.name;
+
+                    // Add button
+                    const addBtn = document.createElement("button");
+                    addBtn.innerText = "Add";
+                    addBtn.className = "btn btn-danger"
+                    addBtn.style.marginLeft = "5px";
+
+                    addBtn.onclick = async (e) => {
+                        e.stopPropagation(); // 🚨 prevents triggering open
+                        selectedContainer.append(row);
+                        addBtn.remove();
+                    };
+                    
+                    const alreadyExists = cachedProjects.some(
+                        cached => cached.name === p.name
+                    );
+
+                    if (alreadyExists) {
+                        div.appendChild(name);
+                        div.appendChild(addBtn);
+                        row.appendChild(div)
+                        selectedContainer.appendChild(row);
+                        return;
+                    }
+                    
+                    div.appendChild(name);
+                    div.appendChild(addBtn);
+                    row.appendChild(div)
+                    container.appendChild(row);
+                });
             }
 
-        } catch(err) {
+            function init3D() {
 
-            document.getElementById("OfflineScreen").style.display = "block";
-            document.getElementById("Main").style.display = "none";
+                clearScene();
 
-            console.log(err);
-        }
+                const container = document.getElementById("canvas-container");
 
-        await sleep(1000);
-    }
-}
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x0f172a);
 
-waitForServer();
+                camera = new THREE.PerspectiveCamera(
+                    75,
+                    container.clientWidth / container.clientHeight,
+                    0.1,
+                    1000
+                );
 
-function init3D() {
+                renderer = new THREE.WebGLRenderer({ antialias: true });
 
-    clearScene();
+                renderer.setSize(
+                    container.clientWidth,
+                    container.clientHeight
+                );
 
-    const container = document.getElementById("canvas-container");
+                container.appendChild(renderer.domElement);
 
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0f172a);
+                scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
-    camera = new THREE.PerspectiveCamera(
-        75,
-        container.clientWidth / container.clientHeight,
-        0.1,
-        1000
-    );
+                const light = new THREE.DirectionalLight(0xffffff, 1);
+                light.position.set(10, 10, 10);
 
-    renderer = new THREE.WebGLRenderer({ antialias: true });
+                scene.add(light);
 
-    renderer.setSize(
-        container.clientWidth,
-        container.clientHeight
-    );
+                controls = new THREE.OrbitControls(
+                    camera,
+                    renderer.domElement
+                );
 
-    container.appendChild(renderer.domElement);
+                controls.enablePan = true;
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+                transformControls = new THREE.TransformControls(
+                    camera,
+                    renderer.domElement
+                );
 
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(10, 10, 10);
+                transformControls.addEventListener("dragging-changed", function(event) {
 
-    scene.add(light);
+                    controls.enabled = !event.value;
 
-    controls = new THREE.OrbitControls(
-        camera,
-        renderer.domElement
-    );
-
-    controls.enablePan = true;
-
-    transformControls = new THREE.TransformControls(
-        camera,
-        renderer.domElement
-    );
-
-    transformControls.addEventListener("dragging-changed", function(event) {
-
-        controls.enabled = !event.value;
-
-    });
-
-    scene.add(transformControls);
-
-    createRoomFloor();
-
-    camera.position.set(5, 5, 5);
-
-    controls.target.set(0, 0, 0);
-    controls.update();
-
-    renderer.domElement.addEventListener("click", onMouseClick);
-
-    animate();
-}
-
-function clearScene() {
-
-    if (animationId) {
-        cancelAnimationFrame(animationId);
-        animationId = null;
-    }
-
-    if (!scene) {
-        return;
-    }
-
-    scene.traverse(object => {
-
-        if (object.geometry) {
-            object.geometry.dispose();
-        }
-
-        if (object.material) {
-
-            if (Array.isArray(object.material)) {
-
-                object.material.forEach(material => {
-                    material.dispose();
                 });
 
-            } else {
+                scene.add(transformControls);
 
-                object.material.dispose();
+                createRoomFloor();
+
+                camera.position.set(5, 5, 5);
+
+                controls.target.set(0, 0, 0);
+                controls.update();
+
+                renderer.domElement.addEventListener("click", onMouseClick);
+
+                animate();
             }
-        }
-    });
 
-    if (renderer) {
+            function clearScene() {
 
-        renderer.dispose();
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
 
-        if (renderer.domElement) {
-            renderer.domElement.remove();
-        }
-    }
+                if (!scene) {
+                    return;
+                }
 
-    roomObjects = [];
+                scene.traverse(object => {
 
-    scene = null;
-    camera = null;
-    renderer = null;
-    controls = null;
-}
+                    if (object.geometry) {
+                        object.geometry.dispose();
+                    }
 
-function createRoomFloor() {
+                    if (object.material) {
 
-    const geo = new THREE.PlaneGeometry(20, 20);
+                        if (Array.isArray(object.material)) {
 
-    const mat = new THREE.MeshStandardMaterial({
-        color: 0x808080,
-        side: THREE.DoubleSide
-    });
+                            object.material.forEach(material => {
+                                material.dispose();
+                            });
 
-    const floor = new THREE.Mesh(geo, mat);
+                        } else {
 
-    floor.rotation.x = -Math.PI / 2;
+                            object.material.dispose();
+                        }
+                    }
+                });
 
-    scene.add(floor);
-}
+                if (renderer) {
 
-function createCupboard(width, height, depth) {
+                    renderer.dispose();
 
-    const group = new THREE.Group();
+                    if (renderer.domElement) {
+                        renderer.domElement.remove();
+                    }
+                }
 
-    const material = new THREE.MeshStandardMaterial({
+                roomObjects = [];
 
-        map: woodTexture,
-        normalMap: woodNormal,
-        roughnessMap: woodRough,
-        roughness: 1
-
-    });
-
-    const left = new THREE.Mesh(
-        new THREE.BoxGeometry(0.02, height, depth),
-        material
-    );
-
-    left.position.x = -width / 2;
-
-    const right = new THREE.Mesh(
-        new THREE.BoxGeometry(0.02, height, depth),
-        material
-    );
-
-    right.position.x = width / 2;
-
-    const top = new THREE.Mesh(
-        new THREE.BoxGeometry(width, 0.02, depth),
-        material
-    );
-
-    top.position.y = height / 2;
-
-    const bottom = new THREE.Mesh(
-        new THREE.BoxGeometry(width, 0.02, depth),
-        material
-    );
-
-    bottom.position.y = -height / 2;
-
-    group.add(left);
-    group.add(right);
-    group.add(top);
-    group.add(bottom);
-
-    return group;
-}
-
-function addCupboard() {
-
-    const cupboard = createCupboard(1, 2, 0.6);
-
-    cupboard.position.y = 1;
-
-    scene.add(cupboard);
-
-    roomObjects.push(cupboard);
-}
-
-function onMouseClick(event) {
-
-    const rect = renderer.domElement.getBoundingClientRect();
-
-    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-
-    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObjects(
-        roomObjects,
-        true
-    );
-
-    if (intersects.length > 0) {
-
-        let obj = intersects[0].object;
-
-        while (obj.parent && obj.parent.type !== "Scene") {
-            obj = obj.parent;
-        }
-
-        selectedObject = obj;
-
-        transformControls.attach(selectedObject);
-    }
-}
-
-window.addEventListener("keydown", (event) => {
-
-    if (!transformControls) {
-        return;
-    }
-
-    switch(event.key.toLowerCase()) {
-
-        case "g":
-            transformControls.setMode("translate");
-            break;
-
-        case "r":
-            transformControls.setMode("rotate");
-            break;
-
-        case "s":
-            transformControls.setMode("scale");
-            break;
-    }
-});
-
-function animate() {
-
-    animationId = requestAnimationFrame(animate);
-
-    controls.update();
-
-    renderer.render(scene, camera);
-}
-
-async function saveRoom() {
-
-    const roomData = roomObjects.map(obj => {
-
-        return {
-
-            position: {
-                x: obj.position.x,
-                y: obj.position.y,
-                z: obj.position.z
-            },
-
-            rotation: {
-                x: obj.rotation.x,
-                y: obj.rotation.y,
-                z: obj.rotation.z
-            },
-
-            scale: {
-                x: obj.scale.x,
-                y: obj.scale.y,
-                z: obj.scale.z
+                scene = null;
+                camera = null;
+                renderer = null;
+                controls = null;
             }
-        };
-    });
 
-    await fetch(API + "/api/rooms", {
+            function createRoomFloor() {
 
-        method: "POST",
+                const geo = new THREE.PlaneGeometry(20, 20);
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+                const mat = new THREE.MeshStandardMaterial({
+                    color: 0x808080,
+                    side: THREE.DoubleSide
+                });
 
-        credentials: "include",
+                const floor = new THREE.Mesh(geo, mat);
 
-        body: JSON.stringify({
+                floor.rotation.x = -Math.PI / 2;
 
-            name: document.title,
-            data: roomData
+                scene.add(floor);
+            }
 
-        })
-    });
+            function createCupboard(width, height, depth) {
 
-    console.log("Room saved");
-}
+                const group = new THREE.Group();
 
-async function loadRoom() {
+                const material = new THREE.MeshStandardMaterial({
 
-    const raw = localStorage.getItem("currentRoom");
+                    map: woodTexture,
+                    normalMap: woodNormal,
+                    roughnessMap: woodRough,
+                    roughness: 1
 
-    if (!raw) {
-        return;
-    }
+                });
 
-    const room = JSON.parse(raw);
+                const left = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.02, height, depth),
+                    material
+                );
 
-    document.title = room.name;
+                left.position.x = -width / 2;
 
-    if (!room.data) {
-        return;
-    }
+                const right = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.02, height, depth),
+                    material
+                );
 
-    if (room.data.projects === null) {
-        return;
-    }
+                right.position.x = width / 2;
 
-    room.data.projects.forEach(savedObj => {
+                const top = new THREE.Mesh(
+                    new THREE.BoxGeometry(width, 0.02, depth),
+                    material
+                );
 
-        const cupboard = createCupboard(1, 2, 0.6);
+                top.position.y = height / 2;
 
-        cupboard.position.set(
-            savedObj.position.x,
-            savedObj.position.y,
-            savedObj.position.z
-        );
+                const bottom = new THREE.Mesh(
+                    new THREE.BoxGeometry(width, 0.02, depth),
+                    material
+                );
 
-        cupboard.rotation.set(
-            savedObj.rotation.x,
-            savedObj.rotation.y,
-            savedObj.rotation.z
-        );
+                bottom.position.y = -height / 2;
 
-        cupboard.scale.set(
-            savedObj.scale.x,
-            savedObj.scale.y,
-            savedObj.scale.z
-        );
+                group.add(left);
+                group.add(right);
+                group.add(top);
+                group.add(bottom);
 
-        scene.add(cupboard);
+                return group;
+            }
 
-        roomObjects.push(cupboard);
-    });
-}
+            function addCupboard() {
 
-function goDashboard() {
-    window.location.href = "dashboard.html";
-}
+                const cupboard = createCupboard(1, 2, 0.6);
 
-function toggleFullscreen() {
+                cupboard.position.y = 1;
 
-    const elem = document.querySelector("#canvas-parent");
+                scene.add(cupboard);
 
-    if (!document.fullscreenElement) {
+                roomObjects.push(cupboard);
+            }
 
-        elem.requestFullscreen().then(() => {
-            resizeRenderer();
-        });
+            function onMouseClick(event) {
 
-    } else {
+                const rect = renderer.domElement.getBoundingClientRect();
 
-        document.exitFullscreen().then(() => {
-            resizeRenderer();
-        });
-    }
-}
+                mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
 
-function resizeRenderer() {
+                mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-    const container = document.getElementById("canvas-container");
+                raycaster.setFromCamera(mouse, camera);
 
-    camera.aspect = container.clientWidth / container.clientHeight;
+                const intersects = raycaster.intersectObjects(
+                    roomObjects,
+                    true
+                );
 
-    camera.updateProjectionMatrix();
+                if (intersects.length > 0) {
 
-    renderer.setSize(
-        container.clientWidth,
-        container.clientHeight
-    );
-}
+                    let obj = intersects[0].object;
 
-</script>
+                    while (obj.parent && obj.parent.type !== "Scene") {
+                        obj = obj.parent;
+                    }
 
-</body>
+                    selectedObject = obj;
+
+                    transformControls.attach(selectedObject);
+                }
+            }
+
+            window.addEventListener("keydown", (event) => {
+
+                if (!transformControls) {
+                    return;
+                }
+
+                switch(event.key.toLowerCase()) {
+
+                    case "g":
+                        transformControls.setMode("translate");
+                        break;
+
+                    case "r":
+                        transformControls.setMode("rotate");
+                        break;
+
+                    case "s":
+                        transformControls.setMode("scale");
+                        break;
+                }
+            });
+
+            function animate() {
+
+                animationId = requestAnimationFrame(animate);
+
+                controls.update();
+
+                renderer.render(scene, camera);
+            }
+
+            async function saveRoom() {
+
+                const roomData = roomObjects.map(obj => {
+
+                    return {
+
+                        position: {
+                            x: obj.position.x,
+                            y: obj.position.y,
+                            z: obj.position.z
+                        },
+
+                        rotation: {
+                            x: obj.rotation.x,
+                            y: obj.rotation.y,
+                            z: obj.rotation.z
+                        },
+
+                        scale: {
+                            x: obj.scale.x,
+                            y: obj.scale.y,
+                            z: obj.scale.z
+                        }
+                    };
+                });
+
+                await fetch(API + "/api/rooms", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    credentials: "include",
+
+                    body: JSON.stringify({
+
+                        name: document.title,
+                        data: roomData
+
+                    })
+                });
+
+                console.log("Room saved");
+            }
+
+            async function loadRoom() {
+
+                const raw = localStorage.getItem("currentRoom");
+
+                if (!raw) {
+                    return;
+                }
+
+                const room = JSON.parse(raw);
+
+                document.title = room.name;
+
+                if (!room.data) {
+                    return;
+                }
+
+                if (room.data.projects === null) {
+                    return;
+                }
+
+                room.data.projects.forEach(savedObj => {
+
+                    const cupboard = createCupboard(1, 2, 0.6);
+
+                    cupboard.position.set(
+                        savedObj.position.x,
+                        savedObj.position.y,
+                        savedObj.position.z
+                    );
+
+                    cupboard.rotation.set(
+                        savedObj.rotation.x,
+                        savedObj.rotation.y,
+                        savedObj.rotation.z
+                    );
+
+                    cupboard.scale.set(
+                        savedObj.scale.x,
+                        savedObj.scale.y,
+                        savedObj.scale.z
+                    );
+
+                    scene.add(cupboard);
+
+                    roomObjects.push(cupboard);
+                });
+            }
+
+            function goDashboard() {
+                window.location.href = "dashboard.html";
+            }
+
+            function toggleFullscreen() {
+
+                const elem = document.querySelector("#canvas-parent");
+
+                if (!document.fullscreenElement) {
+
+                    elem.requestFullscreen().then(() => {
+                        resizeRenderer();
+                    });
+
+                } else {
+
+                    document.exitFullscreen().then(() => {
+                        resizeRenderer();
+                    });
+                }
+            }
+
+            function resizeRenderer() {
+
+                const container = document.getElementById("canvas-container");
+
+                camera.aspect = container.clientWidth / container.clientHeight;
+
+                camera.updateProjectionMatrix();
+
+                renderer.setSize(
+                    container.clientWidth,
+                    container.clientHeight
+                );
+            }
+
+        </script>
+    </body>
 </html>
