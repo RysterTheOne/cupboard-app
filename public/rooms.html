@@ -267,8 +267,9 @@
                         alreadyExists=false
                     } else {
                         alreadyExists = cachedProjects.some(
-                        cached => cached.name === p.name
-                    );
+                            cached => cached.name === p.name
+                        )
+                    };
 
                     if (alreadyExists) {
                         div.appendChild(name);
