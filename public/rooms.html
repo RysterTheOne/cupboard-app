@@ -254,7 +254,7 @@
                     // Add button
                     const addBtn = document.createElement("button");
                     addBtn.innerText = "Add";
-                    addBtn.className = "btn btn-danger"
+                    addBtn.className = "btn btn-primary"
                     addBtn.style.marginLeft = "5px";
 
                     addBtn.onclick = async (e) => {
@@ -262,6 +262,7 @@
                         selectedContainer.append(row);
                         addBtn.remove();
                     };
+                    
                     let alreadyExists;
                     if (cachedProjects === null ) {
                         alreadyExists=false
