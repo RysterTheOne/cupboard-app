@@ -509,7 +509,11 @@ async function loadRoom() {
         return;
     }
 
-    room.data.forEach(savedObj => {
+    if (room.data.projects === null) {
+        return;
+    }
+
+    room.data.projects.forEach(savedObj => {
 
         const cupboard = createCupboard(1, 2, 0.6);
 
