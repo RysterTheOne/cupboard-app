@@ -262,8 +262,11 @@
                         selectedContainer.append(row);
                         addBtn.remove();
                     };
-                    
-                    const alreadyExists = cachedProjects.some(
+                    let alreadyExists;
+                    if (cachedProjects === null ) {
+                        alreadyExists=false
+                    } else {
+                        alreadyExists = cachedProjects.some(
                         cached => cached.name === p.name
                     );
 
