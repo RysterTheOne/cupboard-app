@@ -268,7 +268,7 @@
                         })
                         console.log(cachedProjects);
                         localStorage.removeItem("currentRoom");
-                        localStorage.setItem("currentRoom", JSON.stringify({name: name, projects: cachedProjects}));
+                        localStorage.setItem("currentRoom", JSON.stringify({name: name, data: {projects: cachedProjects}}));
                         addBtn.remove();
                     };
                     
