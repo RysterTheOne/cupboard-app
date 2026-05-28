@@ -266,7 +266,8 @@
                             position: {x: 0, y: 0, z: 0}
                         })
                         console.log(cachedProjects);
-                        localStorage.setItem(currentRoom, JSON.stringify(cachedProjects));
+                        localStorage.removeItem("currentRoom");
+                        localStorage.setItem("currentRoom", JSON.stringify(cachedProjects));
                         addBtn.remove();
                     };
                     
