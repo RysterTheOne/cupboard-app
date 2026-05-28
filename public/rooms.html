@@ -260,12 +260,19 @@
                     addBtn.onclick = async (e) => {
                         e.stopPropagation(); // 🚨 prevents triggering open
                         selectedContainer.append(row);
+                        cachedProjects.push({
+                            name: p.name,
+                            project: p,
+                            position: {x: 0, y: 0, z: 0}
+                        })
+                        console.log(cachedProjects);
+                        localStorage.setItem(currentRoom, JSON.stringify(cachedProjects));
                         addBtn.remove();
                     };
                     
                     let alreadyExists;
                     if (cachedProjects === null ) {
-                        alreadyExists=false
+                        alreadyExists = false
                     } else {
                         alreadyExists = cachedProjects.some(
                             cached => cached.name === p.name
@@ -273,6 +280,7 @@
                     };
 
                     if (alreadyExists) {
+                        console.log(cachedProjects);
                         div.appendChild(name);
                         div.appendChild(addBtn);
                         row.appendChild(div)
