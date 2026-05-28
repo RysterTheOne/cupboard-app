@@ -219,7 +219,8 @@
                 const name = obj.name
                 document.title = obj.name;
 
-                const projects = obj.projects;
+                const data = obj.data
+                const projects = data.projects;
                 cachedProjects = projects;
 
                 const res = await fetch(API + "/api/projects", {
