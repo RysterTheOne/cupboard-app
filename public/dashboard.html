@@ -338,9 +338,6 @@
                 }
 
                 try {
-                    const data = {
-                        projects: [],
-                    };
 
                     await fetch(API + "/api/rooms", {
                         method: "POST",
@@ -354,7 +351,7 @@
 
                     alert("Room created!");
                     localStorage.removeItem("currentRoom");
-                    localStorage.setItem("currentRoom", JSON.stringify({name: name,data}))
+                    localStorage.setItem("currentRoom", JSON.stringify({name: name, projects: []}))
                     window.location.href = "rooms.html";
 
                 } catch (err) {
