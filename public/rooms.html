@@ -215,6 +215,7 @@
                 }
 
                 const obj = JSON.parse(raw);
+                const name = obj.name
                 document.title = obj.name;
 
                 const data = obj.data;
@@ -267,7 +268,7 @@
                         })
                         console.log(cachedProjects);
                         localStorage.removeItem("currentRoom");
-                        localStorage.setItem("currentRoom", JSON.stringify(cachedProjects));
+                        localStorage.setItem("currentRoom", JSON.stringify({name: name, projects: cachedProjects}));
                         addBtn.remove();
                     };
                     
