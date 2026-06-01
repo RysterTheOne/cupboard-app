@@ -270,8 +270,8 @@
                         console.log(cachedProjects);
                         localStorage.removeItem("currentRoom");
                         localStorage.setItem("currentRoom", JSON.stringify({name: name, data: {projects: cachedProjects}}));
-                        addBtn.style.display = none;
-                        rmvBtn.style.display = block;
+                        addBtn.style.display = "none";
+                        rmvBtn.style.display = "block";
                     };
 
                     const rmvBtn = document.createElement("button");
@@ -288,8 +288,8 @@
                         console.log(cachedProjects);
                         localStorage.removeItem("currentRoom");
                         localStorage.setItem("currentRoom", JSON.stringify({name: name, data: {projects: cachedProjects}}));
-                        rmvBtn.style.display = none;
-                        addBtn.style.display = block;
+                        rmvBtn.style.display = "none";
+                        addBtn.style.display = "block";
                     };
                     
                     let alreadyExists;
@@ -307,8 +307,8 @@
                         row.appendChild(div);
                         div.appendChild(addBtn);
                         div.appendChild(rmvBtn);
-                        addBtn.style.display = none;
-                        rmvBtn.style.display = block;
+                        addBtn.style.display = "none";
+                        rmvBtn.style.display = "block";
                         selectedContainer.appendChild(row);
                         return;
                     }
@@ -317,8 +317,8 @@
                     row.appendChild(div);
                     div.appendChild(addBtn);
                     div.appendChild(rmvBtn);
-                    rmvBtn.style.display = none;
-                    addBtn.style.display = block;
+                    rmvBtn.style.display = "none";
+                    addBtn.style.display = "block";
                     container.appendChild(row);
                 });
             }
