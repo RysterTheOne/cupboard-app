@@ -270,9 +270,30 @@
                         console.log(cachedProjects);
                         localStorage.removeItem("currentRoom");
                         localStorage.setItem("currentRoom", JSON.stringify({name: name, data: {projects: cachedProjects}}));
-                        addBtn.remove();
+                        addBtn.style.display = none;
+                        rmvBtn.style.display = block;
+                    };
+
+                    const rmvBtn = document.createElement("button");
+                    rmvBtn.innerText = "Remove";
+                    rmvBtn.className = "btn btn-danger"
+                    rmvBtn.style.marginLeft = "5px";
+
+                    rmvBtn.onclick = async (e) => {
+                        e.stopPropagation(); // 🚨 prevents triggering open
+                        availableProjects.append(row);
+                        cachedProjects = cachedProjects.filter(
+                            project => project.name !== p.name
+                        );
+                        console.log(cachedProjects);
+                        localStorage.removeItem("currentRoom");
+                        localStorage.setItem("currentRoom", JSON.stringify({name: name, data: {projects: cachedProjects}}));
+                        rmvBtn.style.display = none;
+                        addBtn.style.display = block;
                     };
                     
+                    div.appendChild(addBtn);
+                    div.appendChild(rmvBtn);
                     let alreadyExists;
                     if (cachedProjects === null ) {
                         alreadyExists = false
@@ -285,14 +306,12 @@
                     if (alreadyExists) {
                         console.log(cachedProjects);
                         div.appendChild(name);
-                        div.appendChild(addBtn);
                         row.appendChild(div)
                         selectedContainer.appendChild(row);
                         return;
                     }
                     
                     div.appendChild(name);
-                    div.appendChild(addBtn);
                     row.appendChild(div)
                     container.appendChild(row);
                 });
@@ -477,13 +496,9 @@
             }
 
             function addCupboard() {
-
                 const cupboard = createCupboard(1, 2, 0.6);
-
                 cupboard.position.y = 1;
-
                 scene.add(cupboard);
-
                 roomObjects.push(cupboard);
             }
 
