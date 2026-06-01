@@ -281,7 +281,7 @@
 
                     rmvBtn.onclick = async (e) => {
                         e.stopPropagation(); // 🚨 prevents triggering open
-                        availableProjects.append(row);
+                        container.append(row);
                         cachedProjects = cachedProjects.filter(
                             project => project.name !== p.name
                         );
@@ -292,8 +292,6 @@
                         addBtn.style.display = block;
                     };
                     
-                    div.appendChild(addBtn);
-                    div.appendChild(rmvBtn);
                     let alreadyExists;
                     if (cachedProjects === null ) {
                         alreadyExists = false
@@ -306,13 +304,21 @@
                     if (alreadyExists) {
                         console.log(cachedProjects);
                         div.appendChild(name);
-                        row.appendChild(div)
+                        row.appendChild(div);
+                        div.appendChild(addBtn);
+                        div.appendChild(rmvBtn);
+                        addBtn.style.display = none;
+                        rmvBtn.style.display = block;
                         selectedContainer.appendChild(row);
                         return;
                     }
                     
                     div.appendChild(name);
-                    row.appendChild(div)
+                    row.appendChild(div);
+                    div.appendChild(addBtn);
+                    div.appendChild(rmvBtn);
+                    rmvBtn.style.display = none;
+                    addBtn.style.display = block;
                     container.appendChild(row);
                 });
             }
