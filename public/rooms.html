@@ -282,7 +282,7 @@
 
                         localStorage.removeItem("currentRoom");
                         localStorage.setItem("currentRoom", JSON.stringify({name: name, data: {projects: cachedProjects}}));
-                        console.log(JSON.parse(localStorage("currentRoom")));
+                        console.log(JSON.parse(localStorage.getItem("currentRoom")));
                         addBtn.style.display = "none";
                         rmvBtn.style.display = "block";
                     };
@@ -300,8 +300,8 @@
                         );
                         
                         localStorage.removeItem("currentRoom");
-                        localStorage.setItem("currentRoom", JSON.stringify({name: name, data: {projects: cachedProjects}}));
-                        console.log(JSON.parse(localStorage("currentRoom")));
+                        localStorage.setItem("currentRoom", JSON.stringify({name: document.title, data: {projects: cachedProjects}}));
+                        console.log(JSON.parse(localStorage.getItem("currentRoom")));
                         rmvBtn.style.display = "none";
                         addBtn.style.display = "block";
                     };
