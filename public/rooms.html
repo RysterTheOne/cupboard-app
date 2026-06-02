@@ -163,9 +163,21 @@
 
             const textureLoader = new THREE.TextureLoader();
 
-            const woodTexture = textureLoader.load("/textures/oak/WoodTxtr.png");
-            const woodNormal = textureLoader.load("/textures/oak/WoodNormal.png");
-            const woodRough = textureLoader.load("/textures/oak/WoodRoughness.png");
+            const oakTexture = textureLoader.load("/textures/oak/WoodTxtr.png");
+            const oakNorm = textureLoader.load("/textures/oak/WoodNormal.png");
+            const oakRough = textureLoader.load("/textures/oak/WoodRoughness.png");
+            
+            const walnutTexture = textureLoader.load("/textures/walnut/WoodTxtr.png");
+            const walnutNorm= textureLoader.load("/textures/walnut/WoodNormal.png");
+            const walnutRough = textureLoader.load("/textures/walnut/WoodRoughness.png");
+
+            const mapleTexture = textureLoader.load("/textures/maple/WoodTxtr.png");
+            const mapleNorm= textureLoader.load("/textures/maple/WoodNormal.png");
+            const mapleRough = textureLoader.load("/textures/maple/WoodRoughness.png");
+
+            const mahoganyTexture = textureLoader.load("/textures/mahogany/WoodTxtr.png");
+            const mahoganyNorm= textureLoader.load("/textures/mahogany/WoodNormal.png");
+            const mahoganyRough = textureLoader.load("/textures/mahogany/WoodRoughness.png");
 
             async function waitForServer() {
 
@@ -267,9 +279,10 @@
                             project: p,
                             position: {x: 0, y: 0, z: 0}
                         })
-                        console.log(cachedProjects);
+
                         localStorage.removeItem("currentRoom");
                         localStorage.setItem("currentRoom", JSON.stringify({name: name, data: {projects: cachedProjects}}));
+                        console.log(JSON.parse(localStorage("currentRoom")));
                         addBtn.style.display = "none";
                         rmvBtn.style.display = "block";
                     };
@@ -285,9 +298,10 @@
                         cachedProjects = cachedProjects.filter(
                             project => project.name !== p.name
                         );
-                        console.log(cachedProjects);
+                        
                         localStorage.removeItem("currentRoom");
                         localStorage.setItem("currentRoom", JSON.stringify({name: name, data: {projects: cachedProjects}}));
+                        console.log(JSON.parse(localStorage("currentRoom")));
                         rmvBtn.style.display = "none";
                         addBtn.style.display = "block";
                     };
@@ -387,6 +401,17 @@
                 animate();
             }
 
+            function clearGroup(groupName) {
+
+                const object = roomObjects.find(
+                    obj => obj.name === groupName
+                );
+
+                if (object) {
+                    scene.remove(object);
+                }
+            }
+
             function clearScene() {
 
                 if (animationId) {
@@ -452,53 +477,60 @@
                 scene.add(floor);
             }
 
-            function createCupboard(width, height, depth) {
+            function createCupboard(w,h,d,x,y,z,woodtype) {
+                const geo = new THREE.BoxGeometry(w,h,d);
+                let mat = ""
+                if (woodtype === "oak_type") {
+                    mat = new THREE.MeshStandardMaterial({
 
-                const group = new THREE.Group();
+                        map: oakTexture,
 
-                const material = new THREE.MeshStandardMaterial({
+                        roughnessMap: oakRough,
+                        roughness: 1,
 
-                    map: woodTexture,
-                    normalMap: woodNormal,
-                    roughnessMap: woodRough,
-                    roughness: 1
+                        normalMap: oakNorm,
+                    });
+                };
 
-                });
+                if (woodtype == "walnut_type") {
+                    mat = new THREE.MeshStandardMaterial({
 
-                const left = new THREE.Mesh(
-                    new THREE.BoxGeometry(0.02, height, depth),
-                    material
-                );
+                        map: walnutTexture,
 
-                left.position.x = -width / 2;
+                        roughnessMap: walnutRough,
+                        roughness: 1,
 
-                const right = new THREE.Mesh(
-                    new THREE.BoxGeometry(0.02, height, depth),
-                    material
-                );
+                        normalMap: walnutNorm,
+                    });
+                };
 
-                right.position.x = width / 2;
+                if (woodtype == "maple_type") {
+                    mat = new THREE.MeshStandardMaterial({
 
-                const top = new THREE.Mesh(
-                    new THREE.BoxGeometry(width, 0.02, depth),
-                    material
-                );
+                        map: mapleTexture,
 
-                top.position.y = height / 2;
+                        roughnessMap: mapleRough,
+                        roughness: 1,
 
-                const bottom = new THREE.Mesh(
-                    new THREE.BoxGeometry(width, 0.02, depth),
-                    material
-                );
+                        normalMap: mapleNorm,
+                    });
+                };
 
-                bottom.position.y = -height / 2;
+                if (woodtype == "mahogany_type") {
+                    mat = new THREE.MeshStandardMaterial({
 
-                group.add(left);
-                group.add(right);
-                group.add(top);
-                group.add(bottom);
+                        map: mahoganyTexture,
 
-                return group;
+                        roughnessMap: mahoganyRough,
+                        roughness: 1,
+
+                        normalMap: mahoganyNorm,
+                    });
+                };
+                
+                const mesh = new THREE.Mesh(geo,mat);
+                mesh.position.set(x,y,z);
+                return mesh;
             }
 
             function addCupboard() {
