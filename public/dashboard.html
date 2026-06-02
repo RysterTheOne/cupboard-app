@@ -303,6 +303,10 @@
                     return;
                 }
 
+                if (type === "") {
+                    alert("Please select a cabinet type")
+                }
+
                 try {
                     const data = {
                         cabinet_type: type,

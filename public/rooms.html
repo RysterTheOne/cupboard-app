@@ -274,10 +274,11 @@
                     addBtn.onclick = async (e) => {
                         e.stopPropagation(); // 🚨 prevents triggering open
                         selectedContainer.append(row);
+
                         cachedProjects.push({
                             name: p.name,
-                            project: p,
-                            position: {x: 0, y: 0, z: 0}
+                            position: {x: 0, y: 0,z: 0},
+                            rotation: {x: 0,y: 0,z: 0}
                         })
 
                         localStorage.removeItem("currentRoom");
@@ -295,6 +296,7 @@
                     rmvBtn.onclick = async (e) => {
                         e.stopPropagation(); // 🚨 prevents triggering open
                         container.append(row);
+
                         cachedProjects = cachedProjects.filter(
                             project => project.name !== p.name
                         );
@@ -533,8 +535,40 @@
                 return mesh;
             }
 
-            function addCupboard() {
-                const cupboard = createCupboard(1, 2, 0.6);
+            function addCupboard(p) {
+                const cupboard = new THREE.Group();
+                cupboard.name = p.name
+
+                const object = cachedProjects.find(
+                    obj => obj.name === p.name
+                );
+
+                const Pos = object.position;
+                const Rot = object.rotation;
+
+                switch (p.data.cabinet_type) {
+                    case "shelving":
+                        const W = p.data.width / 1000;
+                        const H = p.data.height / 1000;
+                        const D = p.data.depth / 1000;
+                        const T = p.data.thickness / 1000;
+                        const shelves = p.data.shelves;
+                        const wood = p.data.woodtype;
+                        const backT = p.data.back / 1000;
+
+                        cupboard.add(createCupboard(T,H,D,-W/2+T/2,0,0,wood));
+                        cupboard.add(createCupboard(T,H,D,W/2-T/2,0,0,wood));
+
+                        cupboard.add(createCupboard(W,T,D,0,H/2-T/2,0,wood));
+                        cupboard.add(createCupboard(W,T,D,0,-H/2+T/2,0,wood));
+
+                        cupboard.add(createCupboard(W,H,backT,0,0,-D/2,wood));
+
+                        for(let i=1;i<=shelves;i++){
+                            const y = -H/2 + (H/(shelves+1))*i;
+                            cupboard.add(createCupboard(W-2*T,T,D*0.95,0,y,0,wood));
+                        } 
+                }
                 cupboard.position.y = 1;
                 scene.add(cupboard);
                 roomObjects.push(cupboard);
